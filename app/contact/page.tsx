@@ -1,119 +1,192 @@
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
+"use client"
+
+import type React from "react"
+
+import { Navigation } from "@/components/navigation"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { useState } from "react"
 
 export default function ContactPage() {
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const [errorMessage, setErrorMessage] = useState("")
 
-      <main className="flex-1 py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Contact Developer</h1>
-            <p className="text-xl text-muted-foreground">
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitStatus("idle")
+    setErrorMessage("")
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to send message")
+      }
+
+      setSubmitStatus("success")
+      setFormData({ name: "", email: "", subject: "", message: "" })
+    } catch (error) {
+      setSubmitStatus("error")
+      setErrorMessage(error instanceof Error ? error.message : "An error occurred")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }))
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold mb-2">Contact Developer</h1>
+            <p className="text-muted-foreground">
               Get in touch with Dr. Bobby Tork for questions, feedback, or support
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl text-foreground">Send a Message</CardTitle>
-                  <p className="text-muted-foreground">
-                    Your message will be sent directly to the developer. We'll get back to you as soon as possible.
-                  </p>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="fullName" className="text-foreground">
-                        Full Name
-                      </Label>
-                      <Input id="fullName" placeholder="Dr. John Smith" className="bg-input border-border" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-foreground">
-                        Email Address
-                      </Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="doctor@example.com"
-                        className="bg-input border-border"
-                      />
-                    </div>
-                  </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Send a Message</CardTitle>
+              <CardDescription>
+                Your message will be sent directly to the developer. We'll get back to you as soon as possible.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {submitStatus === "success" && (
+                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-green-800 font-medium">Message sent successfully!</p>
+                  <p className="text-green-600 text-sm mt-1">Thank you for your message. We'll get back to you soon.</p>
+                </div>
+              )}
 
-                  <div className="space-y-2">
-                    <Label htmlFor="subject" className="text-foreground">
-                      Subject
-                    </Label>
-                    <Input id="subject" placeholder="Question about GPCCMP tool" className="bg-input border-border" />
-                  </div>
+              {submitStatus === "error" && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-800 font-medium">Failed to send message</p>
+                  <p className="text-red-600 text-sm mt-1">{errorMessage}</p>
+                </div>
+              )}
 
-                  <div className="space-y-2">
-                    <Label htmlFor="message" className="text-foreground">
-                      Message
-                    </Label>
-                    <Textarea
-                      id="message"
-                      placeholder="Please describe your question, feedback, or how we can help you..."
-                      rows={6}
-                      className="bg-input border-border"
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="name">Full Name</Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      type="text"
+                      placeholder="Dr. John Smith"
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
                     />
                   </div>
+                  <div>
+                    <Label htmlFor="email">Email Address</Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="doctor@example.com"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
 
-                  <Button className="w-full bg-primary hover:bg-primary/90">Send Message</Button>
+                <div>
+                  <Label htmlFor="subject">Subject</Label>
+                  <Input
+                    id="subject"
+                    name="subject"
+                    type="text"
+                    placeholder="Question about GPCCMP tool"
+                    required
+                    value={formData.subject}
+                    onChange={handleChange}
+                  />
+                </div>
 
-                  <Card className="bg-muted/50">
-                    <CardContent className="p-4">
-                      <h4 className="font-semibold text-foreground mb-2">Privacy Notice</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Your contact information and message will be securely stored and used only to respond to your
-                        inquiry. We respect your privacy and will never share your information with third parties.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </CardContent>
-              </Card>
-            </div>
+                <div>
+                  <Label htmlFor="message">Message</Label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    placeholder="Please describe your question, feedback, or how we can help you..."
+                    required
+                    rows={6}
+                    value={formData.message}
+                    onChange={handleChange}
+                  />
+                </div>
 
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-xl text-foreground">Response Time</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground text-sm">
-                    We typically respond to messages within 24-48 hours during business days. For urgent technical
-                    issues, please include "URGENT" in your subject line.
-                  </p>
-                </CardContent>
-              </Card>
+                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                  {isSubmitting ? "Sending Message..." : "Send Message"}
+                </Button>
+              </form>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-xl text-foreground">Feedback Welcome</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground text-sm">
-                    We value your feedback and suggestions for improving our tools. Your input helps us create better
-                    resources for healthcare professionals.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+              <div className="mt-6 p-4 bg-muted rounded-lg">
+                <h3 className="font-semibold mb-2">Privacy Notice</h3>
+                <p className="text-sm text-muted-foreground">
+                  Your contact information and message will be securely stored and used only to respond to your inquiry.
+                  We respect your privacy and will never share your information with third parties.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="mt-8 grid md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Response Time</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground text-sm">
+                  We typically respond to messages within 24-48 hours during business days. For urgent technical issues,
+                  please include "URGENT" in your subject line.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Feedback Welcome</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground text-sm">
+                  We value your feedback and suggestions for improving our tools. Your input helps us create better
+                  resources for healthcare professionals.
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
-      </main>
-
-      <Footer />
+      </div>
     </div>
   )
 }

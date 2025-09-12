@@ -1,72 +1,80 @@
 import Link from "next/link"
 
-export function Footer() {
+export default function Footer() {
   return (
-    <footer className="bg-muted border-t border-border mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <footer className="bg-muted/30 border-t border-border mt-auto">
+      <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">GP</span>
+          {/* Brand Section */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
+                <span className="text-primary-foreground font-bold text-sm">GP</span>
               </div>
-              <span className="font-bold text-xl text-foreground">GP Companion</span>
+              <span className="font-semibold text-lg">GP Companion</span>
             </div>
-            <p className="text-muted-foreground text-sm max-w-md">
-              Comprehensive medical tools and health assessments designed for healthcare professionals. Streamline your
-              workflow with our secure, privacy-focused platform.
+            <p className="text-sm text-muted-foreground">
+              Free clinical tools for healthcare professionals with complete patient privacy.
             </p>
           </div>
 
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">Quick Links</h3>
-            <ul className="space-y-2">
+          {/* Quick Links */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm text-foreground">Quick Links</h3>
+            <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                <Link href="/gpccmp" className="text-muted-foreground hover:text-primary transition-colors">
+                  GPCCMP Tools
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Information */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm text-foreground">Information</h3>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">
                   About Website
                 </Link>
               </li>
               <li>
-                <Link href="/developer" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                  Developer
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                <Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                  Contact Developer
+                <Link href="/developer" className="text-muted-foreground hover:text-primary transition-colors">
+                  Developer
                 </Link>
               </li>
             </ul>
           </div>
 
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">Tools</h3>
-            <ul className="space-y-2">
+          {/* Contact */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm text-foreground">Contact</h3>
+            <ul className="space-y-2 text-sm">
               <li>
-                <span className="text-muted-foreground text-sm">GPCCMP Tool</span>
-              </li>
-              <li>
-                <span className="text-muted-foreground text-sm">Health Assessments</span>
-              </li>
-              <li>
-                <span className="text-muted-foreground text-sm">75+ Health Assessment</span>
-              </li>
-              <li>
-                <span className="text-muted-foreground text-sm">ATSI Health Assessment</span>
+                <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">
+                  Contact Developer
+                </Link>
               </li>
             </ul>
+            <div className="pt-2">
+              <p className="text-xs text-muted-foreground">
+                All data stays in your browser. No patient information is ever stored on our servers.
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="border-t border-border mt-8 pt-8 text-center">
-          <p className="text-muted-foreground text-sm">
-            © 2024 GP Companion. All rights reserved. Designed for healthcare professionals.
-          </p>
+        <div className="border-t border-border mt-8 pt-6">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
+            <p className="text-xs text-muted-foreground">© 2024 GP Companion. All rights reserved.</p>
+            <p className="text-xs text-muted-foreground">Designed for healthcare professionals with privacy in mind.</p>
+          </div>
         </div>
       </div>
     </footer>
