@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>45-49 Year Old Health Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6; /* bg-gray-100 */
+      }
+      .chevron-icon {
+        transition: transform 0.3s ease-in-out;
+      }
+      .chevron-icon.rotated {
+        transform: rotate(180deg);
+      }
+      .form-section-content.collapsed {
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out,
+          padding 0.5s ease-in-out;
+      }
+      .form-section-content {
+        transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+        max-height: 8000px; /* A large value to allow for content */
+        opacity: 1;
+      }
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      .modal-content {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 800px;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      .modal-close-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #6b7280;
+      }
+      .details-container {
+        padding-left: 1.85rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0.75rem;
+      }
+      .subsection-title {
+        font-weight: 600;
+        margin-top: 1.25rem;
+        margin-bottom: 0.75rem;
+        color: #334155;
+        font-size: 1.1rem;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 0.5rem;
+      }
+      .snap-item {
+        padding: 0.75rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      .snap-item-header {
+        display: flex;
+        align-items: center;
+      }
+      .snap-item-details {
+        padding-top: 0.75rem;
+        margin-top: 0.75rem;
+        border-top: 1px solid #e2e8f0;
+      }
+      .score-display {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #166534;
+        background-color: #f0fdf4;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+      }
+      .assessment-question {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .assessment-question:last-child {
+        border-bottom: none;
+      }
+    </style>
+  </head>
+  <body class="text-gray-800">
+    <nav
+      class="w-full bg-white border-b border-gray-200 fixed top-0 left-0 z-50"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <a href="/" class="flex items-center space-x-3">
+            <img
+              src="/images/gp-companion-logo.png"
+              alt="GP Companion Logo"
+              width="40"
+              height="40"
+              class="w-10 h-10"
+            />
+            <span class="font-bold text-xl text-gray-900">GP Companion</span>
+          </a>
+
+          <div class="hidden md:flex items-center space-x-8">
+            <a
+              href="/about"
+              class="text-gray-500 hover:text-indigo-600 transition-colors"
+              >About Website</a
+            >
+            <a
+              href="/developer"
+              class="text-gray-500 hover:text-indigo-600 transition-colors"
+              >Developer</a
+            >
+            <a
+              href="/privacy"
+              class="text-gray-500 hover:text-indigo-600 transition-colors"
+              >Privacy Policy</a
+            >
+            <a
+              href="/contact"
+              class="text-gray-500 hover:text-indigo-600 transition-colors"
+              >Contact Developer</a
+            >
+            <a
+              href="/gpccmp"
+              class="inline-flex items-center px-3 py-2 bg-indigo-600 text-white rounded-md text-sm shadow-sm hover:bg-indigo-700"
+              >Start GPCCMP</a
+            >
+          </div>
+
+          <div class="md:hidden">
+            <button
+              type="button"
+              class="inline-flex items-center p-2 rounded-md text-gray-600 hover:bg-gray-100"
+            >
+              <span class="sr-only">Open menu</span>
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 mt-12">
+      <header class="text-center mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">
+          45-49 Year Old Health Assessment
+        </h1>
+        <p class="text-md text-gray-600 mt-2">
+          GP Health Assessment Tool for people at risk of developing chronic
+          disease
+        </p>
+        <p class="text-sm text-gray-700 mt-4 font-semibold">
+          Developed by Dr Bobby Tork MD, FRACGP-RG
+        </p>
+        <p class="text-xs text-gray-500 mt-1">&copy; 2025 Dr Bobby Tork</p>
+      </header>
+
+      <div class="max-w-4xl mx-auto">
+        <!-- Dynamic Form Content -->
+        <div id="form-container"></div>
+
+        <!-- Action Buttons -->
+        <div id="action-buttons" class="mt-8 flex justify-end space-x-4 hidden">
+          <button
+            id="clear-form-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          >
+            Clear Form
+          </button>
+          <button
+            id="save-txt-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Save as .txt
+          </button>
+          <button
+            id="save-rtf-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Save as .rtf
+          </button>
+        </div>
+
+        <!-- Report Output -->
+        <div id="report-container" class="mt-10 hidden">
+          <div
+            class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+          >
+            <div class="p-6 bg-white">
+              <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                Generated Assessment Report
+              </h2>
+              <pre
+                id="report-output"
+                class="p-4 bg-gray-50 rounded-lg whitespace-pre-wrap font-mono text-sm"
+              ></pre>
+              <div class="mt-6 flex justify-end space-x-4">
+                <button
+                  id="copy-report-btn"
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+                >
+                  Copy to Clipboard
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="easter-egg-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <p class="font-semibold">Developed by Dr Bobby Tork MD, FRACGP-RG</p>
+        <p class="text-sm">&copy; 2025 Dr Bobby Tork</p>
+        <button
+          id="close-easter-egg"
+          class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+    <div id="clear-confirm-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <h3 class="text-lg font-bold mb-2">Are you sure?</h3>
+        <p class="text-gray-600 mb-4">
+          All entered data will be lost. This action cannot be undone.
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            id="cancel-clear-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+          >
+            Cancel
+          </button>
+          <button
+            id="confirm-clear-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700"
+          >
+            Clear Form
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="restore-confirm-modal" class="modal-overlay hidden">
+      <div class="modal-content text-center">
+        <h3 class="text-xl font-bold mb-2">Restore Previous Session?</h3>
+        <p class="text-gray-600 mb-6">
+          We found saved data from your last session. Would you like to continue
+          where you left off?
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            id="start-fresh-btn"
+            class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+          >
+            Start Fresh
+          </button>
+          <button
+            id="confirm-restore-btn"
+            class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
+          >
+            Restore Session
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="assessment-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modal-title" class="text-2xl font-bold">Assessment</h2>
+          <div id="modal-score-display" class="score-display">Score: 0</div>
+          <button id="modal-close-btn" class="modal-close-btn">&times;</button>
+        </div>
+        <div id="modal-body"></div>
+        <div id="modal-footer" class="mt-6 flex justify-end items-center"></div>
+      </div>
+    </div>
+
+    <footer
+      class="bg-indigo-950 text-indigo-100 border-t border-indigo-800 mt-auto"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="col-span-1 md:col-span-2">
+            <div class="flex items-center space-x-3 mb-4">
+              <div
+                class="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center shadow-sm"
+              >
+                <span class="text-white font-bold text-lg">GP</span>
+              </div>
+              <span class="font-bold text-xl text-white"> GP Companion </span>
+            </div>
+
+            <p class="text-indigo-200 text-sm max-w-md">
+              Comprehensive medical tools and health assessments designed for
+              healthcare professionals. Streamline your workflow with our
+              secure, privacy-focused platform.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-white mb-4">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="/about"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                >
+                  About Website
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/developer"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                >
+                  Developer
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/privacy"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                >
+                  Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/contact"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                >
+                  Contact Developer
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-white mb-4">Tools</h3>
+            <ul class="space-y-2">
+              <li>
+                <span class="text-indigo-200 text-sm">GPCCMP Tool</span>
+              </li>
+              <li>
+                <span class="text-indigo-200 text-sm">
+                  Health Assessments
+                </span>
+              </li>
+              <li>
+                <span class="text-indigo-200 text-sm">
+                  75+ Health Assessment
+                </span>
+              </li>
+              <li>
+                <span class="text-indigo-200 text-sm">
+                  ATSI Health Assessment
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-indigo-800 mt-8 pt-8 text-center">
+          <p class="text-indigo-300 text-sm">
+            © 2024 GP Companion. All rights reserved. Designed for healthcare
+            professionals.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // --- DOM Element References ---
+      const formContainer = document.getElementById("form-container");
+      const saveTxtBtn = document.getElementById("save-txt-btn");
+      const saveRtfBtn = document.getElementById("save-rtf-btn");
+      const clearFormBtn = document.getElementById("clear-form-btn");
+      const actionButtons = document.getElementById("action-buttons");
+      const reportContainer = document.getElementById("report-container");
+      const reportOutput = document.getElementById("report-output");
+      const copyReportBtn = document.getElementById("copy-report-btn");
+      const assessmentModal = document.getElementById("assessment-modal");
+      const modalTitle = document.getElementById("modal-title");
+      const modalBody = document.getElementById("modal-body");
+      const modalFooter = document.getElementById("modal-footer");
+      const modalCloseBtn = document.getElementById("modal-close-btn");
+      const modalScoreDisplay = document.getElementById("modal-score-display");
+
+      // --- Reusable HTML Templates ---
+      const getChevronIcon = () =>
+        `<svg class="chevron-icon w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+
+      const getMbsSelectionHtml = () => `
+            <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                <div class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"><h2 class="form-section-title">MBS Item Number</h2>${getChevronIcon()}</div>
+                <div class="p-6 bg-white form-section-content">
+                    <label class="block text-lg font-medium text-gray-700 mb-3">Select the appropriate MBS item number based on consultation time:</label>
+                    <div class="space-y-3">
+                        <label class="flex items-center"><input type="radio" name="mbs-item" value="701" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mr-3"> <b>Item 701</b> - Brief health assessment lasting no more than 30 minutes</label>
+                        <label class="flex items-center"><input type="radio" name="mbs-item" value="703" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mr-3"> <b>Item 703</b> - Standard health assessment lasting at least 30 minutes and less than 45 minutes</label>
+                        <label class="flex items-center"><input type="radio" name="mbs-item" value="705" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mr-3"> <b>Item 705</b> - Long health assessment lasting at least 45 minutes and less than 60 minutes</label>
+                        <label class="flex items-center"><input type="radio" name="mbs-item" value="707" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mr-3"> <b>Item 707</b> - Prolonged health assessment lasting more than 60 minutes</label>
+                    </div>
+                    <div id="assessment-frequency-note" class="mt-4 p-3 bg-indigo-50 rounded-lg text-sm text-indigo-800">This health assessment is available once to an eligible patient.</div>
+                </div>
+            </div>
+        `;
+
+      const getPatientDetailsHtml = () => {
+        const today = new Date().toISOString().slice(0, 10);
+        return `
+            <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                <div class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"><h2 class="form-section-title">Patient Details</h2>${getChevronIcon()}</div>
+                <div class="p-6 bg-white form-section-content">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
+                        <div><label for="patient-name" class="block text-sm font-medium text-gray-700 mb-1">Name: <span class="text-gray-400 font-normal">(optional)</span></label><input type="text" id="patient-name" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"></div>
+                        <div><label for="assessment-date" class="block text-sm font-medium text-gray-700 mb-1">Assessment Date:</label><input type="date" id="assessment-date" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" value="${today}"></div>
+                        <div><label for="patient-dob" class="block text-sm font-medium text-gray-700 mb-1">DOB:</label><input type="date" id="patient-dob" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"></div>
+                        <div class="grid grid-cols-2 gap-4 self-end">
+                            <div id="patient-age-display" class="p-3 bg-gray-100 rounded-md text-center font-medium h-full flex items-center justify-center">Age will be calculated</div>
+                            <div id="patient-age-error" class="hidden text-red-600 font-bold text-sm flex items-center justify-center text-center">Age must be 45-49</div>
+                        </div>
+                        <div><label for="patient-medicare" class="block text-sm font-medium text-gray-700 mb-1">Medicare No: <span class="text-gray-400 font-normal">(optional)</span></label><input type="text" id="patient-medicare" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"></div>
+                        <div>
+                            <label for="patient-gender" class="block text-sm font-medium text-gray-700 mb-1">Gender:</label>
+                            <select id="patient-gender" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
+                                <option value="">Select Gender</option><option value="male">Male</option><option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="flex items-center"><input type="checkbox" id="patient-atsi" class="h-4 w-4 text-indigo-600 mr-2"> Aboriginal and/or Torres Strait Islander origin</label>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+      };
+
+      const getSnapEdHtml = () => `
+            <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                <div class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"><h2 class="form-section-title">SNAP-Ed Assessment</h2>${getChevronIcon()}</div>
+                <div class="p-6 bg-white form-section-content">
+                    <p class="text-gray-600 mb-4">Assessment of Smoking, Nutrition, Alcohol, Physical Activity, and Emotional Wellbeing.</p>
+                    
+                    <div class="space-y-4">
+                        <!-- Smoking -->
+                        <div class="snap-item">
+                            <div class="snap-item-header">
+                                <input type="checkbox" id="assess-smoking" class="h-4 w-4 text-indigo-600 mr-3">
+                                <label for="assess-smoking" class="font-semibold text-gray-800">S - Smoking Status</label>
+                            </div>
+                            <div id="smoking-details-container" class="snap-item-details hidden">
+                                <div class="flex items-center space-x-4">
+                                    <select id="smoking-status" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
+                                        <option value="">Select status...</option>
+                                        <option value="current">Current Smoker</option>
+                                        <option value="ex">Ex-smoker</option>
+                                        <option value="non">Non-smoker</option>
+                                    </select>
+                                    <input type="text" id="smoking-pack-years" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm hidden" placeholder="Pack Years...">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nutrition -->
+                        <div class="snap-item">
+                            <div class="snap-item-header">
+                                <input type="checkbox" id="assess-nutrition" class="h-4 w-4 text-indigo-600 mr-3">
+                                <label for="assess-nutrition" class="font-semibold text-gray-800">N - Nutrition</label>
+                            </div>
+                            <div id="nutrition-details-container" class="snap-item-details hidden">
+                                 <div class="flex items-center space-x-4">
+                                    <select id="nutrition-status" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
+                                        <option value="">Select diet type...</option>
+                                        <option value="balanced">Balanced</option>
+                                        <option value="poor">Poor</option>
+                                    </select>
+                                    <input type="text" id="nutrition-details" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm hidden" placeholder="Details...">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Alcohol -->
+                        <div class="snap-item">
+                            <div class="snap-item-header">
+                                <input type="checkbox" id="assess-alcohol" class="h-4 w-4 text-indigo-600 mr-3">
+                                <label for="assess-alcohol" class="font-semibold text-gray-800">A - Alcohol</label>
+                            </div>
+                            <div id="alcohol-details-container" class="snap-item-details hidden">
+                                <div class="flex items-center space-x-2">
+                                    <input type="number" id="alcohol-drinks" class="block w-1/2 px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="Standard drinks">
+                                    <select id="alcohol-period" class="block w-1/2 px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm">
+                                        <option value="week">per week</option>
+                                        <option value="day">per day</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Physical Activity -->
+                        <div class="snap-item">
+                            <div class="snap-item-header">
+                                <input type="checkbox" id="assess-activity" class="h-4 w-4 text-indigo-600 mr-3">
+                                <label for="assess-activity" class="font-semibold text-gray-800">P - Physical Activity</label>
+                            </div>
+                            <div id="activity-details-container" class="snap-item-details hidden">
+                                <div class="flex items-center space-x-2">
+                                    <input type="number" id="activity-minutes" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="Minutes of exercise">
+                                    <span class="text-gray-600">per week</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emotional Wellbeing -->
+                    <div class="mt-6 pt-6 border-t-2 border-dashed border-gray-300">
+                         <div class="snap-item bg-gray-50">
+                            <div class="snap-item-header">
+                                <input type="checkbox" id="assess-mood" class="h-4 w-4 text-indigo-600 mr-3">
+                                <label for="assess-mood" class="font-semibold text-gray-800">E - Emotional Wellbeing (Depression Screening)</label>
+                            </div>
+                            <div id="mood-details-container" class="snap-item-details hidden">
+                                <div class="flex items-center space-x-4">
+                                    <select id="mood-tool" class="block w-1/3 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm">
+                                        <option value="">Select Tool...</option>
+                                        <option value="K10">K10</option>
+                                        <option value="DASS21">DASS-21</option>
+                                    </select>
+                                    <input type="text" id="mood-score" class="block w-1/3 px-3 py-2 bg-gray-200 border border-gray-300 rounded-md shadow-sm" placeholder="Score" readonly>
+                                    <button id="launch-mood-assessment" class="w-1/3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400" disabled>Launch Assessment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+      const getPlanAndRecsHtml = () => `
+            <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                <div class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"><h2 class="form-section-title">Plan & Recommendations</h2>${getChevronIcon()}</div>
+                <div class="p-6 bg-white form-section-content">
+                    <h3 class="subsection-title">Recommended actions, screening and immunisations</h3>
+                    
+                    <h4 class="font-semibold text-gray-700 mt-4 mb-2">Assessments</h4>
+                    <div id="assessments-container" class="pl-2">
+                        <label class="flex items-center my-2 hidden" id="rec-menopause-assessment-label"><input type="checkbox" id="rec-menopause-assessment" value="Menopause health assessment recommended."> Menopause assessment</label>
+                        <label class="flex items-center my-2"><input type="checkbox" id="rec-heart-health-assessment" value="Heart Health Assessment recommended."> Heart Health Assessment</label>
+                        <label class="flex items-center my-2 hidden" id="rec-atsi-assessment-label"><input type="checkbox" id="rec-atsi-assessment" value="ATSI health assessment recommended."> ATSI health assessment</label>
+                        <label class="flex items-center my-2"><input type="checkbox" id="rec-diabetes-risk-assessment" value="40-49 YO Type 2 Diabetes Risk Evaluation recommended."> 40-49 YO Type 2 Diabetes Risk Evaluation</label>
+                    </div>
+
+                    <h4 class="font-semibold text-gray-700 mt-6 mb-2">Screening</h4>
+                    <div id="screening-container" class="pl-2">
+                        <label class="flex items-center my-2"><input type="checkbox" id="rec-bowel-screening" value="Bowel screening recommended."> Bowel screening</label>
+                        <label class="flex items-center my-2 hidden" id="rec-breast-screening-label"><input type="checkbox" id="rec-breast-screening" value="Breast screening recommended."> Breast screening</label>
+                        <label class="flex items-center my-2 hidden" id="rec-cervical-screening-label"><input type="checkbox" id="rec-cervical-screening" value="Cervical screening recommended."> Cervical screening</label>
+                    </div>
+
+                    <h4 class="font-semibold text-gray-700 mt-6 mb-2">Immunisations</h4>
+                    <div id="immunisations-container" class="pl-2">
+                        <label class="flex items-center my-2"><input type="checkbox" id="rec-flu-vax" value="Annual influenza immunisation recommended."> Annual influenza immunisation</label>
+                        <label class="flex items-center my-2"><input type="checkbox" id="rec-covid-vax" value="COVID-19 immunisation recommended."> COVID-19 immunisation</label>
+                    </div>
+                    <div id="other-immunisations-container" class="pl-2 mt-2 space-y-2"></div>
+                    <button id="add-immunisation-btn" class="mt-2 ml-2 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-3 rounded-md">+ Add Other</button>
+
+                    <label for="plan-recommendations" class="block text-sm font-medium text-gray-700 mt-8 mb-1">Detail the management plan, referrals, and follow-up actions:</label>
+                    <textarea id="plan-recommendations" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm h-48"></textarea>
+                </div>
+            </div>`;
+
+      function get45to49Form() {
+        return `
+                ${getMbsSelectionHtml()}
+                ${getPatientDetailsHtml()}
+                <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                    <div class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"><h2 class="form-section-title">History & Medication</h2>${getChevronIcon()}</div>
+                    <div class="p-6 bg-white form-section-content">
+                        <label for="past-medical-history" class="block text-sm font-medium text-gray-700 mb-1">Past Medical History:</label>
+                        <textarea id="past-medical-history" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm h-24 mb-4"></textarea>
+                        
+                        <label for="regular-medications" class="block text-sm font-medium text-gray-700 mb-1">Regular Medications:</label>
+                        <textarea id="regular-medications" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm h-24 mb-4"></textarea>
+                        
+                        <label class="flex items-center"><input type="checkbox" id="meds-reviewed-checkbox" value="Medication list reviewed and reconciled with patient." class="h-4 w-4 text-indigo-600 mr-2"> Medication list reviewed and reconciled with patient.</label>
+                    </div>
+                </div>
+                <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                    <div class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"><h2 class="form-section-title">Risk Factor Assessment</h2>${getChevronIcon()}</div>
+                    <div class="p-6 bg-white form-section-content">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+                            <div>
+                                <h3 class="subsection-title">Biomedical Risks</h3>
+                                <label class="flex items-center my-2"><input type="checkbox" id="risk-cholesterol" value="High cholesterol" class="h-4 w-4 text-indigo-600 mr-2">High cholesterol</label>
+                                <div id="risk-cholesterol-details" class="details-container hidden">
+                                    <label class="flex items-center"><input type="radio" name="cholesterol-meds" value="Medicated" class="h-4 w-4 text-indigo-600 mr-2"> Medicated</label>
+                                    <label class="flex items-center"><input type="radio" name="cholesterol-meds" value="Unmedicated" class="h-4 w-4 text-indigo-600 mr-2"> Unmedicated</label>
+                                </div>
+
+                                <label class="flex items-center my-2"><input type="checkbox" id="risk-bp" value="High blood pressure" class="h-4 w-4 text-indigo-600 mr-2">High blood pressure</label>
+                                <div id="risk-bp-details" class="details-container hidden">
+                                    <label class="flex items-center"><input type="radio" name="bp-meds" value="Medicated" class="h-4 w-4 text-indigo-600 mr-2"> Medicated</label>
+                                    <label class="flex items-center"><input type="radio" name="bp-meds" value="Unmedicated" class="h-4 w-4 text-indigo-600 mr-2"> Unmedicated</label>
+                                </div>
+
+                                <label class="flex items-center my-2"><input type="checkbox" id="risk-glucose" value="Impaired glucose metabolism" class="h-4 w-4 text-indigo-600 mr-2">Impaired glucose metabolism</label>
+                                <div id="risk-glucose-details" class="details-container hidden">
+                                    <label class="flex items-center"><input type="radio" name="glucose-meds" value="Medicated" class="h-4 w-4 text-indigo-600 mr-2"> Medicated</label>
+                                    <label class="flex items-center"><input type="radio" name="glucose-meds" value="Unmedicated" class="h-4 w-4 text-indigo-600 mr-2"> Unmedicated</label>
+                                </div>
+
+                                <label class="flex items-center my-2"><input type="checkbox" id="risk-skin-cancer" value="History of skin cancer or significant sun exposure" class="h-4 w-4 text-indigo-600 mr-2">History of skin cancer / sig. sun exposure</label>
+
+                                <label for="other-biomedical-risks" class="block text-sm font-medium text-gray-700 mt-4 mb-1">Other biomedical risks:</label>
+                                <textarea id="other-biomedical-risks" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="Enter other risks..."></textarea>
+                            </div>
+                            <div class="md:col-span-2 mt-4">
+                                <h3 class="subsection-title">Significant family history</h3>
+                                <label class="flex items-center my-2"><input type="checkbox" id="fh-breast" value="Breast cancer" class="h-4 w-4 text-indigo-600 mr-2">Breast cancer</label>
+                                <div id="fh-breast-details" class="details-container hidden"><textarea class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="Details..."></textarea></div>
+                                
+                                <label class="flex items-center my-2"><input type="checkbox" id="fh-diabetes" value="Diabetes" class="h-4 w-4 text-indigo-600 mr-2">Diabetes</label>
+                                <div id="fh-diabetes-details" class="details-container hidden"><textarea class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="Details..."></textarea></div>
+
+                                <label class="flex items-center my-2"><input type="checkbox" id="fh-colorectal" value="Colorectal Cancer" class="h-4 w-4 text-indigo-600 mr-2">Colorectal Cancer</label>
+                                <div id="fh-colorectal-details" class="details-container hidden"><textarea class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="Details..."></textarea></div>
+
+                                <label class="flex items-center my-2"><input type="checkbox" id="fh-mental" value="Mental Health conditions" class="h-4 w-4 text-indigo-600 mr-2">Mental Health conditions</label>
+                                <div id="fh-mental-details" class="details-container hidden"><textarea class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="Details..."></textarea></div>
+
+                                <label class="flex items-center my-2"><input type="checkbox" id="fh-other" value="Other chronic disease" class="h-4 w-4 text-indigo-600 mr-2">Other chronic disease</label>
+                                <div id="fh-other-details" class="details-container hidden"><textarea class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="Details..."></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                ${getSnapEdHtml()}
+                <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+                    <div class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"><h2 class="form-section-title">Examination & Investigations</h2>${getChevronIcon()}</div>
+                    <div class="p-6 bg-white form-section-content">
+                        <h3 class="subsection-title">Examination</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                            <div><label for="bp" class="block text-sm font-medium text-gray-700 mb-1">Blood Pressure (mmHg):</label><input type="text" id="bp" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="e.g., 120/80"></div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label for="hr" class="block text-sm font-medium text-gray-700 mb-1">Heart Rate:</label><input type="number" id="hr" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"></div>
+                                <div><label for="hr-rhythm" class="block text-sm font-medium text-gray-700 mb-1">Rhythm:</label><select id="hr-rhythm" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"><option>Regular</option><option>Irregular</option></select></div>
+                            </div>
+                            <div><label for="height-cm" class="block text-sm font-medium text-gray-700 mb-1">Height (cm):</label><input type="number" id="height-cm" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"></div>
+                            <div><label for="weight-kg" class="block text-sm font-medium text-gray-700 mb-1">Weight (kg):</label><input type="number" id="weight-kg" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"></div>
+                            <div><label for="waist" class="block text-sm font-medium text-gray-700 mb-1">Waist Circumference (cm):</label><input type="number" id="waist" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"></div>
+                            <div><label for="bmi" class="block text-sm font-medium text-gray-700 mb-1">BMI (kg/m²):</label><input type="text" id="bmi" class="block w-full px-3 py-2 bg-gray-200 border border-gray-300 rounded-md shadow-sm" readonly></div>
+                        </div>
+                        
+                        <label class="flex items-center my-2"><input type="checkbox" id="exam-cvs" class="h-4 w-4 text-indigo-600 mr-2">Cardiovascular examination</label>
+                        <div id="exam-cvs-details" class="details-container hidden"><textarea class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="Findings..."></textarea></div>
+                        
+                        <label class="flex items-center my-2"><input type="checkbox" id="exam-resp" class="h-4 w-4 text-indigo-600 mr-2">Respiratory examination</label>
+                        <div id="exam-resp-details" class="details-container hidden"><textarea class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="Findings..."></textarea></div>
+
+                        <label class="flex items-center my-2"><input type="checkbox" id="exam-abdo" class="h-4 w-4 text-indigo-600 mr-2">Abdominal examination</label>
+                        <div id="exam-abdo-details" class="details-container hidden"><textarea class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="Findings..."></textarea></div>
+
+                        <label for="exam-other" class="block text-sm font-medium text-gray-700 mt-4 mb-1">Other examination findings:</label>
+                        <textarea id="exam-other" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"></textarea>
+
+                        <div class="mt-6">
+                            <h3 class="subsection-title">Investigations</h3>
+                            <div id="investigations-checkboxes">
+                                <label class="flex items-center my-2"><input type="checkbox" value="Fasting lipids ordered/reviewed" class="h-4 w-4 text-indigo-600 mr-2"> Fasting lipids ordered/reviewed</label>
+                                <label class="flex items-center my-2"><input type="checkbox" value="Fasting glucose/HbA1c ordered/reviewed" class="h-4 w-4 text-indigo-600 mr-2"> Fasting glucose/HbA1c ordered/reviewed</label>
+                            </div>
+                            <label for="investigations-other" class="block text-sm font-medium text-gray-700 mt-4 mb-1">Other relevant investigations:</label>
+                            <textarea id="investigations-other" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"></textarea>
+                        </div>
+                    </div>
+                </div>
+                ${getPlanAndRecsHtml()}
+            `;
+      }
+
+      // --- CORE SCRIPT LOGIC ---
+      // A map of checkbox IDs to the IDs of the containers they toggle.
+      // Defined globally so it can be used by the form loading function.
+      const toggleMap = {
+        "risk-cholesterol": "risk-cholesterol-details",
+        "risk-bp": "risk-bp-details",
+        "risk-glucose": "risk-glucose-details",
+        "fh-breast": "fh-breast-details",
+        "fh-diabetes": "fh-diabetes-details",
+        "fh-colorectal": "fh-colorectal-details",
+        "fh-mental": "fh-mental-details",
+        "fh-other": "fh-other-details",
+        "exam-cvs": "exam-cvs-details",
+        "exam-resp": "exam-resp-details",
+        "exam-abdo": "exam-abdo-details",
+        "assess-smoking": "smoking-details-container",
+        "assess-nutrition": "nutrition-details-container",
+        "assess-alcohol": "alcohol-details-container",
+        "assess-activity": "activity-details-container",
+        "assess-mood": "mood-details-container",
+      };
+
+      function initializeForm() {
+        formContainer.innerHTML = get45to49Form();
+        actionButtons.classList.remove("hidden");
+        addAccordionListeners();
+        addDynamicListeners();
+      }
+
+      clearFormBtn.addEventListener("click", () => {
+        document
+          .getElementById("clear-confirm-modal")
+          .classList.remove("hidden");
+      });
+      document
+        .getElementById("cancel-clear-btn")
+        .addEventListener("click", () => {
+          document
+            .getElementById("clear-confirm-modal")
+            .classList.add("hidden");
+        });
+      document
+        .getElementById("confirm-clear-btn")
+        .addEventListener("click", () => {
+          document
+            .getElementById("clear-confirm-modal")
+            .classList.add("hidden");
+          initializeForm();
+          reportContainer.classList.add("hidden");
+          reportOutput.textContent = "";
+          localStorage.removeItem("healthAssessmentFormData"); // Clear saved data
+        });
+
+      saveTxtBtn.addEventListener("click", () =>
+        generateAndDisplayReport(true, "txt")
+      );
+      saveRtfBtn.addEventListener("click", () =>
+        generateAndDisplayReport(true, "rtf")
+      );
+
+      copyReportBtn.addEventListener("click", () => {
+        navigator.clipboard
+          .writeText(reportOutput.textContent)
+          .then(() => {
+            copyReportBtn.textContent = "Copied!";
+            setTimeout(() => {
+              copyReportBtn.textContent = "Copy to Clipboard";
+            }, 2000);
+          })
+          .catch((err) => {
+            console.error("Could not copy text: ", err);
+          });
+      });
+
+      function calculateAndDisplayAge() {
+        const dobInput = document.getElementById("patient-dob");
+        const ageDisplay = document.getElementById("patient-age-display");
+        const ageError = document.getElementById("patient-age-error");
+        if (!dobInput || !ageDisplay) return null;
+
+        const dob = dobInput.value;
+        if (!dob) {
+          ageDisplay.innerHTML = "Age will be calculated";
+          ageError.classList.add("hidden");
+          return null;
+        }
+        const birthDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+
+        ageDisplay.innerHTML = `Age: ${age}`;
+        ageError.classList.toggle("hidden", age >= 45 && age <= 49);
+
+        return age;
+      }
+
+      function addAccordionListeners() {
+        document.querySelectorAll(".bg-indigo-700").forEach((header) => {
+          if (header.dataset.listener) return;
+          header.dataset.listener = true;
+          header.addEventListener("click", () => {
+            const content = header.nextElementSibling;
+            const chevron = header.querySelector(".chevron-icon");
+            content.classList.toggle("collapsed");
+            chevron.classList.toggle("rotated");
+          });
+        });
+      }
+
+      function addDynamicListeners() {
+        const dobInput = document.getElementById("patient-dob");
+        const genderSelect = document.getElementById("patient-gender");
+        const atsiCheckbox = document.getElementById("patient-atsi");
+        const patientNameInput = document.getElementById("patient-name");
+
+        // --- EASTER EGG ---
+        if (patientNameInput) {
+          patientNameInput.addEventListener("input", (e) => {
+            if (e.target.value.toLowerCase() === atob("YmlnIGJyb3RoZXIh")) {
+              document
+                .getElementById("easter-egg-modal")
+                .classList.remove("hidden");
+            }
+          });
+        }
+        document
+          .getElementById("close-easter-egg")
+          .addEventListener("click", () => {
+            document.getElementById("easter-egg-modal").classList.add("hidden");
+          });
+        // --- END EASTER EGG ---
+
+        const handlePatientDetailsChange = () => {
+          calculateAndDisplayAge();
+          const isFemale = genderSelect.value === "female";
+          const isAtsi = atsiCheckbox.checked;
+
+          document
+            .getElementById("rec-breast-screening-label")
+            ?.classList.toggle("hidden", !isFemale);
+          document
+            .getElementById("rec-cervical-screening-label")
+            ?.classList.toggle("hidden", !isFemale);
+          document
+            .getElementById("rec-menopause-assessment-label")
+            ?.classList.toggle("hidden", !isFemale);
+          document
+            .getElementById("rec-atsi-assessment-label")
+            ?.classList.toggle("hidden", !isAtsi);
+
+          updateAutomaticAssessments();
+          updateManagementPlan();
+        };
+
+        if (dobInput)
+          dobInput.addEventListener("change", handlePatientDetailsChange);
+        if (genderSelect)
+          genderSelect.addEventListener("change", handlePatientDetailsChange);
+        if (atsiCheckbox)
+          atsiCheckbox.addEventListener("change", handlePatientDetailsChange);
+
+        handlePatientDetailsChange();
+
+        const setupToggle = (checkboxId, detailsId) => {
+          const checkbox = document.getElementById(checkboxId);
+          const details = document.getElementById(detailsId);
+          if (checkbox && details) {
+            checkbox.addEventListener("change", (e) => {
+              details.classList.toggle("hidden", !e.target.checked);
+            });
+          }
+        };
+
+        Object.entries(toggleMap).forEach(([checkboxId, detailsId]) =>
+          setupToggle(checkboxId, detailsId)
+        );
+
+        document
+          .getElementById("height-cm")
+          ?.addEventListener("input", calculateBMI);
+        document
+          .getElementById("weight-kg")
+          ?.addEventListener("input", calculateBMI);
+        document
+          .getElementById("hr-rhythm")
+          ?.addEventListener("change", updateManagementPlan);
+
+        // SNAP-Ed specific listeners
+        document
+          .getElementById("smoking-status")
+          ?.addEventListener("change", (e) => {
+            document
+              .getElementById("smoking-pack-years")
+              .classList.toggle("hidden", e.target.value !== "current");
+            updateManagementPlan();
+          });
+        document
+          .getElementById("nutrition-status")
+          ?.addEventListener("change", (e) => {
+            document
+              .getElementById("nutrition-details")
+              .classList.toggle("hidden", e.target.value === "");
+            updateManagementPlan();
+          });
+        document
+          .getElementById("alcohol-drinks")
+          ?.addEventListener("input", updateManagementPlan);
+        document
+          .getElementById("alcohol-period")
+          ?.addEventListener("change", updateManagementPlan);
+        document
+          .getElementById("activity-minutes")
+          ?.addEventListener("input", updateManagementPlan);
+
+        // Mood assessment modal launcher
+        const moodToolSelect = document.getElementById("mood-tool");
+        const launchMoodBtn = document.getElementById("launch-mood-assessment");
+        moodToolSelect?.addEventListener("change", () => {
+          launchMoodBtn.disabled = moodToolSelect.value === "";
+        });
+        launchMoodBtn?.addEventListener("click", (e) => {
+          e.preventDefault();
+          const tool = moodToolSelect.value;
+          if (tool) openAssessmentModal(tool, "mood-score");
+        });
+
+        document
+          .getElementById("add-immunisation-btn")
+          ?.addEventListener("click", () => {
+            const container = document.getElementById(
+              "other-immunisations-container"
+            );
+            const newImmunisation = document.createElement("div");
+            newImmunisation.className = "flex items-center mt-2";
+            newImmunisation.innerHTML = `
+                    <label class="flex items-center my-2 flex-grow"><input type="checkbox" checked data-custom="true" class="h-4 w-4 text-indigo-600 mr-2"> <input type="text" class="flex-grow p-1 border-b focus:outline-none focus:border-indigo-500" placeholder="Enter immunisation name..."></label>
+                    <button class="ml-4 text-red-500 hover:text-red-700 font-bold cursor-pointer" onclick="this.parentElement.remove()">X</button>
+                `;
+            container.appendChild(newImmunisation);
+            newImmunisation.querySelector('input[type="text"]').focus();
+          });
+
+        const autoUpdateElements = [
+          "risk-cholesterol",
+          "risk-bp",
+          "risk-glucose",
+          "risk-skin-cancer",
+          "fh-diabetes",
+          "fh-breast",
+          "fh-colorectal",
+          "patient-atsi",
+        ];
+        autoUpdateElements.forEach((id) => {
+          document.getElementById(id)?.addEventListener("change", () => {
+            updateAutomaticAssessments();
+            updateManagementPlan();
+          });
+        });
+
+        // Add auto-save listener
+        formContainer.addEventListener("input", saveFormToLocalStorage);
+        formContainer.addEventListener("change", saveFormToLocalStorage);
+      }
+
+      function updateAutomaticAssessments() {
+        const isChecked = (id) => document.getElementById(id)?.checked;
+
+        const anyBiomedicalRisk =
+          isChecked("risk-cholesterol") ||
+          isChecked("risk-bp") ||
+          isChecked("risk-glucose");
+        const anyLifestyleRisk =
+          document.getElementById("smoking-status")?.value === "current" ||
+          document.getElementById("nutrition-status")?.value === "poor" ||
+          isChecked("assess-alcohol") ||
+          isChecked("assess-activity");
+        document.getElementById("rec-heart-health-assessment").checked =
+          anyBiomedicalRisk || anyLifestyleRisk;
+
+        const isOverweight =
+          (parseFloat(document.getElementById("bmi")?.value) || 0) >= 25;
+        const diabetesRisk =
+          isChecked("assess-activity") ||
+          document.getElementById("nutrition-status")?.value === "poor" ||
+          isChecked("patient-atsi") ||
+          isChecked("risk-glucose") ||
+          isOverweight ||
+          isChecked("fh-diabetes");
+        document.getElementById("rec-diabetes-risk-assessment").checked =
+          diabetesRisk;
+      }
+
+      function updateManagementPlan() {
+        const planTextarea = document.getElementById("plan-recommendations");
+        if (!planTextarea) return;
+
+        // This comprehensive set includes all possible auto-generated recommendations.
+        // It's used to distinguish between machine-generated text and user-entered text.
+        const allAutoRecs = new Set([
+          "- Patient has obesity (BMI ≥ 30). Discussed eligibility for a GP Management Plan (GPMP).",
+          "- Irregular pulse noted. Recommend ECG to investigate for potential arrhythmia (e.g., Atrial Fibrillation).",
+          "- Review and optimise treatment of dyslipidaemia.",
+          "- Review and optimise treatment of hypertension.",
+          "- Review and optimise treatment of impaired glucose metabolism.",
+          "- Patient has risk factors for skin cancer. Recommend regular self-checks and a formal skin check by a doctor.",
+          "- Discuss smoking cessation strategies, including nicotine replacement therapy and counseling support.",
+          "- Encourage a balanced diet including at least 5 servings of vegetables and 2 servings of fruit daily.",
+          "- Alcohol intake is above recommended guidelines. Advise calculating AUDIT-C score and discuss safe alcohol intake (no more than 10 standard drinks/week and no more than 4 on any one day).",
+          "- Recommend aiming for at least 150 minutes of moderate-intensity aerobic activity per week.",
+          "- Consider escalated screening for breast and/or bowel cancer as per guidelines.",
+        ]);
+
+        // Preserve user-entered text by filtering out the known auto-recommendations.
+        const currentLines = planTextarea.value.split("\n");
+        const userEnteredText = currentLines
+          .filter((line) => !allAutoRecs.has(line) && line.trim() !== "")
+          .join("\n");
+
+        // Determine the new set of auto-recommendations based on the current form state.
+        let newAutoRecs = new Set();
+        const isChecked = (id) => document.getElementById(id)?.checked;
+        const getValue = (id) => document.getElementById(id)?.value || "";
+
+        const bmi = parseFloat(getValue("bmi"));
+        if (!isNaN(bmi) && bmi >= 30) {
+          newAutoRecs.add(
+            "- Patient has obesity (BMI ≥ 30). Discussed eligibility for a GP Management Plan (GPMP)."
+          );
+        }
+        if (getValue("hr-rhythm") === "Irregular") {
+          newAutoRecs.add(
+            "- Irregular pulse noted. Recommend ECG to investigate for potential arrhythmia (e.g., Atrial Fibrillation)."
+          );
+        }
+        if (isChecked("risk-cholesterol"))
+          newAutoRecs.add("- Review and optimise treatment of dyslipidaemia.");
+        if (isChecked("risk-bp"))
+          newAutoRecs.add("- Review and optimise treatment of hypertension.");
+        if (isChecked("risk-glucose"))
+          newAutoRecs.add(
+            "- Review and optimise treatment of impaired glucose metabolism."
+          );
+        if (isChecked("risk-skin-cancer")) {
+          newAutoRecs.add(
+            "- Patient has risk factors for skin cancer. Recommend regular self-checks and a formal skin check by a doctor."
+          );
+        }
+        if (getValue("smoking-status") === "current") {
+          newAutoRecs.add(
+            "- Discuss smoking cessation strategies, including nicotine replacement therapy and counseling support."
+          );
+        }
+        if (getValue("nutrition-status") === "poor") {
+          newAutoRecs.add(
+            "- Encourage a balanced diet including at least 5 servings of vegetables and 2 servings of fruit daily."
+          );
+        }
+        const drinks = parseInt(getValue("alcohol-drinks"), 10);
+        const period = getValue("alcohol-period");
+        if (
+          !isNaN(drinks) &&
+          ((period === "week" && drinks > 10) ||
+            (period === "day" && drinks > 4))
+        ) {
+          newAutoRecs.add(
+            "- Alcohol intake is above recommended guidelines. Advise calculating AUDIT-C score and discuss safe alcohol intake (no more than 10 standard drinks/week and no more than 4 on any one day)."
+          );
+        }
+        const activity = parseInt(getValue("activity-minutes"), 10);
+        if (!isNaN(activity) && activity < 150) {
+          newAutoRecs.add(
+            "- Recommend aiming for at least 150 minutes of moderate-intensity aerobic activity per week."
+          );
+        }
+        if (isChecked("fh-breast") || isChecked("fh-colorectal")) {
+          newAutoRecs.add(
+            "- Consider escalated screening for breast and/or bowel cancer as per guidelines."
+          );
+        }
+
+        // Recombine the new auto-recommendations with the preserved user text.
+        const recommendationsText = Array.from(newAutoRecs).join("\n");
+        let finalText = recommendationsText;
+        if (recommendationsText && userEnteredText) {
+          finalText += "\n\n";
+        }
+        finalText += userEnteredText;
+        planTextarea.value = finalText;
+      }
+
+      function calculateBMI() {
+        const height = parseFloat(document.getElementById("height-cm")?.value);
+        const weight = parseFloat(document.getElementById("weight-kg")?.value);
+        const bmiInput = document.getElementById("bmi");
+        if (height > 0 && weight > 0) {
+          const bmi = weight / (height / 100) ** 2;
+          bmiInput.value = bmi.toFixed(2);
+        } else {
+          bmiInput.value = "";
+        }
+        updateManagementPlan();
+        updateAutomaticAssessments(); // Also update assessments when BMI changes
+      }
+
+      function generateAndDisplayReport(download = false, format = "txt") {
+        const reportData = buildReportFromForm();
+        reportOutput.textContent = reportData.text;
+        reportContainer.classList.remove("hidden");
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+
+        if (download) {
+          const fileName = `HealthAssessment_${
+            reportData.patientName.replace(/ /g, "_") || "report"
+          }`;
+          if (format === "rtf") {
+            downloadFile(`${fileName}.rtf`, reportData.rtf, "application/rtf");
+          } else {
+            downloadFile(`${fileName}.txt`, reportData.text, "text/plain");
+          }
+        }
+      }
+
+      function downloadFile(filename, content, mimeType) {
+        const element = document.createElement("a");
+        const blob = new Blob([content], { type: mimeType });
+        element.href = URL.createObjectURL(blob);
+        element.download = filename;
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      }
+
+      function formatAusDate(dateString) {
+        if (!dateString) return "N/A";
+        const [year, month, day] = dateString.split("-");
+        return `${day}/${month}/${year}`;
+      }
+
+      function buildReportFromForm() {
+        let textReport = "";
+        let rtfReport =
+          "{\\rtf1\\ansi\\deff0{\\fonttbl{\\f0 Inter;}}\\pard\\sa0\\sl276\\slmult1 ";
+
+        const getValue = (id) =>
+          document.getElementById(id)?.value.trim() || "";
+        const isChecked = (id) => document.getElementById(id)?.checked;
+        const getRadioValue = (name) =>
+          document.querySelector(`input[name="${name}"]:checked`)?.value ||
+          "N/A";
+
+        const escapeRtf = (str) => {
+          if (typeof str !== "string") return "";
+          return str
+            .replace(/\\/g, "\\\\")
+            .replace(/{/g, "\\{")
+            .replace(/}/g, "\\}")
+            .replace(/\n/g, "\\par\n");
+        };
+
+        const addSection = (title, content) => {
+          let cleanedContent = [];
+          if (Array.isArray(content)) {
+            cleanedContent = content.filter(
+              (line) => line && line.trim() !== ""
+            );
+          } else if (typeof content === "string" && content.trim()) {
+            cleanedContent = [content];
+          }
+
+          if (cleanedContent.length > 0) {
+            textReport += `${title.toUpperCase()}:\n`;
+            rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(
+              title.toUpperCase()
+            )}\\ul0\\b0\\par}`;
+
+            cleanedContent.forEach((line) => {
+              const isListItem = line.startsWith("- ");
+              const lineText = isListItem ? line.substring(2) : line;
+
+              textReport += `${isListItem ? "  - " : ""}${lineText}\n`;
+              rtfReport += `{\\pard\\fi360\\sa100\\sl276\\slmult1\\fs22 ${
+                isListItem ? "- " : ""
+              }${escapeRtf(lineText)}\\par}`;
+            });
+            textReport += "\n";
+          }
+        };
+
+        const addFreeTextSection = (title, elementId) => {
+          const content = getValue(elementId);
+          if (content) {
+            textReport += `${title.toUpperCase()}:\n${content}\n\n`;
+            rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(
+              title.toUpperCase()
+            )}\\ul0\\b0\\par}`;
+            rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\fs22 ${escapeRtf(
+              content
+            )}\\par}`;
+          }
+        };
+
+        // --- Header ---
+        const headerTitle = "Assessment: 45-49 Year Old Health Assessment";
+        const mbsItem = `MBS Item Number: ${getRadioValue("mbs-item")}`;
+        textReport += `${headerTitle}\n${mbsItem}\n\n`;
+        rtfReport += `{\\pard\\qc\\b\\fs32 ${escapeRtf(headerTitle)}\\par}`;
+        rtfReport += `{\\pard\\qc\\fs24 ${escapeRtf(mbsItem)}\\par\\par}`;
+
+        // --- Patient Details ---
+        const patientDetails = [
+          `- Name: ${getValue("patient-name") || "N/A"}`,
+          `- DOB: ${formatAusDate(getValue("patient-dob"))}`,
+          `- ${
+            document.getElementById("patient-age-display")?.textContent ||
+            "Age: N/A"
+          }`,
+          `- Gender: ${getValue("patient-gender") || "N/A"}`,
+          `- Medicare: ${getValue("patient-medicare") || "N/A"}`,
+          `- Date: ${formatAusDate(getValue("assessment-date"))}`,
+          `- Aboriginal and/or Torres Strait Islander origin: ${
+            isChecked("patient-atsi") ? "Yes" : "No"
+          }`,
+        ];
+        addSection("Patient Details", patientDetails);
+
+        // --- History & Meds ---
+        addFreeTextSection("Past Medical History", "past-medical-history");
+        addFreeTextSection("Regular Medications", "regular-medications");
+        if (isChecked("meds-reviewed-checkbox"))
+          addSection("Medication Review", [
+            "- Medication list reviewed and reconciled with patient.",
+          ]);
+
+        // --- Risk Factors ---
+        let biomedicalRisks = [];
+        if (isChecked("risk-cholesterol"))
+          biomedicalRisks.push(
+            `- High cholesterol (${
+              getRadioValue("cholesterol-meds") || "status not specified"
+            })`
+          );
+        if (isChecked("risk-bp"))
+          biomedicalRisks.push(
+            `- High blood pressure (${
+              getRadioValue("bp-meds") || "status not specified"
+            })`
+          );
+        if (isChecked("risk-glucose"))
+          biomedicalRisks.push(
+            `- Impaired glucose metabolism (${
+              getRadioValue("glucose-meds") || "status not specified"
+            })`
+          );
+        if (isChecked("risk-skin-cancer"))
+          biomedicalRisks.push(
+            "- History of skin cancer or significant sun exposure"
+          );
+        if (getValue("other-biomedical-risks"))
+          biomedicalRisks.push(
+            `- Other: ${getValue("other-biomedical-risks")}`
+          );
+        addSection("Biomedical Risk Factors", biomedicalRisks);
+
+        let familyHistory = [];
+        const addFhDetail = (checkboxId, description) => {
+          if (isChecked(checkboxId))
+            familyHistory.push(
+              `- ${description}${
+                document
+                  .querySelector(`#${checkboxId}-details textarea`)
+                  ?.value.trim()
+                  ? `: ${document
+                      .querySelector(`#${checkboxId}-details textarea`)
+                      .value.trim()}`
+                  : ""
+              }`
+            );
+        };
+        addFhDetail("fh-breast", "Breast cancer");
+        addFhDetail("fh-diabetes", "Diabetes");
+        addFhDetail("fh-colorectal", "Colorectal Cancer");
+        addFhDetail("fh-mental", "Mental Health conditions");
+        addFhDetail("fh-other", "Other chronic disease");
+        addSection("Significant Family History", familyHistory);
+
+        // --- SNAP-Ed ---
+        let snapEdItems = [];
+        if (isChecked("assess-smoking"))
+          snapEdItems.push(
+            `- Smoking: ${getValue("smoking-status") || "Not specified"}${
+              getValue("smoking-status") === "current"
+                ? ` (Pack Years: ${getValue("smoking-pack-years") || "N/A"})`
+                : ""
+            }`
+          );
+        if (isChecked("assess-nutrition"))
+          snapEdItems.push(
+            `- Nutrition: ${getValue("nutrition-status") || "Not specified"}${
+              getValue("nutrition-details")
+                ? ` (Details: ${getValue("nutrition-details")})`
+                : ""
+            }`
+          );
+        if (isChecked("assess-alcohol"))
+          snapEdItems.push(
+            `- Alcohol: ${
+              getValue("alcohol-drinks") || "N/A"
+            } standard drinks ${getValue("alcohol-period")}`
+          );
+        if (isChecked("assess-activity"))
+          snapEdItems.push(
+            `- Physical Activity: ${
+              getValue("activity-minutes") || "N/A"
+            } minutes per week`
+          );
+        if (isChecked("assess-mood")) {
+          const tool = getValue("mood-tool");
+          const score = getValue("mood-score");
+          snapEdItems.push(
+            `- Emotional Wellbeing: Assessed using ${tool || "N/A"}. Score: ${
+              score || "N/A"
+            }`
+          );
+        }
+        addSection("SNAP-Ed Assessment", snapEdItems);
+
+        // --- Examination ---
+        let examFindings = [
+          `- Blood Pressure: ${getValue("bp") || "N/A"} mmHg`,
+          `- Heart Rate: ${getValue("hr") || "N/A"} bpm (${getValue(
+            "hr-rhythm"
+          )})`,
+          `- Height: ${getValue("height-cm") || "N/A"} cm`,
+          `- Weight: ${getValue("weight-kg") || "N/A"} kg`,
+          `- Waist: ${getValue("waist") || "N/A"} cm`,
+          `- BMI: ${getValue("bmi") || "N/A"} kg/m²`,
+        ];
+        if (isChecked("exam-cvs"))
+          examFindings.push(
+            `- Cardiovascular Exam: ${
+              document
+                .querySelector("#exam-cvs-details textarea")
+                ?.value.trim() || "Normal"
+            }`
+          );
+        if (isChecked("exam-resp"))
+          examFindings.push(
+            `- Respiratory Exam: ${
+              document
+                .querySelector("#exam-resp-details textarea")
+                ?.value.trim() || "Normal"
+            }`
+          );
+        if (isChecked("exam-abdo"))
+          examFindings.push(
+            `- Abdominal Exam: ${
+              document
+                .querySelector("#exam-abdo-details textarea")
+                ?.value.trim() || "Normal"
+            }`
+          );
+        if (getValue("exam-other"))
+          examFindings.push(`- Other Findings: ${getValue("exam-other")}`);
+        addSection("Examination", examFindings);
+
+        let investigations = [];
+        document
+          .querySelectorAll("#investigations-checkboxes input:checked")
+          .forEach((el) => investigations.push(`- ${el.value}`));
+        const otherInvestigations = getValue("investigations-other");
+        if (otherInvestigations)
+          investigations.push(`- Other: ${otherInvestigations}`);
+        addSection("Investigations", investigations);
+
+        // --- PLAN & RECS ---
+        let assessments = [];
+        document
+          .querySelectorAll("#assessments-container input:checked")
+          .forEach((el) => assessments.push(`- ${el.value}`));
+        addSection("Recommended Assessments", assessments);
+
+        let screening = [];
+        document
+          .querySelectorAll("#screening-container input:checked")
+          .forEach((el) => screening.push(`- ${el.value}`));
+        addSection("Recommended Screening", screening);
+
+        let immunisations = [];
+        document
+          .querySelectorAll("#immunisations-container input:checked")
+          .forEach((el) => immunisations.push(`- ${el.value}`));
+        document
+          .querySelectorAll('#other-immunisations-container input[type="text"]')
+          .forEach((el) => {
+            if (el.value.trim() && el.previousElementSibling.checked)
+              immunisations.push(`- ${el.value.trim()}`);
+          });
+        addSection("Recommended Immunisations", immunisations);
+
+        addFreeTextSection(
+          "Management plan, Referrals, and Follow-up actions",
+          "plan-recommendations"
+        );
+
+        rtfReport += "}"; // Close RTF document
+
+        return {
+          text: textReport.trim(),
+          rtf: rtfReport,
+          patientName: getValue("patient-name"),
+        };
+      }
+
+      // --- ASSESSMENT MODAL LOGIC ---
+      const assessmentTemplates = {
+        K10: {
+          title: "Kessler Psychological Distress Scale (K10)",
+          type: "radio-sum",
+          maxScore: 50,
+          html: () => `
+                    <p class="text-gray-600 mb-4">Over the last 4 weeks, about how often did the patient feel...</p>
+                    <div id="assessment-form-content" class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+                        ${[
+                          "Tired out for no good reason?",
+                          "Nervous?",
+                          "So nervous that nothing could calm them down?",
+                          "Hopeless?",
+                          "Restless or fidgety?",
+                          "So restless they could not sit still?",
+                          "Depressed?",
+                          "That everything was an effort?",
+                          "So sad that nothing could cheer them up?",
+                          "Worthless?",
+                        ]
+                          .map(
+                            (q, i) => `
+                        <div class="assessment-question">
+                            <p class="font-medium mb-2">${i + 1}. ${q}</p>
+                            <div class="assessment-options text-sm space-y-2">
+                                <label><input type="radio" name="k10-q${i}" value="1"> None of the time</label>
+                                <label><input type="radio" name="k10-q${i}" value="2"> A little of the time</label>
+                                <label><input type="radio" name="k10-q${i}" value="3"> Some of the time</label>
+                                <label><input type="radio" name="k10-q${i}" value="4"> Most of the time</label>
+                                <label><input type="radio" name="k10-q${i}" value="5"> All of the time</label>
+                            </div>
+                        </div>`
+                          )
+                          .join("")}
+                    </div>
+                `,
+        },
+        DASS21: {
+          title: "Depression Anxiety Stress Scales (DASS-21)",
+          type: "dass-score",
+          html: () => `
+                    <p class="text-gray-600 mb-4">Please read each statement and indicate how much the statement applied to you <b>over the past week</b>.</p>
+                    <div id="assessment-form-content" class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+                        ${[
+                          {
+                            q: "I found it hard to wind down",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I was aware of dryness of my mouth",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I couldn’t seem to experience any positive feeling at all",
+                            scale: "depression",
+                          },
+                          {
+                            q: "I experienced breathing difficulty",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I found it difficult to work up the initiative to do things",
+                            scale: "depression",
+                          },
+                          {
+                            q: "I tended to over-react to situations",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I experienced trembling (e.g. in the hands)",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I felt that I was using a lot of nervous energy",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I was worried about situations in which I might panic",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I felt that I had nothing to look forward to",
+                            scale: "depression",
+                          },
+                          {
+                            q: "I found myself getting agitated",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I found it difficult to relax",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I felt down-hearted and blue",
+                            scale: "depression",
+                          },
+                          {
+                            q: "I was intolerant of anything that kept me from getting on",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I felt I was close to panic",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I was unable to become enthusiastic about anything",
+                            scale: "depression",
+                          },
+                          {
+                            q: "I felt I was not worth much as a person",
+                            scale: "depression",
+                          },
+                          {
+                            q: "I felt that I was rather touchy",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I was aware of the action of my heart in the absence of physical exertion",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I felt scared without any good reason",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I felt that life was meaningless",
+                            scale: "depression",
+                          },
+                        ]
+                          .map(
+                            (item, i) => `
+                        <div class="assessment-question" data-scale="${
+                          item.scale
+                        }">
+                            <p class="font-medium mb-2">${i + 1}. ${item.q}</p>
+                            <div class="assessment-options text-sm space-y-2">
+                                <label><input type="radio" name="dass-q${i}" value="0"> Did not apply to me at all</label>
+                                <label><input type="radio" name="dass-q${i}" value="1"> Applied to me to some degree</label>
+                                <label><input type="radio" name="dass-q${i}" value="2"> Applied to me to a considerable degree</label>
+                                <label><input type="radio" name="dass-q${i}" value="3"> Applied to me very much</label>
+                            </div>
+                        </div>`
+                          )
+                          .join("")}
+                    </div>
+                `,
+        },
+      };
+
+      function calculateCurrentScore(template) {
+        let score = 0;
+        if (template.type === "radio-sum") {
+          modalBody
+            .querySelectorAll('input[type="radio"]:checked')
+            .forEach((radio) => {
+              score += parseInt(radio.value) || 0;
+            });
+        } else if (template.type === "dass-score") {
+          const allAnswered =
+            modalBody.querySelectorAll(".assessment-question").length ===
+            modalBody.querySelectorAll('input[type="radio"]:checked').length;
+          return allAnswered ? "Complete" : "Incomplete";
+        }
+        return score;
+      }
+
+      function handleFinalise(template, targetInputId) {
+        const targetInput = document.getElementById(targetInputId);
+        if (!targetInput) return;
+
+        if (template.type === "dass-score") {
+          let depressionScore = 0,
+            anxietyScore = 0,
+            stressScore = 0;
+          modalBody.querySelectorAll(".assessment-question").forEach((q) => {
+            const scale = q.dataset.scale;
+            const checkedRadio = q.querySelector('input[type="radio"]:checked');
+            if (checkedRadio) {
+              const value = parseInt(checkedRadio.value) || 0;
+              if (scale === "depression") depressionScore += value;
+              else if (scale === "anxiety") anxietyScore += value;
+              else if (scale === "stress") stressScore += value;
+            }
+          });
+
+          const finalDepression = depressionScore * 2;
+          const finalAnxiety = anxietyScore * 2;
+          const finalStress = stressScore * 2;
+
+          targetInput.value = `D:${finalDepression}, A:${finalAnxiety}, S:${finalStress}`;
+        } else {
+          const finalScore = calculateCurrentScore(template);
+          targetInput.value = `${finalScore} / ${template.maxScore}`;
+        }
+        closeAssessmentModal();
+      }
+
+      function openAssessmentModal(toolKey, targetInputId) {
+        const template = assessmentTemplates[toolKey];
+        if (!template) return;
+
+        modalTitle.textContent = template.title;
+        modalBody.innerHTML = template.html();
+
+        modalFooter.innerHTML = `<button id="modal-action-btn" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">Finalise & Close</button>`;
+
+        assessmentModal.classList.remove("hidden");
+
+        const updateScore = () => {
+          const currentScore = calculateCurrentScore(template);
+          modalScoreDisplay.textContent =
+            template.type === "dass-score"
+              ? currentScore
+              : `Score: ${currentScore}`;
+        };
+
+        modalBody.addEventListener("change", updateScore);
+        updateScore();
+
+        document
+          .getElementById("modal-action-btn")
+          .addEventListener("click", () =>
+            handleFinalise(template, targetInputId)
+          );
+      }
+
+      function closeAssessmentModal() {
+        assessmentModal.classList.add("hidden");
+        modalBody.innerHTML = "";
+        modalFooter.innerHTML = "";
+      }
+
+      modalCloseBtn.addEventListener("click", closeAssessmentModal);
+      assessmentModal.addEventListener("click", (e) => {
+        if (e.target === assessmentModal) closeAssessmentModal();
+      });
+
+      // --- LOCAL STORAGE FUNCTIONS ---
+      function saveFormToLocalStorage() {
+        const formData = {};
+        const formElements = formContainer.querySelectorAll(
+          "input, textarea, select"
+        );
+        formElements.forEach((el) => {
+          if (el.id) {
+            if (el.type === "checkbox" || el.type === "radio") {
+              formData[el.id] = el.checked;
+            } else {
+              formData[el.id] = el.value;
+            }
+          } else if (el.name && el.type === "radio" && el.checked) {
+            formData[el.name] = el.value;
+          }
+        });
+        localStorage.setItem(
+          "healthAssessmentFormData",
+          JSON.stringify(formData)
+        );
+      }
+
+      function applyDataFromLocalStorage() {
+        const savedData = localStorage.getItem("healthAssessmentFormData");
+        if (!savedData) return;
+
+        const formData = JSON.parse(savedData);
+        const formElements = formContainer.querySelectorAll(
+          "input, textarea, select"
+        );
+
+        formElements.forEach((el) => {
+          if (el.id && formData[el.id] !== undefined) {
+            if (el.type === "checkbox" || el.type === "radio") {
+              el.checked = formData[el.id];
+            } else {
+              el.value = formData[el.id];
+            }
+          } else if (
+            el.name &&
+            el.type === "radio" &&
+            formData[el.name] !== undefined
+          ) {
+            if (el.value === formData[el.name]) {
+              el.checked = true;
+            }
+          }
+        });
+
+        // Manually trigger UI updates after loading data to ensure everything is displayed correctly.
+        Object.keys(toggleMap).forEach((checkboxId) => {
+          const checkbox = document.getElementById(checkboxId);
+          if (checkbox && checkbox.checked) {
+            const event = new Event("change", { bubbles: true });
+            checkbox.dispatchEvent(event);
+          }
+        });
+
+        const smokingStatus = document.getElementById("smoking-status");
+        if (smokingStatus)
+          smokingStatus.dispatchEvent(new Event("change", { bubbles: true }));
+
+        const nutritionStatus = document.getElementById("nutrition-status");
+        if (nutritionStatus)
+          nutritionStatus.dispatchEvent(new Event("change", { bubbles: true }));
+
+        const patientDob = document.getElementById("patient-dob");
+        if (patientDob)
+          patientDob.dispatchEvent(new Event("change", { bubbles: true }));
+
+        calculateBMI();
+        updateManagementPlan();
+      }
+
+      // --- Initial Load ---
+      document.addEventListener("DOMContentLoaded", () => {
+        initializeForm();
+
+        const savedData = localStorage.getItem("healthAssessmentFormData");
+        if (savedData) {
+          const restoreModal = document.getElementById("restore-confirm-modal");
+          restoreModal.classList.remove("hidden");
+
+          document.getElementById("confirm-restore-btn").onclick = () => {
+            applyDataFromLocalStorage();
+            restoreModal.classList.add("hidden");
+          };
+
+          document.getElementById("start-fresh-btn").onclick = () => {
+            localStorage.removeItem("healthAssessmentFormData");
+            restoreModal.classList.add("hidden");
+          };
+        }
+      });
+    </script>
+  </body>
+</html>

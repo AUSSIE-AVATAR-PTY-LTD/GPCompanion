@@ -1,0 +1,4188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GPCCMP & Review Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <base href="/gpccmp/" />
+
+    <style>
+      /* Using Inter font as the base, loaded from Google Fonts */
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6; /* bg-gray-100 */
+      }
+      /* Styles for the modals */
+      .modal-overlay {
+        transition: opacity 0.3s ease;
+      }
+      .modal-container {
+        transition: all 0.3s ease;
+      }
+      /* Styles for accordion sections */
+      .chevron-icon {
+        transition: transform 0.3s ease-in-out;
+      }
+      .chevron-icon.rotated {
+        transform: rotate(180deg);
+      }
+      .form-section-content.collapsed {
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out,
+          padding 0.5s ease-in-out;
+      }
+      .form-section-content {
+        transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+        max-height: 8000px; /* A large value to allow for content */
+        opacity: 1;
+      }
+      /* Style for disabled dropdown options */
+      select option:disabled {
+        color: #9ca3af; /* gray-400 */
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="w-full bg-white border-b border-gray-200 fixed top-0 left-0 z-50"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <a href="/" class="flex items-center space-x-3">
+            <img
+              src="/images/gp-companion-logo.png"
+              alt="GP Companion Logo"
+              width="40"
+              height="40"
+              class="w-10 h-10"
+            />
+            <span class="font-bold text-xl text-gray-900">GP Companion</span>
+          </a>
+
+          <div class="hidden md:flex items-center space-x-8">
+            <a
+              href="/about"
+              class="text-gray-500 hover:text-indigo-600 transition-colors"
+              >About Website</a
+            >
+            <a
+              href="/developer"
+              class="text-gray-500 hover:text-indigo-600 transition-colors"
+              >Developer</a
+            >
+            <a
+              href="/privacy"
+              class="text-gray-500 hover:text-indigo-600 transition-colors"
+              >Privacy Policy</a
+            >
+            <a
+              href="/contact"
+              class="text-gray-500 hover:text-indigo-600 transition-colors"
+              >Contact Developer</a
+            >
+            <a
+              href="/gpccmp"
+              class="inline-flex items-center px-3 py-2 bg-indigo-600 text-white rounded-md text-sm shadow-sm hover:bg-indigo-700"
+              >Start GPCCMP</a
+            >
+          </div>
+
+          <div class="md:hidden">
+            <button
+              type="button"
+              class="inline-flex items-center p-2 rounded-md text-gray-600 hover:bg-gray-100"
+            >
+              <span class="sr-only">Open menu</span>
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="p-4 sm:p-6 lg:p-8">
+      <div class="max-w-4xl mx-auto">
+        <header class="mb-8 text-center">
+          <h1 class="text-3xl font-bold text-gray-900">
+            GPCCMP & Review Generator
+          </h1>
+          <p class="text-sm text-gray-700 mt-2 font-semibold">
+            Developed by Dr Bobby Tork MD, FRACGP-RG
+          </p>
+          <p class="text-xs text-gray-500 mt-1">&copy; 2025 Dr Bobby Tork</p>
+        </header>
+
+        <!-- Screen to select between creating a new plan or a review -->
+        <div id="selectionScreen">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+            <div
+              id="selectNewGpccmp"
+              class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all cursor-pointer border-4 border-transparent hover:border-indigo-500"
+            >
+              <h2 class="text-2xl font-bold text-indigo-700">
+                Create New GPCCMP
+              </h2>
+              <p class="text-gray-600 mt-2">
+                Start a new comprehensive care and coordination management plan
+                for a patient with chronic conditions.
+              </p>
+            </div>
+            <div
+              id="selectReviewGpccmp"
+              class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all cursor-pointer border-4 border-transparent hover:border-indigo-500"
+            >
+              <h2 class="text-2xl font-bold text-indigo-700">
+                Review Existing GPCCMP
+              </h2>
+              <p class="text-gray-600 mt-2">
+                Review a patient's progress, update their existing plan, and
+                document changes.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main container for the New GPCCMP form -->
+        <div id="gpccmpContainer" class="hidden">
+          <button
+            id="backToSelectionFromGpccmp"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-800 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mb-6"
+          >
+            &larr; Back to Selection
+          </button>
+          <form id="gpmpForm" onsubmit="return false;">
+            <!-- Patient Details Section -->
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Patient Details</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
+                  <div>
+                    <label
+                      for="patientName"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Name:
+                      <span class="text-gray-400 font-normal"
+                        >(optional)</span
+                      ></label
+                    ><input
+                      type="text"
+                      id="patientName"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="gpccmp_assessmentDate"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Assessment Date:</label
+                    ><input
+                      type="date"
+                      id="gpccmp_assessmentDate"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="dob"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >DOB:</label
+                    ><input
+                      type="date"
+                      id="dob"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"
+                    />
+                  </div>
+                  <div class="grid grid-cols-2 gap-4 self-end">
+                    <div
+                      id="age"
+                      class="p-3 bg-gray-100 rounded-md text-center font-medium h-full flex items-center justify-center"
+                    >
+                      Age will be calculated
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      for="medicareNumber"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Medicare No:
+                      <span class="text-gray-400 font-normal"
+                        >(optional)</span
+                      ></label
+                    ><input
+                      type="text"
+                      id="medicareNumber"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="gender"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Gender:</label
+                    >
+                    <select
+                      id="gender"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="flex items-center"
+                      ><input
+                        type="checkbox"
+                        id="atsiStatus"
+                        class="h-4 w-4 text-indigo-600 mr-2"
+                      />
+                      Aboriginal and/or Torres Strait Islander origin</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- MyMedicare Section -->
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>MyMedicare Registration</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content space-y-6">
+                <div>
+                  <label
+                    for="regularGp"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                    >Patient's regular GP</label
+                  >
+                  <input
+                    type="text"
+                    id="regularGp"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Enter GP name..."
+                  />
+                </div>
+                <div class="border-t pt-6">
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Is the patient registered with MyMedicare at this
+                    clinic?</label
+                  >
+                  <div class="mt-2 space-x-6">
+                    <label class="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="myMedicare"
+                        value="yes"
+                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        required
+                      />
+                      <span class="ml-2">Yes</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="myMedicare"
+                        value="no"
+                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        required
+                      />
+                      <span class="ml-2">No</span>
+                    </label>
+                  </div>
+                  <div
+                    id="myMedicareAdvice"
+                    class="hidden mt-4 p-3 bg-yellow-50 border-l-4 border-yellow-400"
+                  >
+                    <p class="text-sm text-yellow-800">
+                      <strong>Action Required:</strong> Please encourage and
+                      assist the patient with registering for MyMedicare at this
+                      clinic to access enhanced benefits. An action point has
+                      been added automatically.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Consent Section -->
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Patient Consent</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content space-y-4">
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input
+                      id="consentPlan"
+                      name="consentPlan"
+                      type="checkbox"
+                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      required
+                    />
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="consentPlan" class="font-medium text-gray-700"
+                      >I confirm that the patient has provided their informed
+                      consent for the creation of this GPCCMP.</label
+                    >
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input
+                      id="consentShare"
+                      name="consentShare"
+                      type="checkbox"
+                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      required
+                    />
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="consentShare" class="font-medium text-gray-700"
+                      >I confirm the patient has provided their consent to
+                      sharing relevant information (including relevant parts of
+                      the plan) with the members of the multidisciplinary
+                      team.</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Conditions and Risk Factors Section -->
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Chronic Health Conditions and Risk Factors</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                  Chronic Conditions
+                </h3>
+                <div
+                  id="chronicConditionsList"
+                  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                ></div>
+                <div id="otherConditionsContainer" class="mt-4 space-y-2"></div>
+                <button
+                  type="button"
+                  id="addOtherConditionBtn"
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-800 bg-gray-200 hover:bg-gray-300 mt-4"
+                >
+                  Add Other Condition
+                </button>
+
+                <div class="mt-8 border-t pt-6">
+                  <label
+                    for="clinicalComments"
+                    class="block text-lg font-semibold text-gray-800 mb-2"
+                    >Clinical Summary & Comments</label
+                  >
+                  <textarea
+                    id="clinicalComments"
+                    rows="4"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Enter any additional clinical notes, summary, or comments here..."
+                  ></textarea>
+                </div>
+
+                <h3
+                  class="text-lg font-semibold text-gray-800 mt-8 mb-4 border-t pt-4"
+                >
+                  Risk Factors
+                </h3>
+                <div class="space-y-6">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                    <div>
+                      <label
+                        for="smokingStatus"
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Smoking Status</label
+                      >
+                      <select
+                        id="smokingStatus"
+                        class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      >
+                        <option value="never">Never smoked</option>
+                        <option value="current">Current smoker</option>
+                        <option value="ex">Ex-smoker</option>
+                      </select>
+                    </div>
+                    <div id="packYearsContainer" class="hidden">
+                      <label
+                        for="packYears"
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                        >Pack Years</label
+                      >
+                      <input
+                        type="number"
+                        id="packYears"
+                        class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        placeholder="e.g., 20"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    id="riskFactorsList"
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <!-- Medications Section -->
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Current Medication List</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <textarea
+                  id="medicationList"
+                  rows="6"
+                  class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[6rem]"
+                  placeholder="Enter current medications, including dose and frequency..."
+                ></textarea>
+              </div>
+            </div>
+            <!-- Goals Section -->
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Health and lifestyle goals</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <p class="text-sm text-gray-600 mb-4">
+                  Developed by the patient and medical practitioner using a
+                  shared decision making approach.
+                </p>
+                <div
+                  id="goalsContainer"
+                  class="p-4 bg-indigo-50 rounded-lg min-h-[150px] space-y-2"
+                >
+                  <p class="text-gray-500 italic">
+                    Goals will appear here as conditions are selected.
+                  </p>
+                </div>
+                <div class="flex gap-4 mt-4 pt-4 border-t">
+                  <input
+                    type="text"
+                    id="manualGoalInput"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Add a custom goal..."
+                  />
+                  <button
+                    type="button"
+                    id="addManualGoalBtn"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Actions Section -->
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Actions to be taken by the patient</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <div
+                  id="actionsContainer"
+                  class="p-4 bg-indigo-50 rounded-lg min-h-[150px] space-y-2"
+                >
+                  <p class="text-gray-500 italic">
+                    Patient actions will appear here.
+                  </p>
+                </div>
+                <div class="flex gap-4 mt-4 pt-4 border-t">
+                  <input
+                    type="text"
+                    id="manualActionInput"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Add a custom action..."
+                  />
+                  <button
+                    type="button"
+                    id="addManualActionBtn"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Services Section -->
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Treatment and services the patient is likely to need</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <div
+                  id="servicesContainer"
+                  class="p-4 bg-indigo-50 rounded-lg min-h-[150px] space-y-2"
+                >
+                  <p class="text-gray-500 italic">
+                    Treatments and services will appear here.
+                  </p>
+                </div>
+                <div class="flex gap-4 mt-4 pt-4 border-t">
+                  <input
+                    type="text"
+                    id="manualServiceInput"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Add a custom service..."
+                  />
+                  <button
+                    type="button"
+                    id="addManualServiceBtn"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Assessments Section -->
+            <div
+              id="assessmentsSection"
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Relevant Health Assessments and Screening</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                  Health Assessments
+                </h3>
+                <div id="assessmentsContainer" class="space-y-2 mb-4"></div>
+                <div class="flex gap-4 items-center">
+                  <select
+                    id="assessmentSelect"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value="">-- Select an assessment to add --</option>
+                  </select>
+                  <button
+                    type="button"
+                    id="addAssessmentBtn"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Add
+                  </button>
+                </div>
+
+                <h3
+                  class="text-lg font-semibold text-gray-800 mt-8 mb-4 border-t pt-4"
+                >
+                  Screening
+                </h3>
+                <div class="space-y-4">
+                  <div class="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="cervicalScreen"
+                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      disabled
+                    />
+                    <label
+                      for="cervicalScreen"
+                      class="ml-3 block text-sm font-medium text-gray-700 mb-1 cursor-not-allowed"
+                      id="label_cervicalScreen"
+                      >Cervical Screening Test</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="prostateScreen"
+                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      disabled
+                    />
+                    <label
+                      for="prostateScreen"
+                      class="ml-3 block text-sm font-medium text-gray-700 mb-1 cursor-not-allowed"
+                      id="label_prostateScreen"
+                      >Prostate Screening Discussion</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="breastScreen"
+                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      disabled
+                    />
+                    <label
+                      for="breastScreen"
+                      class="ml-3 block text-sm font-medium text-gray-700 mb-1 cursor-not-allowed"
+                      id="label_breastScreen"
+                      >BreastScreen Australia</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="bowelScreen"
+                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      disabled
+                    />
+                    <label
+                      for="bowelScreen"
+                      class="ml-3 block text-sm font-medium text-gray-700 mb-1 cursor-not-allowed"
+                      id="label_bowelScreen"
+                      >National Bowel Cancer Screening Program</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="lungCancerScreen"
+                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      disabled
+                    />
+                    <label
+                      for="lungCancerScreen"
+                      class="ml-3 block text-sm font-medium text-gray-700 mb-1 cursor-not-allowed"
+                      id="label_lungCancerScreen"
+                      >Lung Cancer Screening</label
+                    >
+                  </div>
+                </div>
+
+                <div id="diabeticScreening" class="hidden mt-8 border-t pt-4">
+                  <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                    Diabetic Care
+                  </h3>
+                  <div class="space-y-4">
+                    <div class="flex items-center">
+                      <input
+                        type="checkbox"
+                        id="diabeticEye"
+                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <label
+                        for="diabeticEye"
+                        class="ml-3 block text-sm font-medium text-gray-700 mb-1"
+                        >Annual Optometrist Review (Diabetic Retinopathy
+                        Screen)</label
+                      >
+                    </div>
+                    <div class="flex items-center">
+                      <input
+                        type="checkbox"
+                        id="diabeticFoot"
+                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <label
+                        for="diabeticFoot"
+                        class="ml-3 block text-sm font-medium text-gray-700 mb-1"
+                        >Annual Podiatrist Review (Diabetic Foot Health
+                        Check)</label
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Care Team Section -->
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Care Team Members</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                  Allied Health (for Team Care Arrangements - TCA)
+                </h3>
+                <div
+                  id="alliedHealthList"
+                  class="grid grid-cols-2 md:grid-cols-3 gap-4"
+                ></div>
+                <div id="otherAlliedContainer" class="mt-4 space-y-2"></div>
+                <button
+                  type="button"
+                  id="addOtherAlliedBtn"
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-800 bg-gray-200 hover:bg-gray-300 mt-4"
+                >
+                  Add Other Allied Health
+                </button>
+
+                <div class="mt-6 border-t pt-4">
+                  <div class="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="pharmacistDMMR"
+                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    />
+                    <label
+                      for="pharmacistDMMR"
+                      class="ml-3 block text-sm font-medium text-gray-700"
+                      >Pharmacist (DMMR, Item 900)</label
+                    >
+                  </div>
+                </div>
+
+                <h3
+                  class="text-lg font-semibold text-gray-800 mt-8 mb-4 border-t pt-4"
+                >
+                  Specialists
+                </h3>
+                <ul
+                  id="specialistList"
+                  class="list-disc list-inside pl-2 space-y-1 mb-4"
+                >
+                  <li id="specialistPlaceholder" class="text-gray-500 italic">
+                    No specialists added yet.
+                  </li>
+                </ul>
+                <div class="flex gap-4">
+                  <input
+                    type="text"
+                    id="specialistInput"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Enter specialist name and practice..."
+                  />
+                  <button
+                    type="button"
+                    id="addSpecialistBtn"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Add Specialist
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Plan Distribution Section -->
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Plan Distribution</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input
+                      id="copyOffered"
+                      name="copyOffered"
+                      type="checkbox"
+                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    />
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="copyOffered" class="font-medium text-gray-700"
+                      >A copy of this plan was offered to patient or patient's
+                      carer.</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Review Section -->
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Plan Review</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Review Dates</label
+                >
+                <div id="reviewDatesContainer" class="space-y-2 mb-4"></div>
+                <div class="flex gap-4">
+                  <input
+                    type="date"
+                    id="reviewDateInput"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                  <button
+                    type="button"
+                    id="addReviewDateBtn"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Add Review Date
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Action Buttons -->
+            <div class="mt-8 flex flex-col sm:flex-row justify-end gap-4">
+              <button
+                type="button"
+                id="clearGpccmpFormBtn"
+                class="inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Clear Form
+              </button>
+              <button
+                type="button"
+                id="generatePatientSummaryBtn"
+                class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Patient Summary
+              </button>
+              <button
+                type="button"
+                id="saveGpccmpTxtBtn"
+                class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
+                Save as .txt
+              </button>
+              <button
+                type="button"
+                id="saveGpccmpRtfBtn"
+                class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Save as .rtf
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Main container for the Review form -->
+        <div id="reviewContainer" class="hidden">
+          <button
+            id="backToSelectionFromReview"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-800 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mb-6"
+          >
+            &larr; Back to Selection
+          </button>
+          <form id="gpmpReviewForm" onsubmit="return false;">
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Patient & Review Details</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
+                  <div>
+                    <label
+                      for="review_patientName"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Name:
+                      <span class="text-gray-400 font-normal"
+                        >(optional)</span
+                      ></label
+                    ><input
+                      type="text"
+                      id="review_patientName"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="review_reviewDate"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Date of this Review:</label
+                    ><input
+                      type="date"
+                      id="review_reviewDate"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="review_dob"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >DOB:</label
+                    ><input
+                      type="date"
+                      id="review_dob"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"
+                    />
+                  </div>
+                  <div class="grid grid-cols-2 gap-4 self-end">
+                    <div
+                      id="review_age"
+                      class="p-3 bg-gray-100 rounded-md text-center font-medium h-full flex items-center justify-center"
+                    >
+                      Age will be calculated
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      for="review_medicareNumber"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Medicare No:
+                      <span class="text-gray-400 font-normal"
+                        >(optional)</span
+                      ></label
+                    ><input
+                      type="text"
+                      id="review_medicareNumber"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="review_gender"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Gender:</label
+                    >
+                    <select
+                      id="review_gender"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm"
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Review of Patient Goals</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content space-y-8">
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                    Achieved Goals
+                  </h3>
+                  <p class="text-sm text-gray-600 mb-4">
+                    Add goals from the original plan that have been successfully
+                    achieved.
+                  </p>
+                  <div
+                    id="review_achievedGoalsContainer"
+                    class="p-4 bg-indigo-50 rounded-lg min-h-[150px] space-y-2"
+                  >
+                    <p class="text-gray-500 italic">No achieved goals added.</p>
+                  </div>
+                  <div class="flex gap-4 mt-4 pt-4 border-t">
+                    <input
+                      type="text"
+                      id="review_achievedGoalInput"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      placeholder="Enter achieved goal..."
+                    />
+                    <button
+                      type="button"
+                      id="review_addAchievedGoalBtn"
+                      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Add
+                    </button>
+                  </div>
+                  <div class="mt-3 flex items-center">
+                    <input
+                      type="checkbox"
+                      id="review_noAchievedGoals"
+                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    />
+                    <label
+                      for="review_noAchievedGoals"
+                      class="ml-2 text-sm text-gray-700"
+                      >None</label
+                    >
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                    New / Revised Goals
+                  </h3>
+                  <p class="text-sm text-gray-600 mb-4">
+                    Add any new goals or existing goals that have been revised.
+                  </p>
+                  <div
+                    id="review_newGoalsContainer"
+                    class="p-4 bg-indigo-50 rounded-lg min-h-[150px] space-y-2"
+                  >
+                    <p class="text-gray-500 italic">
+                      No new or revised goals added.
+                    </p>
+                  </div>
+                  <div class="flex gap-4 mt-4 pt-4 border-t">
+                    <input
+                      type="text"
+                      id="review_newGoalInput"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      placeholder="Enter new or revised goal..."
+                    />
+                    <button
+                      type="button"
+                      id="review_addNewGoalBtn"
+                      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Add
+                    </button>
+                  </div>
+                  <div class="mt-3 flex items-center">
+                    <input
+                      type="checkbox"
+                      id="review_noNewGoals"
+                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    />
+                    <label
+                      for="review_noNewGoals"
+                      class="ml-2 text-sm text-gray-700"
+                      >None</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Feedback from Multidisciplinary Team</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <label
+                  for="review_teamFeedback"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Document any information, correspondence or feedback from
+                  specialists, allied health, or other team members since the
+                  last plan.</label
+                >
+                <textarea
+                  id="review_teamFeedback"
+                  class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[6rem]"
+                  placeholder="e.g., 'Received letter from Dr. Smith (Cardiologist) noting good BP control...', 'Patient reports physio has helped with mobility...'"
+                ></textarea>
+              </div>
+            </div>
+
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Updates to Management Plan</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content space-y-6">
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <label
+                      for="review_updateMedications"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Changes to Medications</label
+                    >
+                    <div class="flex items-center">
+                      <input
+                        type="checkbox"
+                        id="review_noMedicationChange"
+                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <label
+                        for="review_noMedicationChange"
+                        class="ml-2 text-sm text-gray-700"
+                        >No Change</label
+                      >
+                    </div>
+                  </div>
+                  <textarea
+                    id="review_updateMedications"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[6rem] disabled:bg-gray-200 disabled:cursor-not-allowed"
+                    placeholder="List any new medications, ceased medications, or dose changes."
+                  ></textarea>
+                </div>
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <label
+                      for="review_updateDiagnoses"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Changes to Diagnoses / Conditions</label
+                    >
+                    <div class="flex items-center">
+                      <input
+                        type="checkbox"
+                        id="review_noDiagnosisChange"
+                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <label
+                        for="review_noDiagnosisChange"
+                        class="ml-2 text-sm text-gray-700"
+                        >No Change</label
+                      >
+                    </div>
+                  </div>
+                  <textarea
+                    id="review_updateDiagnoses"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[6rem] disabled:bg-gray-200 disabled:cursor-not-allowed"
+                    placeholder="List any new or resolved health conditions."
+                  ></textarea>
+                </div>
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <label
+                      for="review_updateActions"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Changes to Patient Actions / Services</label
+                    >
+                    <div class="flex items-center">
+                      <input
+                        type="checkbox"
+                        id="review_noActionChange"
+                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <label
+                        for="review_noActionChange"
+                        class="ml-2 text-sm text-gray-700"
+                        >No Change</label
+                      >
+                    </div>
+                  </div>
+                  <textarea
+                    id="review_updateActions"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[6rem] disabled:bg-gray-200 disabled:cursor-not-allowed"
+                    placeholder="List any new actions, goals, or required services."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>New Referrals & Care Team Updates</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                  New Allied Health Referrals
+                </h3>
+                <div
+                  id="review_alliedHealthList"
+                  class="grid grid-cols-2 md:grid-cols-3 gap-4"
+                ></div>
+                <div
+                  id="review_otherAlliedContainer"
+                  class="mt-4 space-y-2"
+                ></div>
+                <button
+                  type="button"
+                  id="review_addOtherAlliedBtn"
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-800 bg-gray-200 hover:bg-gray-300 mt-4"
+                >
+                  Add Other Allied Health
+                </button>
+
+                <h3
+                  class="text-lg font-semibold text-gray-800 mt-8 mb-4 border-t pt-4"
+                >
+                  New Specialist Referrals
+                </h3>
+                <ul
+                  id="review_specialistList"
+                  class="list-disc list-inside pl-2 space-y-1 mb-4"
+                >
+                  <li
+                    id="review_specialistPlaceholder"
+                    class="text-gray-500 italic"
+                  >
+                    No new specialists added.
+                  </li>
+                </ul>
+                <div class="flex gap-4">
+                  <input
+                    type="text"
+                    id="review_specialistInput"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Enter specialist name and practice..."
+                  />
+                  <button
+                    type="button"
+                    id="review_addSpecialistBtn"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Add Specialist
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Patient Agreement & Consent</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content space-y-4">
+                <div class="flex items-start">
+                  <input
+                    id="review_consentUpdates"
+                    type="checkbox"
+                    class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1"
+                    required
+                  />
+                  <label
+                    for="review_consentUpdates"
+                    class="ml-3 block text-sm font-medium text-gray-700"
+                    >The patient agrees with the reviewed plan and all
+                    documented updates.</label
+                  >
+                </div>
+                <div class="flex items-start">
+                  <input
+                    id="review_consentShare"
+                    type="checkbox"
+                    class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1"
+                  />
+                  <label
+                    for="review_consentShare"
+                    class="ml-3 block text-sm font-medium text-gray-700"
+                    >The patient provides consent to share relevant updated
+                    information with existing and/or new members of the
+                    multidisciplinary care team.</label
+                  >
+                </div>
+                <div class="flex items-start">
+                  <input
+                    id="review_copyOffered"
+                    type="checkbox"
+                    class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1"
+                    required
+                  />
+                  <label
+                    for="review_copyOffered"
+                    class="ml-3 block text-sm font-medium text-gray-700"
+                    >A copy of this updated plan was offered to the patient
+                    and/or their carer.</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            >
+              <div
+                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+              >
+                <h2>Next Plan Review</h2>
+                <svg
+                  class="chevron-icon w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+              <div class="p-6 bg-white form-section-content">
+                <label
+                  for="review_nextReviewDate"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Set date for next scheduled review</label
+                >
+                <input
+                  type="date"
+                  id="review_nextReviewDate"
+                  class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div class="mt-8 flex flex-col sm:flex-row justify-end gap-4">
+              <button
+                type="button"
+                id="clearReviewFormBtn"
+                class="inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Clear Form
+              </button>
+              <button
+                type="button"
+                id="saveReviewTxtBtn"
+                class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
+                Save as .txt
+              </button>
+              <button
+                type="button"
+                id="saveReviewRtfBtn"
+                class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Save as .rtf
+              </button>
+            </div>
+
+            <div
+              class="mt-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-800 rounded-lg"
+            >
+              <h4 class="font-bold text-lg mb-2">
+                Practitioner Checklist (Not for Export)
+              </h4>
+              <ul class="list-disc list-inside space-y-1 text-sm">
+                <li>
+                  Ensure this review document is added to the patient’s medical
+                  records.
+                </li>
+                <li>
+                  Ensure copies are provided to the patient/carer as agreed.
+                </li>
+                <li>
+                  Ensure relevant updated parts of the plan are sent to the care
+                  team members.
+                </li>
+              </ul>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Patient Summary Modal -->
+      <div
+        id="patientSummaryModal"
+        class="modal-overlay fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 hidden z-50 opacity-0 pointer-events-none"
+      >
+        <div
+          class="modal-container bg-white w-full max-w-2xl rounded-xl shadow-2xl transform scale-95"
+        >
+          <div class="px-6 py-4 border-b">
+            <h3 class="text-xl font-bold text-gray-800">
+              Patient-Friendly Summary
+            </h3>
+          </div>
+          <div
+            id="patientSummaryContent"
+            class="p-6 max-h-[60vh] overflow-y-auto space-y-4"
+          >
+            <!-- Content will be injected here -->
+          </div>
+          <div
+            class="px-6 py-4 bg-gray-50 rounded-b-xl flex justify-end items-center gap-4"
+          >
+            <button
+              id="printSummaryBtn"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            >
+              <svg
+                class="w-5 h-5 mr-2"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm7-8a2 2 0 11-4 0 2 2 0 014 0z"
+                ></path>
+              </svg>
+              Print
+            </button>
+            <button
+              id="copySummaryBtn"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              <svg
+                class="w-5 h-5 mr-2"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                />
+              </svg>
+              Copy to Clipboard
+            </button>
+            <button
+              id="closeSummaryModalBtn"
+              class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Easter Egg Modal -->
+      <div
+        id="easter-egg-modal"
+        class="modal-overlay fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 hidden z-50"
+      >
+        <div class="bg-white p-8 rounded-xl shadow-2xl text-center">
+          <p class="font-semibold">Developed by Dr Bobby Tork MD, FRACGP-RG</p>
+          <p class="text-sm">&copy; 2025 Dr Bobby Tork</p>
+          <button
+            id="close-easter-egg"
+            class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+
+      <!-- Restore Session Modal -->
+      <div
+        id="restoreSessionModal"
+        class="modal-overlay fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 hidden z-50"
+      >
+        <div
+          class="modal-container bg-white w-full max-w-md rounded-xl shadow-2xl text-center p-8"
+        >
+          <h3 class="text-xl font-bold text-gray-800 mb-2">Welcome Back!</h3>
+          <p class="text-gray-600 mb-6">
+            We've found a saved session. Would you like to restore your progress
+            or start a new plan?
+          </p>
+          <div class="flex justify-center gap-4">
+            <button
+              id="restoreSessionBtn"
+              class="inline-flex justify-center items-center px-6 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Restore Session
+            </button>
+            <button
+              id="startFreshBtn"
+              class="inline-flex justify-center items-center px-6 py-2 border border-gray-300 text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Start Fresh
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer
+      class="bg-indigo-950 text-indigo-100 border-t border-indigo-800 mt-auto"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="col-span-1 md:col-span-2">
+            <div class="flex items-center space-x-3 mb-4">
+              <div
+                class="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center shadow-sm"
+              >
+                <span class="text-white font-bold text-lg">GP</span>
+              </div>
+              <span class="font-bold text-xl text-white">
+                GP Companion
+              </span>
+            </div>
+
+            <p class="text-indigo-200 text-sm max-w-md">
+              Comprehensive medical tools and health assessments designed for
+              healthcare professionals. Streamline your workflow with our
+              secure, privacy-focused platform.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-white mb-4">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="/about"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                >
+                  About Website
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/developer"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                >
+                  Developer
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/privacy"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                >
+                  Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/contact"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                >
+                  Contact Developer
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-white mb-4">Tools</h3>
+            <ul class="space-y-2">
+              <li>
+                <span class="text-indigo-200 text-sm">GPCCMP Tool</span>
+              </li>
+              <li>
+                <span class="text-indigo-200 text-sm">
+                  Health Assessments
+                </span>
+              </li>
+              <li>
+                <span class="text-indigo-200 text-sm">
+                  75+ Health Assessment
+                </span>
+              </li>
+              <li>
+                <span class="text-indigo-200 text-sm">
+                  ATSI Health Assessment
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-indigo-800 mt-8 pt-8 text-center">
+          <p class="text-indigo-300 text-sm">
+            © 2024 GP Companion. All rights reserved. Designed for healthcare
+            professionals.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // --- DATA (Shared across forms) ---
+      // This section contains the medical data used to auto-populate the forms.
+      const conditions = [
+        { id: "diabetes1", name: "Type 1 Diabetes" },
+        { id: "diabetes2", name: "Type 2 Diabetes" },
+        { id: "obesity", name: "Obesity" },
+        { id: "ckd", name: "Chronic Kidney Disease (CKD)" },
+        { id: "asthma", name: "Asthma" },
+        { id: "copd", name: "COPD" },
+        { id: "ischaemic_heart_disease", name: "Ischaemic Heart Disease" },
+        { id: "heart_failure", name: "Heart Failure" },
+        { id: "atrial_fibrillation", name: "Atrial Fibrillation" },
+        { id: "hypertension", name: "Hypertension" },
+        { id: "osteoporosis", name: "Osteoporosis" },
+        { id: "obstructive_sleep_apnoea", name: "Obstructive Sleep Apnoea" },
+        { id: "osteoarthritis", name: "Osteoarthritis" },
+        {
+          id: "inflammatory_arthritis",
+          name: "Inflammatory Arthritis (e.g., RA)",
+          specify: true,
+        },
+        { id: "chronic_pain", name: "Chronic Pain", specify: true },
+        { id: "cancer", name: "Cancer", specify: true },
+        {
+          id: "mental_health",
+          name: "Mental Health Condition (e.g., Depression, Anxiety)",
+          specify: true,
+        },
+      ];
+      const riskFactors = [
+        { id: "alcohol", name: "Excessive Alcohol Use" },
+        { id: "drugs", name: "Recreational Drug Use" },
+      ];
+      const alliedHealth = [
+        "Podiatrist",
+        "Dietitian",
+        "Exercise Physiologist",
+        "Physiotherapist",
+        "Psychologist",
+        "Occupational Therapist",
+        "Diabetic Educator",
+        "Audiologist",
+        "Osteopath",
+        "Chiropractor",
+        "Aboriginal Health Worker",
+        "Social Worker",
+      ];
+      // UPDATED: Health assessments text updated to remove bracketed info.
+      const healthAssessments = [
+        {
+          name: "Aboriginal and Torres Strait Islander Health Assessment",
+          criteria: { atsi: true },
+          text: "ATSI Health Assessment",
+        },
+        {
+          name: "Health Assessment for People Aged 75 Years and Older",
+          criteria: { minAge: 75 },
+          text: "75+ Health Assessment",
+        },
+        {
+          name: "Health Assessment for People with an Intellectual Disability",
+          criteria: {},
+          text: "Intellectual Disability Health Assessment",
+        },
+        {
+          name: "Health Assessment for Refugees and Other Humanitarian Entrants",
+          criteria: {},
+          text: "Refugee Health Assessment",
+        },
+        {
+          name: "Health Assessment for People Aged 45-49 Years at Risk of Chronic Disease",
+          criteria: { minAge: 45, maxAge: 49 },
+          text: "45-49 Health Assessment",
+        },
+        {
+          name: "Health assessment for people aged 40-49 with a high risk of developing diabetes",
+          criteria: { minAge: 40, maxAge: 49 },
+          text: "40-49 Diabetes Risk Assessment",
+        },
+        {
+          name: "Heart Health Assessment",
+          criteria: { heartHealth: true },
+          text: "Heart Health Assessment",
+        },
+        {
+          name: "Menopause and Perimenopause Health Assessment",
+          criteria: { gender: "female", minAge: 40 },
+          text: "Menopause Health Assessment",
+        },
+      ];
+      const dataMap = {
+        goals: {
+          diabetes1: [
+            "Maintain HbA1c between 6.5-7.5%",
+            "Attend annual diabetic eye and foot screening",
+            "Demonstrate correct insulin administration technique",
+            "Develop a sick day management plan",
+          ],
+          diabetes2: [
+            "Achieve and maintain target HbA1c <7%",
+            "Engage in 150 mins of moderate-intensity activity/week",
+            "Follow a healthy eating plan for diabetes",
+            "Complete annual cycle of care",
+          ],
+          obesity: [
+            "Aim for gradual weight loss of 5-10% over 6 months",
+            "Incorporate 3-4 sessions of structured exercise/week",
+            "Adopt a balanced, calorie-controlled diet",
+            "Improve overall physical fitness and mobility",
+          ],
+          ckd: [
+            "Maintain blood pressure below 130/80 mmHg",
+            "Adhere to prescribed medications for kidney protection",
+            "Follow a low-salt and protein-modified diet as advised",
+            "Monitor kidney function via regular tests",
+          ],
+          asthma: [
+            "Achieve optimal asthma control with minimal symptoms",
+            "Use preventer inhaler daily as prescribed",
+            "Demonstrate correct inhaler technique",
+            "Understand and follow a written Asthma Action Plan",
+          ],
+          copd: [
+            "Minimise exacerbations and hospital admissions",
+            "Ensure all vaccinations (Influenza, Pneumococcal) are up to date",
+            "Use long-acting inhalers as prescribed",
+            "Practice controlled breathing techniques",
+          ],
+          ischaemic_heart_disease: [
+            "Maintain LDL cholesterol below 1.8 mmol/L",
+            "Take antiplatelet and statin medication consistently",
+            "Follow a heart-healthy diet low in saturated fats",
+            "Recognize symptoms of angina and know how to respond",
+          ],
+          heart_failure: [
+            "Monitor daily weight to detect fluid retention early",
+            "Adhere strictly to fluid and salt restrictions",
+            "Take all prescribed heart failure medications",
+            "Recognize signs of worsening heart failure",
+          ],
+          atrial_fibrillation: [
+            "Prevent stroke through effective anticoagulation",
+            "Maintain target INR or adhere to DOAC schedule",
+            "Control heart rate and rhythm as able",
+            "Avoid triggers such as excessive caffeine or alcohol",
+          ],
+          hypertension: [
+            "Achieve and maintain a target blood pressure of <140/90 mmHg",
+            "Reduce dietary sodium intake",
+            "Engage in regular aerobic exercise",
+            "Regularly self-monitor blood pressure at home",
+          ],
+          osteoporosis: [
+            "Prevent fractures and improve bone mineral density",
+            "Ensure adequate daily intake of calcium and Vitamin D",
+            "Improve balance and strength to reduce fall risk",
+            "Adhere to bone-protective medication",
+          ],
+          obstructive_sleep_apnoea: [
+            "Improve sleep quality and reduce daytime sleepiness",
+            "Achieve consistent nightly use of CPAP therapy",
+            "Aim for a healthy weight to reduce severity",
+            "Avoid sedatives and alcohol before sleep",
+          ],
+          osteoarthritis: [
+            "Manage pain and maintain joint function",
+            "Engage in low-impact strengthening exercises",
+            "Achieve a healthy weight to reduce joint load",
+            "Learn joint protection strategies",
+          ],
+          inflammatory_arthritis: [
+            "Achieve disease remission or low disease activity",
+            "Adhere to Disease-Modifying Antirheumatic Drug (DMARD) therapy",
+            "Maintain joint flexibility and muscle strength",
+            "Learn fatigue management strategies",
+          ],
+          chronic_pain: [
+            "Improve function and quality of life despite pain",
+            "Develop non-pharmacological pain management strategies",
+            "Engage in activity pacing to avoid boom-bust cycles",
+            "Improve sleep quality and hygiene",
+          ],
+          cancer: [
+            "Successfully complete the agreed treatment plan",
+            "Effectively manage treatment side-effects",
+            "Maintain adequate nutrition and hydration",
+            "Address emotional and psychological wellbeing",
+          ],
+          mental_health: [
+            "Reduce symptoms and improve daily functioning",
+            "Engage in regular psychological therapy",
+            "Establish a consistent daily routine",
+            "Take prescribed medication consistently",
+          ],
+          smoking: [
+            "Set a quit date and achieve complete cessation",
+            "Develop strategies to cope with cravings",
+            "Utilise smoking cessation aids as discussed",
+            "Improve cardiovascular and respiratory health",
+          ],
+          alcohol: [
+            "Reduce alcohol intake to within national guidelines",
+            "Have at least 2-3 alcohol-free days per week",
+            "Identify and manage triggers for excessive drinking",
+            "Improve liver function and overall health",
+          ],
+          drugs: [
+            "Achieve reduction or cessation of recreational drug use",
+            "Engage with counselling services for support",
+            "Develop alternative coping mechanisms",
+            "Understand and practice harm minimisation strategies",
+          ],
+        },
+        patientGoals: {
+          diabetes1: [
+            "My goal is to keep my blood sugar levels in a healthy range (HbA1c 6.5-7.5%).",
+            "I will get my eyes and feet checked for diabetes-related problems every year.",
+            "I will learn how to give myself insulin shots correctly.",
+            "I will have a plan for what to do when I'm sick.",
+          ],
+          diabetes2: [
+            "My goal is to keep my blood sugar levels in a healthy range (HbA1c less than 7%).",
+            "I will aim for about 2.5 hours of exercise like brisk walking each week.",
+            "I will follow a healthy eating plan that is good for my diabetes.",
+            "I will see my doctor for all my regular diabetes check-ups each year.",
+          ],
+          obesity: [
+            "My goal is to lose a small amount of weight (5-10%) slowly and safely over the next 6 months.",
+            "I will try to do some form of planned exercise 3 to 4 times a week.",
+            "I will eat a balanced diet and watch my portion sizes.",
+            "I want to feel fitter and find it easier to move around.",
+          ],
+          ckd: [
+            "My goal is to keep my blood pressure well-controlled (below 130/80).",
+            "I will take my prescribed medications to protect my kidneys.",
+            "I will follow my doctor's or dietitian's advice on eating less salt and the right amount of protein.",
+            "I will have regular blood and urine tests to check on my kidney health.",
+          ],
+          asthma: [
+            "My goal is to have good control of my asthma, with very few symptoms like coughing or wheezing.",
+            "I will use my preventer inhaler every day as my doctor told me to.",
+            "I will make sure I am using my inhaler the right way.",
+            "I will understand and know what to do based on my written Asthma Action Plan.",
+          ],
+          ischaemic_heart_disease: [
+            "My goal is to keep my 'bad cholesterol' (LDL) at a very low level.",
+            "I will take my daily aspirin and cholesterol medications without missing them.",
+            "I will eat a heart-healthy diet that is low in unhealthy fats.",
+            "I will know the signs of chest pain (angina) and what to do if it happens.",
+          ],
+          hypertension: [
+            "My goal is to get my blood pressure down to a healthy level (less than 140/90).",
+            "I will cut down on salty foods and read food labels to choose low-salt options.",
+            "I will do regular exercise that gets my heart rate up, like walking or cycling.",
+            "I will check my blood pressure at home to help my doctor manage it.",
+          ],
+        },
+        actions: {
+          diabetes1: [
+            "Monitor blood glucose levels as recommended",
+            "Administer insulin as prescribed and rotate injection sites",
+          ],
+          diabetes2: [
+            "Take oral hypoglycaemic agents/insulin as prescribed",
+            "Attend annual cycle of care appointments with GP",
+          ],
+          obesity: [
+            "Keep a food and activity diary",
+            "Engage in regular physical activity",
+          ],
+          ckd: [
+            "Take prescribed medications (e.g., for BP) regularly",
+            "Attend regular GP/specialist reviews for monitoring",
+          ],
+          asthma: [
+            "Use preventer and reliever inhalers correctly",
+            "Follow personal Asthma Action Plan",
+          ],
+          copd: [
+            "Take prescribed inhalers daily",
+            "Attend pulmonary rehabilitation if referred",
+          ],
+          ischaemic_heart_disease: [
+            "Take statin and antiplatelet medication daily",
+            "Follow up with GP/Cardiologist regularly",
+          ],
+          heart_failure: [
+            "Monitor for symptoms like swelling or breathlessness",
+            "Take diuretics and other heart medications as prescribed",
+          ],
+          atrial_fibrillation: [
+            "Take anticoagulant medication without missing doses",
+            "Report any signs of bleeding or stroke immediately",
+          ],
+          hypertension: [
+            "Monitor blood pressure at home",
+            "Reduce salt in diet and read food labels",
+          ],
+          osteoporosis: [
+            "Take calcium and vitamin D supplements if recommended",
+            "Perform weight-bearing exercises (e.g., walking)",
+          ],
+          obstructive_sleep_apnoea: [
+            "Use CPAP machine every night for the entire duration of sleep",
+            "Clean and maintain CPAP equipment regularly",
+          ],
+          osteoarthritis: [
+            "Perform prescribed physiotherapy exercises",
+            "Use simple analgesia like paracetamol as needed for pain",
+          ],
+          inflammatory_arthritis: [
+            "Take DMARDs as prescribed by rheumatologist",
+            "Attend regular specialist appointments",
+          ],
+          chronic_pain: [
+            "Practice pacing and graded exposure to activity",
+            "Utilise relaxation or mindfulness techniques",
+          ],
+          cancer: [
+            "Attend all scheduled treatment and follow-up appointments",
+            "Report any new or worsening side-effects to the care team",
+          ],
+          mental_health: [
+            "Attend psychology/counselling appointments",
+            "Practice self-care and coping strategies discussed in therapy",
+          ],
+          smoking: [
+            "Contact Quitline (13 78 48) for support",
+            "Discuss cessation medications (NRT, etc.) with GP",
+          ],
+          alcohol: [
+            "Track standard drinks to stay within guidelines",
+            "Find alternative activities to drinking in social situations",
+          ],
+          drugs: [
+            "Engage with a drug and alcohol counsellor",
+            "Discuss harm minimisation with GP",
+          ],
+        },
+        patientActions: {
+          diabetes1: [
+            "I will check my blood sugar levels as often as my doctor has recommended.",
+            "I will take my insulin as prescribed and remember to use different spots for my injections.",
+          ],
+          diabetes2: [
+            "I will take my diabetes tablets or insulin every day as prescribed.",
+            "I will make sure to go to all my yearly diabetes check-up appointments with my doctor.",
+          ],
+          obesity: [
+            "I will try to keep a diary of what I eat and how much I move each day.",
+            "I will make an effort to be physically active on most days.",
+          ],
+          ckd: [
+            "I will take my medications (like blood pressure pills) every day.",
+            "I will go to my regular doctor and specialist appointments to keep an eye on my kidneys.",
+          ],
+          asthma: [
+            "I will use my inhalers the right way, as shown by my doctor or pharmacist.",
+            "I will follow my personal Asthma Action Plan, especially if my asthma gets worse.",
+          ],
+          ischaemic_heart_disease: [
+            "I will take my daily cholesterol and blood-thinning medication.",
+            "I will see my doctor or heart specialist for regular check-ups.",
+          ],
+          hypertension: [
+            "I will check my blood pressure at home and keep a record of it.",
+            "I will try to eat less salt by checking food labels and not adding salt to my meals.",
+          ],
+        },
+        services: {
+          diabetes1: [
+            "Endocrinologist review",
+            "Diabetic Educator consultation",
+            "Annual Optometrist and Podiatrist review",
+          ],
+          diabetes2: [
+            "Dietitian for dietary planning",
+            "Podiatrist for annual foot check",
+            "Exercise Physiologist for tailored exercise plan",
+          ],
+          obesity: [
+            "Dietitian for weight management plan",
+            "Exercise Physiologist",
+            "Consider referral to weight management clinic",
+          ],
+          ckd: [
+            "Nephrologist (kidney specialist) review",
+            "Dietitian for renal diet advice",
+            "Regular GP monitoring of eGFR and ACR",
+          ],
+          asthma: [
+            "GP for regular Asthma review and Action Plan update",
+            "Pharmacist for inhaler technique check",
+            "Consider specialist Respiratory Physician review",
+          ],
+          copd: [
+            "Pulmonary Rehabilitation Program",
+            "Respiratory Physician review",
+            "Annual influenza and pneumococcal vaccinations",
+          ],
+          ischaemic_heart_disease: [
+            "Cardiologist review",
+            "Dietitian for heart-healthy eating plan",
+            "Cardiac Rehabilitation Program",
+          ],
+          heart_failure: [
+            "Cardiologist review",
+            "Heart Failure Nurse support",
+            "Dietitian for low salt/fluid advice",
+          ],
+          atrial_fibrillation: [
+            "Cardiologist or Haematologist review",
+            "Regular blood tests (INR) if on warfarin",
+            "Pharmacist medication review",
+          ],
+          hypertension: [
+            "Regular GP review for blood pressure check",
+            "Dietitian for DASH diet advice",
+            "Home Blood Pressure Monitor",
+          ],
+          osteoporosis: [
+            "Endocrinologist or Rheumatologist review",
+            "Physiotherapist for balance and strengthening exercises",
+            "Repeat DEXA scan as recommended",
+          ],
+          obstructive_sleep_apnoea: [
+            "Sleep Physician review",
+            "CPAP provider for equipment and support",
+            "Dietitian for weight management",
+          ],
+          osteoarthritis: [
+            "Physiotherapist for exercise prescription",
+            "Occupational Therapist for joint protection advice",
+            "Consider referral to Orthopaedic Surgeon if severe",
+          ],
+          inflammatory_arthritis: [
+            "Rheumatologist review",
+            "Physiotherapist/Occupational Therapist",
+            "Pharmacist for medication management",
+          ],
+          chronic_pain: [
+            "Multidisciplinary Pain Clinic referral",
+            "Psychologist with experience in pain management",
+            "Physiotherapist for a graded exercise program",
+          ],
+          cancer: [
+            "Oncologist/Haematologist review",
+            "Allied health support (e.g., dietitian, psychologist)",
+            "Palliative care services if required",
+          ],
+          mental_health: [
+            "Psychologist or Psychiatrist review",
+            "Mental Health Care Plan review with GP",
+            "Counselling services",
+          ],
+          smoking: [
+            "GP counselling and support",
+            "Pharmacist for NRT advice",
+            "Quitline telephone support",
+          ],
+          alcohol: [
+            "GP counselling and monitoring",
+            "Drug and Alcohol Counselling service",
+            "Liver function tests",
+          ],
+          drugs: [
+            "Drug and Alcohol Counselling service",
+            "GP for harm minimisation advice",
+            "Psychologist for underlying issues",
+          ],
+        },
+      };
+
+      const localStorageKey = "gpccmpFormData";
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // --- APP NAVIGATION ---
+        const selectionScreen = document.getElementById("selectionScreen");
+        const gpccmpContainer = document.getElementById("gpccmpContainer");
+        const reviewContainer = document.getElementById("reviewContainer");
+
+        document
+          .getElementById("selectNewGpccmp")
+          .addEventListener("click", () => {
+            selectionScreen.classList.add("hidden");
+            gpccmpContainer.classList.remove("hidden");
+            saveState(); // Save the new screen state
+          });
+        document
+          .getElementById("selectReviewGpccmp")
+          .addEventListener("click", () => {
+            selectionScreen.classList.add("hidden");
+            reviewContainer.classList.remove("hidden");
+            saveState(); // Save the new screen state
+          });
+        document
+          .getElementById("backToSelectionFromGpccmp")
+          .addEventListener("click", () => {
+            gpccmpContainer.classList.add("hidden");
+            selectionScreen.classList.remove("hidden");
+            saveState(); // Save the new screen state
+          });
+        document
+          .getElementById("backToSelectionFromReview")
+          .addEventListener("click", () => {
+            reviewContainer.classList.add("hidden");
+            selectionScreen.classList.remove("hidden");
+            saveState(); // Save the new screen state
+          });
+
+        // --- INITIALIZE BOTH FORMS ---
+        initializeGpccmpForm();
+        initializeReviewForm();
+        addAccordionListeners();
+
+        // --- SESSION RESTORE LOGIC ---
+        const restoreModal = document.getElementById("restoreSessionModal");
+        const savedData = localStorage.getItem(localStorageKey);
+
+        if (savedData) {
+          restoreModal.classList.remove("hidden");
+        }
+
+        document
+          .getElementById("restoreSessionBtn")
+          .addEventListener("click", () => {
+            restoreState();
+            restoreModal.classList.add("hidden");
+          });
+
+        document
+          .getElementById("startFreshBtn")
+          .addEventListener("click", () => {
+            localStorage.removeItem(localStorageKey);
+            restoreModal.classList.add("hidden");
+          });
+
+        // --- AUTO-SAVE LOGIC ---
+        // Use event delegation to listen for changes on all form inputs
+        document
+          .getElementById("gpccmpContainer")
+          .addEventListener("input", saveState);
+        document
+          .getElementById("reviewContainer")
+          .addEventListener("input", saveState);
+        // Also listen for 'change' for selects and checkboxes
+        document
+          .getElementById("gpccmpContainer")
+          .addEventListener("change", saveState);
+        document
+          .getElementById("reviewContainer")
+          .addEventListener("change", saveState);
+      });
+
+      // ===================================================================================
+      // --- GPCCMP (NEW PLAN) FORM LOGIC ---
+      // ===================================================================================
+      function initializeGpccmpForm() {
+        // --- DOM ELEMENTS ---
+        const dobInput = document.getElementById("dob");
+        const genderSelect = document.getElementById("gender");
+        const atsiCheckbox = document.getElementById("atsiStatus");
+        const smokingStatusSelect = document.getElementById("smokingStatus");
+        const packYearsContainer =
+          document.getElementById("packYearsContainer");
+        const lungCancerScreenCheckbox =
+          document.getElementById("lungCancerScreen");
+        const patientNameInput = document.getElementById("patientName");
+
+        // --- INITIALIZATION ---
+        populateGpccmpCheckboxes();
+        populateAssessmentDropdown();
+        setInitialReviewDate();
+        document.getElementById("gpccmp_assessmentDate").value = new Date()
+          .toISOString()
+          .slice(0, 10);
+        updatePatientState();
+
+        // --- EVENT LISTENERS ---
+        dobInput.addEventListener("change", updatePatientState);
+        genderSelect.addEventListener("change", updatePatientState);
+        atsiCheckbox.addEventListener("change", updatePatientState);
+        smokingStatusSelect.addEventListener("change", () => {
+          const status = smokingStatusSelect.value;
+          packYearsContainer.classList.toggle("hidden", status === "never");
+          updatePatientState();
+          updateGeneratedContent();
+        });
+        lungCancerScreenCheckbox.addEventListener(
+          "change",
+          updateGeneratedContent
+        );
+
+        // --- EASTER EGG ---
+        patientNameInput.addEventListener("input", (e) => {
+          if (e.target.value.toLowerCase() === atob("YmlnIGJyb3RoZXIh")) {
+            document
+              .getElementById("easter-egg-modal")
+              .classList.remove("hidden");
+          }
+        });
+        document
+          .getElementById("close-easter-egg")
+          .addEventListener("click", () => {
+            document.getElementById("easter-egg-modal").classList.add("hidden");
+          });
+        // --- END EASTER EGG ---
+
+        document
+          .querySelectorAll('input[name="myMedicare"]')
+          .forEach((radio) => {
+            radio.addEventListener("change", (e) => {
+              document
+                .getElementById("myMedicareAdvice")
+                .classList.toggle("hidden", e.target.value !== "no");
+              updateMyMedicareAction(e.target.value === "no");
+            });
+          });
+
+        document
+          .getElementById("addOtherConditionBtn")
+          .addEventListener("click", () => addOtherCondition());
+        // FIX: Changed to an arrow function to prevent the event object from being passed.
+        document
+          .getElementById("addAssessmentBtn")
+          .addEventListener("click", () => addSelectedAssessment());
+        document
+          .getElementById("addOtherAlliedBtn")
+          .addEventListener("click", () => addOtherAllied("gpccmp"));
+        document
+          .getElementById("addSpecialistBtn")
+          .addEventListener("click", () => addSpecialist("gpccmp"));
+        document
+          .getElementById("addReviewDateBtn")
+          .addEventListener("click", () => {
+            const dateValue = document.getElementById("reviewDateInput").value;
+            if (dateValue) {
+              addReviewDate(dateValue);
+              document.getElementById("reviewDateInput").value = "";
+            }
+          });
+
+        // Manual add buttons
+        document
+          .getElementById("addManualGoalBtn")
+          .addEventListener("click", () =>
+            addManualItem(
+              "goalsContainer",
+              "manualGoalInput",
+              "Goals will appear here..."
+            )
+          );
+        document
+          .getElementById("addManualActionBtn")
+          .addEventListener("click", () =>
+            addManualItem(
+              "actionsContainer",
+              "manualActionInput",
+              "Patient actions will appear here."
+            )
+          );
+        document
+          .getElementById("addManualServiceBtn")
+          .addEventListener("click", () =>
+            addManualItem(
+              "servicesContainer",
+              "manualServiceInput",
+              "Treatments and services will appear here."
+            )
+          );
+
+        // Action buttons
+        document
+          .getElementById("clearGpccmpFormBtn")
+          .addEventListener("click", clearGpccmpForm);
+        document
+          .getElementById("generatePatientSummaryBtn")
+          .addEventListener("click", generatePatientSummary);
+        document
+          .getElementById("saveGpccmpTxtBtn")
+          .addEventListener("click", () => exportToFile("gpccmp", "txt"));
+        document
+          .getElementById("saveGpccmpRtfBtn")
+          .addEventListener("click", () => exportToFile("gpccmp", "rtf"));
+
+        // Patient Summary Modal listeners
+        const modal = document.getElementById("patientSummaryModal");
+        document
+          .getElementById("closeSummaryModalBtn")
+          .addEventListener("click", () => {
+            modal.querySelector(".modal-container").classList.add("scale-95");
+            modal.classList.add("opacity-0", "pointer-events-none");
+            setTimeout(() => modal.classList.add("hidden"), 300);
+          });
+        document
+          .getElementById("copySummaryBtn")
+          .addEventListener("click", copySummaryToClipboard);
+        document
+          .getElementById("printSummaryBtn")
+          .addEventListener("click", printPatientSummary);
+
+        // --- FUNCTIONS ---
+        /**
+         * Populates the form with checkboxes for conditions, risk factors, and allied health services.
+         */
+        function populateGpccmpCheckboxes() {
+          const conditionsContainer = document.getElementById(
+            "chronicConditionsList"
+          );
+          const riskFactorsContainer =
+            document.getElementById("riskFactorsList");
+          const alliedHealthContainer =
+            document.getElementById("alliedHealthList");
+
+          conditions.forEach((condition) => {
+            const div = document.createElement("div");
+            div.className = "flex items-start";
+            div.innerHTML = `
+                <div class="flex items-center h-5">
+                    <input id="${condition.id}" name="${
+              condition.id
+            }" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded condition-checkbox">
+                </div>
+                <div class="ml-3 text-sm">
+                    <label for="${
+                      condition.id
+                    }" class="font-medium text-gray-700">${
+              condition.name
+            }</label>
+                    ${
+                      condition.specify
+                        ? `<input type="text" id="${condition.id}_specify" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm mt-1 hidden" placeholder="Specify...">`
+                        : ""
+                    }
+                </div>`;
+            conditionsContainer.appendChild(div);
+          });
+
+          riskFactors.forEach((factor) => {
+            const div = document.createElement("div");
+            div.className = "flex items-center";
+            div.innerHTML = `
+                <input id="${factor.id}" name="${factor.id}" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded risk-checkbox">
+                <label for="${factor.id}" class="ml-3 block text-sm font-medium text-gray-700">${factor.name}</label>`;
+            riskFactorsContainer.appendChild(div);
+          });
+
+          alliedHealth.forEach((item) => {
+            const safeId = `ah_${item.replace(/\s+/g, "")}`;
+            const div = document.createElement("div");
+            div.className = "flex items-center";
+            div.innerHTML = `
+                <input id="${safeId}" name="allied_health" type="checkbox" value="${item}" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                <label for="${safeId}" class="ml-3 block text-sm font-medium text-gray-700">${item}</label>`;
+            alliedHealthContainer.appendChild(div);
+          });
+
+          // Add event listeners to update content when checkboxes are toggled
+          document
+            .querySelectorAll(".condition-checkbox, .risk-checkbox")
+            .forEach((cb) =>
+              cb.addEventListener("change", updateGeneratedContent)
+            );
+
+          // Logic for "specify" input fields
+          conditions
+            .filter((c) => c.specify)
+            .forEach((c) => {
+              const cb = document.getElementById(c.id);
+              const specifyInput = document.getElementById(`${c.id}_specify`);
+              cb.addEventListener("change", () => {
+                specifyInput.classList.toggle("hidden", !cb.checked);
+                specifyInput.required = cb.checked;
+                if (cb.checked) specifyInput.focus();
+                else specifyInput.value = "";
+              });
+            });
+
+          // Show/hide diabetic-specific screening if diabetes is selected
+          document
+            .getElementById("diabetes1")
+            .addEventListener("change", updateDiabeticScreeningVisibility);
+          document
+            .getElementById("diabetes2")
+            .addEventListener("change", updateDiabeticScreeningVisibility);
+        }
+
+        /**
+         * Populates the dropdown menu for health assessments with criteria.
+         */
+        function populateAssessmentDropdown() {
+          const select = document.getElementById("assessmentSelect");
+          healthAssessments.forEach((assessment) => {
+            const option = document.createElement("option");
+            option.value = assessment.name;
+            option.textContent = assessment.text;
+            // Store criteria in data attributes
+            Object.keys(assessment.criteria).forEach((key) => {
+              option.dataset[key] = assessment.criteria[key];
+            });
+            option.disabled = true; // Initially disable all, will be enabled by update function
+            select.appendChild(option);
+          });
+        }
+
+        /**
+         * Updates patient-dependent fields like age, screening, and assessment eligibility.
+         */
+        function updatePatientState() {
+          const dob = document.getElementById("dob").value;
+          const gender = document.getElementById("gender").value;
+          const isAtsi = document.getElementById("atsiStatus").checked;
+          const smokingStatus = document.getElementById("smokingStatus").value;
+          let ageNum = null;
+
+          if (dob) {
+            ageNum = calculateAge(dob);
+            document.getElementById("age").textContent = `Age: ${ageNum}`;
+          } else {
+            document.getElementById("age").textContent =
+              "Age will be calculated";
+          }
+          updateScreening(ageNum, gender, isAtsi, smokingStatus);
+          updateAssessmentOptions(ageNum, gender, isAtsi); // NEW: Update assessment dropdown
+        }
+
+        /**
+         * NEW: Enables/disables health assessment options based on patient demographics.
+         */
+        function updateAssessmentOptions(age, gender, isAtsi) {
+          const select = document.getElementById("assessmentSelect");
+          const options = select.querySelectorAll('option:not([value=""])');
+          const hasDemographics = typeof age === "number" && gender;
+
+          options.forEach((option) => {
+            if (!hasDemographics) {
+              option.disabled = true;
+              return;
+            }
+
+            let isEligible = true;
+            const criteria = option.dataset;
+
+            if (criteria.minAge && age < parseInt(criteria.minAge))
+              isEligible = false;
+            if (criteria.maxAge && age > parseInt(criteria.maxAge))
+              isEligible = false;
+            if (criteria.gender && gender !== criteria.gender)
+              isEligible = false;
+            if (criteria.atsi === "true" && !isAtsi) isEligible = false;
+
+            // Special criteria for Heart Health Assessment
+            if (criteria.heartHealth) {
+              if (isAtsi) {
+                if (age < 30) isEligible = false;
+              } else {
+                if (age < 45) isEligible = false;
+              }
+            }
+
+            option.disabled = !isEligible;
+          });
+
+          // If the currently selected option becomes disabled, reset the select
+          if (select.options[select.selectedIndex]?.disabled) {
+            select.value = "";
+          }
+        }
+
+        /**
+         * Enables or disables screening checkboxes based on patient demographics.
+         */
+        function updateScreening(age, gender, isAtsi, smokingStatus) {
+          const validAge = typeof age === "number" && !isNaN(age);
+          const setControlState = (id, enabled) => {
+            const checkbox = document.getElementById(id);
+            const label = document.getElementById(`label_${id}`);
+            checkbox.disabled = !enabled;
+            label.classList.toggle("cursor-not-allowed", !enabled);
+            label.classList.toggle("text-gray-400", !enabled);
+            if (!enabled) checkbox.checked = false;
+          };
+
+          setControlState(
+            "cervicalScreen",
+            gender === "female" && validAge && age >= 25 && age <= 74
+          );
+          setControlState(
+            "prostateScreen",
+            gender === "male" && validAge && age >= 50
+          );
+          setControlState(
+            "breastScreen",
+            gender === "female" && validAge && age >= 50 && age <= 74
+          );
+          setControlState("bowelScreen", validAge && age >= 45 && age <= 74);
+          const isSmokerOrEx =
+            smokingStatus === "current" || smokingStatus === "ex";
+          setControlState(
+            "lungCancerScreen",
+            validAge && age >= 50 && age <= 70 && isSmokerOrEx
+          );
+        }
+
+        /**
+         * Shows or hides the diabetic-specific screening section.
+         */
+        function updateDiabeticScreeningVisibility() {
+          const show =
+            document.getElementById("diabetes1").checked ||
+            document.getElementById("diabetes2").checked;
+          document
+            .getElementById("diabeticScreening")
+            .classList.toggle("hidden", !show);
+        }
+
+        /**
+         * Updates the auto-generated content boxes based on selected conditions.
+         */
+        function updateGeneratedContent() {
+          const activeGoals = new Set();
+          const activeActions = new Set();
+          const activeServices = new Set();
+
+          // Gather items from selected conditions and risk factors
+          document
+            .querySelectorAll(
+              ".condition-checkbox:checked, .risk-checkbox:checked"
+            )
+            .forEach((cb) => {
+              const id = cb.id;
+              if (dataMap.goals[id])
+                dataMap.goals[id].forEach((item) => activeGoals.add(item));
+              if (dataMap.actions[id])
+                dataMap.actions[id].forEach((item) => activeActions.add(item));
+              if (dataMap.services[id])
+                dataMap.services[id].forEach((item) =>
+                  activeServices.add(item)
+                );
+            });
+
+          // Add smoking-related items if applicable
+          if (document.getElementById("smokingStatus").value === "current") {
+            const id = "smoking";
+            if (dataMap.goals[id])
+              dataMap.goals[id].forEach((item) => activeGoals.add(item));
+            if (dataMap.actions[id])
+              dataMap.actions[id].forEach((item) => activeActions.add(item));
+            if (dataMap.services[id])
+              dataMap.services[id].forEach((item) => activeServices.add(item));
+          }
+
+          if (document.getElementById("lungCancerScreen").checked) {
+            activeServices.add("Two yearly low dose CT chest");
+          }
+
+          // De-duplicate blood pressure goals to keep the most stringent one
+          let goalArray = Array.from(activeGoals);
+          const bpGoals = goalArray.filter((g) =>
+            g.toLowerCase().includes("blood pressure")
+          );
+          if (bpGoals.length > 1) {
+            bpGoals.sort(); // Sorts alphabetically, e.g., "...130/80" comes before "...140/90"
+            const bestGoal = bpGoals[0];
+            goalArray = goalArray.filter(
+              (g) => !g.toLowerCase().includes("blood pressure")
+            );
+            goalArray.push(bestGoal);
+          }
+
+          renderContent(
+            "goalsContainer",
+            goalArray,
+            "Goals will appear here as conditions are selected."
+          );
+          renderContent(
+            "actionsContainer",
+            Array.from(activeActions),
+            "Patient actions will appear here."
+          );
+          renderContent(
+            "servicesContainer",
+            Array.from(activeServices),
+            "Treatments and services will appear here."
+          );
+        }
+
+        /**
+         * Adds or removes the MyMedicare registration action point.
+         */
+        function updateMyMedicareAction(shouldAdd) {
+          const container = document.getElementById("actionsContainer");
+          const existingItem = document.getElementById(
+            "mymedicare-action-item"
+          );
+
+          if (shouldAdd && !existingItem) {
+            const actionText =
+              "Encouraged to approach staff to get assistance for registering for MyMedicare at this clinic to access enhanced benefits.";
+            const itemElement = createRemovableListItem(actionText, () => {
+              // If removed manually, uncheck the 'no' radio
+              const noRadio = document.querySelector(
+                'input[name="myMedicare"][value="no"]'
+              );
+              if (noRadio) noRadio.checked = false;
+              document
+                .getElementById("myMedicareAdvice")
+                .classList.add("hidden");
+            });
+            itemElement.id = "mymedicare-action-item";
+
+            // If placeholder is present, remove it
+            const placeholder = container.querySelector(".text-gray-500");
+            if (placeholder) placeholder.remove();
+
+            // Add to the top of the list
+            container.prepend(itemElement);
+          } else if (!shouldAdd && existingItem) {
+            existingItem.remove();
+            // If container is now empty, show placeholder
+            if (container.children.length === 0) {
+              container.innerHTML = `<p class="text-gray-500 italic">Patient actions will appear here.</p>`;
+            }
+          }
+        }
+
+        /**
+         * Renders a list of items into a specified container.
+         */
+        function renderContent(containerId, items, placeholderText) {
+          const container = document.getElementById(containerId);
+          // Preserve the MyMedicare action if it exists
+          const myMedicareItem =
+            containerId === "actionsContainer"
+              ? document.getElementById("mymedicare-action-item")
+              : null;
+
+          container.innerHTML = ""; // Clear container
+
+          // Re-add MyMedicare item at the top if it existed
+          if (myMedicareItem) {
+            container.appendChild(myMedicareItem);
+          }
+
+          if (items.length === 0 && !myMedicareItem) {
+            container.innerHTML = `<p class="text-gray-500 italic">${placeholderText}</p>`;
+            return;
+          }
+          items.forEach((itemText) => {
+            const itemElement = createRemovableListItem(itemText, () => {
+              if (container.children.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 italic">${placeholderText}</p>`;
+              }
+            });
+            container.appendChild(itemElement);
+          });
+        }
+
+        /**
+         * Adds a new input field for an "other" chronic condition.
+         */
+        function addOtherCondition(value = "") {
+          const container = document.getElementById("otherConditionsContainer");
+          const div = document.createElement("div");
+          div.className = "flex items-center gap-2";
+          div.innerHTML = `
+            <input type="text" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="Enter other chronic condition..." value="${value}">
+            <button type="button" class="ml-4 text-red-500 hover:text-red-700 font-bold cursor-pointer" aria-label="Remove">&times;</button>`;
+          div.querySelector("button").addEventListener("click", () => {
+            div.remove();
+            saveState();
+          });
+          container.appendChild(div);
+        }
+
+        /**
+         * Adds the selected health assessment to the list.
+         */
+        function addSelectedAssessment(assessmentText = null) {
+          const select = document.getElementById("assessmentSelect");
+          const textToAdd = assessmentText || select.value;
+          if (!textToAdd) return;
+
+          const container = document.getElementById("assessmentsContainer");
+          const existing = Array.from(
+            container.querySelectorAll(".p-2 > span")
+          ).some((span) => span.textContent === textToAdd);
+          if (existing) {
+            select.value = "";
+            return;
+          }
+
+          const assessmentElement = createRemovableListItem(textToAdd);
+          assessmentElement.dataset.assessment = textToAdd;
+
+          container.appendChild(assessmentElement);
+          select.value = "";
+        }
+
+        /**
+         * Adds a review date to the list.
+         */
+        function addReviewDate(dateString) {
+          const container = document.getElementById("reviewDatesContainer");
+          const formattedDate = formatAusDate(dateString);
+          const dateElement = createRemovableListItem(formattedDate);
+          dateElement.dataset.date = dateString;
+          container.appendChild(dateElement);
+        }
+
+        /**
+         * Sets an initial default review date (3 months from now).
+         */
+        function setInitialReviewDate() {
+          let reviewDate = new Date();
+          reviewDate.setMonth(reviewDate.getMonth() + 3);
+          let day = reviewDate.getDay();
+          if (day === 6) reviewDate.setDate(reviewDate.getDate() + 2);
+          // If Saturday, move to Monday
+          else if (day === 0) reviewDate.setDate(reviewDate.getDate() + 1); // If Sunday, move to Monday
+
+          const dateString = reviewDate.toISOString().split("T")[0];
+          addReviewDate(dateString);
+        }
+
+        /**
+         * Resets the entire GPCCMP form to its default state.
+         */
+        function clearGpccmpForm() {
+          document.getElementById("gpmpForm").reset();
+          // Clear dynamically generated content
+          document.getElementById("otherConditionsContainer").innerHTML = "";
+          document.getElementById("assessmentsContainer").innerHTML = "";
+          document.getElementById("otherAlliedContainer").innerHTML = "";
+          document.getElementById("specialistList").innerHTML =
+            '<li id="specialistPlaceholder" class="text-gray-500 italic">No specialists added yet.</li>';
+          document.getElementById("reviewDatesContainer").innerHTML = "";
+
+          // Reset auto-populated fields
+          updateGeneratedContent();
+
+          // Reset specific UI states
+          document.getElementById("packYearsContainer").classList.add("hidden");
+          document.getElementById("myMedicareAdvice").classList.add("hidden");
+          document.getElementById("diabeticScreening").classList.add("hidden");
+
+          // Re-initialize default review date and patient state
+          setInitialReviewDate();
+          updatePatientState();
+          saveState(); // Save the cleared state
+        }
+
+        /**
+         * Generates and displays the patient-friendly summary modal.
+         */
+        function generatePatientSummary() {
+          const patientName = document
+            .getElementById("patientName")
+            .value.trim();
+          const activeGoals = new Set();
+          const activeActions = new Set();
+
+          document
+            .querySelectorAll(".condition-checkbox:checked")
+            .forEach((cb) => {
+              const id = cb.id;
+              if (dataMap.patientGoals[id])
+                dataMap.patientGoals[id].forEach((item) =>
+                  activeGoals.add(item)
+                );
+              if (dataMap.patientActions[id])
+                dataMap.patientActions[id].forEach((item) =>
+                  activeActions.add(item)
+                );
+            });
+
+          const contentDiv = document.getElementById("patientSummaryContent");
+          contentDiv.innerHTML = "";
+
+          let summaryHtml = `<p class="text-gray-700">Hi ${
+            patientName || "there"
+          },</p><p class="text-gray-700">Here is a simple summary of the goals and actions we discussed today to help manage your health.</p>`;
+
+          if (activeGoals.size > 0) {
+            summaryHtml += `<h4 class="text-lg font-semibold text-indigo-700 mt-4">Our Goals:</h4><ul class="list-disc list-inside space-y-1 text-gray-800">`;
+            activeGoals.forEach((goal) => {
+              summaryHtml += `<li>${goal}</li>`;
+            });
+            summaryHtml += `</ul>`;
+          }
+
+          if (activeActions.size > 0) {
+            summaryHtml += `<h4 class="text-lg font-semibold text-indigo-700 mt-4">Your Actions:</h4><ul class="list-disc list-inside space-y-1 text-gray-800">`;
+            activeActions.forEach((action) => {
+              summaryHtml += `<li>${action}</li>`;
+            });
+            summaryHtml += `</ul>`;
+          }
+
+          if (activeGoals.size === 0 && activeActions.size === 0) {
+            summaryHtml += `<p class="mt-4 text-gray-600 italic">No conditions with patient-friendly summaries were selected. You can discuss and add custom goals and actions with your doctor.</p>`;
+          }
+
+          contentDiv.innerHTML = summaryHtml;
+
+          const modal = document.getElementById("patientSummaryModal");
+          modal.classList.remove("hidden");
+          setTimeout(() => {
+            modal.classList.remove("opacity-0", "pointer-events-none");
+            modal
+              .querySelector(".modal-container")
+              .classList.remove("scale-95");
+          }, 10);
+        }
+
+        /**
+         * Copies the content of the patient summary modal to the clipboard.
+         */
+        function copySummaryToClipboard() {
+          const contentDiv = document.getElementById("patientSummaryContent");
+          const textToCopy = contentDiv.innerText;
+          const button = document.getElementById("copySummaryBtn");
+
+          // Use a temporary textarea to preserve formatting
+          const textArea = document.createElement("textarea");
+          textArea.value = textToCopy;
+          document.body.appendChild(textArea);
+          textArea.select();
+          try {
+            document.execCommand("copy");
+            button.innerHTML =
+              '<svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Copied!';
+            setTimeout(() => {
+              button.innerHTML =
+                '<svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg> Copy to Clipboard';
+            }, 2000);
+          } catch (err) {
+            console.error("Failed to copy text: ", err);
+            button.innerText = "Copy Failed";
+          }
+          document.body.removeChild(textArea);
+        }
+
+        /**
+         * Prints the patient summary.
+         */
+        function printPatientSummary() {
+          const contentToPrint = document.getElementById(
+            "patientSummaryContent"
+          ).innerHTML;
+          const printWindow = window.open("", "_blank");
+          printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Patient Summary</title>
+                    <style>
+                        body { font-family: sans-serif; line-height: 1.5; }
+                        h4 { margin-bottom: 0.5em; }
+                        ul { margin-top: 0; padding-left: 20px; }
+                    </style>
+                </head>
+                <body>
+                    <h3>Patient Summary</h3>
+                    ${contentToPrint}
+                </body>
+            </html>
+        `);
+          printWindow.document.close();
+          printWindow.print();
+        }
+      }
+
+      // ===================================================================================
+      // --- GPCCMP REVIEW FORM LOGIC ---
+      // ===================================================================================
+      function initializeReviewForm() {
+        // --- Set initial dates ---
+        document.getElementById("review_reviewDate").value = new Date()
+          .toISOString()
+          .split("T")[0];
+        let nextReview = new Date();
+        nextReview.setMonth(nextReview.getMonth() + 6);
+        document.getElementById("review_nextReviewDate").value = nextReview
+          .toISOString()
+          .split("T")[0];
+
+        // --- Age Calculator ---
+        const dobInput = document.getElementById("review_dob");
+        const ageDisplay = document.getElementById("review_age");
+        dobInput.addEventListener("change", () => {
+          if (dobInput.value) {
+            ageDisplay.textContent = `Age: ${calculateAge(dobInput.value)}`;
+          } else {
+            ageDisplay.textContent = "Age will be calculated";
+          }
+        });
+
+        // --- Populate Allied Health ---
+        const alliedHealthContainer = document.getElementById(
+          "review_alliedHealthList"
+        );
+        alliedHealth.forEach((item) => {
+          const safeId = `review_ah_${item.replace(/\s+/g, "")}`;
+          const div = document.createElement("div");
+          div.className = "flex items-center";
+          div.innerHTML = `
+            <input id="${safeId}" name="review_allied_health" type="checkbox" value="${item}" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+            <label for="${safeId}" class="ml-3 block text-sm font-medium text-gray-700">${item}</label>`;
+          alliedHealthContainer.appendChild(div);
+        });
+
+        // --- Event Listeners ---
+        document
+          .getElementById("review_addOtherAlliedBtn")
+          .addEventListener("click", () => addOtherAllied("review"));
+        document
+          .getElementById("review_addSpecialistBtn")
+          .addEventListener("click", () => addSpecialist("review"));
+
+        // Goal sections
+        setupGoalSection(
+          "review_achievedGoalsContainer",
+          "review_achievedGoalInput",
+          "review_addAchievedGoalBtn",
+          "review_noAchievedGoals",
+          "No achieved goals added."
+        );
+        setupGoalSection(
+          "review_newGoalsContainer",
+          "review_newGoalInput",
+          "review_addNewGoalBtn",
+          "review_noNewGoals",
+          "No new or revised goals added."
+        );
+
+        // "No Change" checkboxes
+        setupNoChangeCheckbox(
+          "review_noMedicationChange",
+          "review_updateMedications"
+        );
+        setupNoChangeCheckbox(
+          "review_noDiagnosisChange",
+          "review_updateDiagnoses"
+        );
+        setupNoChangeCheckbox("review_noActionChange", "review_updateActions");
+
+        // Action buttons
+        document
+          .getElementById("clearReviewFormBtn")
+          .addEventListener("click", clearReviewForm);
+        document
+          .getElementById("saveReviewTxtBtn")
+          .addEventListener("click", () => exportToFile("review", "txt"));
+        document
+          .getElementById("saveReviewRtfBtn")
+          .addEventListener("click", () => exportToFile("review", "rtf"));
+
+        // --- Functions specific to Review Form ---
+        /**
+         * Sets up the logic for a goal section (achieved or new).
+         */
+        function setupGoalSection(
+          containerId,
+          inputId,
+          btnId,
+          checkboxId,
+          placeholder
+        ) {
+          const container = document.getElementById(containerId);
+          const input = document.getElementById(inputId);
+          const btn = document.getElementById(btnId);
+          const checkbox = document.getElementById(checkboxId);
+
+          btn.addEventListener("click", () => {
+            const text = input.value.trim();
+            if (!text) return;
+
+            if (container.querySelector(".text-gray-500")) {
+              container.innerHTML = "";
+            }
+            container.appendChild(createRemovableListItem(text));
+            input.value = "";
+          });
+
+          checkbox.addEventListener("change", () => {
+            const isDisabled = checkbox.checked;
+            input.disabled = isDisabled;
+            btn.disabled = isDisabled;
+            if (isDisabled) {
+              container.innerHTML = `<p class="text-gray-500 italic">${placeholder}</p>`;
+              input.value = "";
+            }
+          });
+        }
+
+        /**
+         * Sets up the logic for a "No Change" checkbox to disable a textarea.
+         */
+        function setupNoChangeCheckbox(checkboxId, textareaId) {
+          const checkbox = document.getElementById(checkboxId);
+          const textarea = document.getElementById(textareaId);
+          checkbox.addEventListener("change", () => {
+            textarea.disabled = checkbox.checked;
+            if (checkbox.checked) {
+              textarea.value = "No Change";
+            } else {
+              textarea.value = "";
+            }
+          });
+        }
+
+        /**
+         * Resets the entire Review form to its default state.
+         */
+        function clearReviewForm() {
+          document.getElementById("gpmpReviewForm").reset();
+          // Clear dynamic lists
+          document.getElementById("review_achievedGoalsContainer").innerHTML =
+            '<p class="text-gray-500 italic">No achieved goals added.</p>';
+          document.getElementById("review_newGoalsContainer").innerHTML =
+            '<p class="text-gray-500 italic">No new or revised goals added.</p>';
+          document.getElementById("review_otherAlliedContainer").innerHTML = "";
+          document.getElementById("review_specialistList").innerHTML =
+            '<li id="review_specialistPlaceholder" class="text-gray-500 italic">No new specialists added.</li>';
+
+          // Re-enable textareas that might be disabled
+          [
+            "review_updateMedications",
+            "review_updateDiagnoses",
+            "review_updateActions",
+          ].forEach((id) => {
+            document.getElementById(id).disabled = false;
+          });
+
+          // Reset initial dates
+          document.getElementById("review_reviewDate").value = new Date()
+            .toISOString()
+            .split("T")[0];
+          let nextReview = new Date();
+          nextReview.setMonth(nextReview.getMonth() + 6);
+          document.getElementById("review_nextReviewDate").value = nextReview
+            .toISOString()
+            .split("T")[0];
+          saveState(); // Save the cleared state
+        }
+      }
+
+      // ===================================================================================
+      // --- SHARED/UTILITY FUNCTIONS ---
+      // ===================================================================================
+
+      /**
+       * Adds accordion functionality to section headers.
+       */
+      function addAccordionListeners() {
+        document.querySelectorAll(".bg-indigo-700").forEach((header) => {
+          if (header.dataset.listener) return;
+          header.dataset.listener = true;
+          header.addEventListener("click", () => {
+            const content = header.nextElementSibling;
+            const chevron = header.querySelector(".chevron-icon");
+            content.classList.toggle("collapsed");
+            chevron.classList.toggle("rotated");
+          });
+        });
+      }
+
+      /**
+       * Formats a date string to DD/MM/YYYY.
+       * @param {string} dateString - The date of birth in 'YYYY-MM-DD' format.
+       * @returns {string} The formatted date or 'N/A'.
+       */
+      function formatAusDate(dateString) {
+        if (
+          !dateString ||
+          typeof dateString !== "string" ||
+          !dateString.includes("-")
+        )
+          return "N/A";
+        const [year, month, day] = dateString.split("-");
+        return `${day}/${month}/${year}`;
+      }
+
+      /**
+       * Calculates age from a date of birth string.
+       * @param {string} dobString - The date of birth in 'YYYY-MM-DD' format.
+       * @returns {number|string} The calculated age or an empty string if invalid.
+       */
+      function calculateAge(dobString) {
+        const birthDate = new Date(dobString);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        return age >= 0 ? age : "";
+      }
+
+      /**
+       * Creates a removable list item element.
+       * @param {string} text - The text content of the list item.
+       * @param {function} [onRemoveCallback] - An optional callback to run when the item is removed.
+       * @returns {HTMLElement} The created div element.
+       */
+      function createRemovableListItem(text, onRemoveCallback) {
+        const itemElement = document.createElement("div");
+        itemElement.className =
+          "p-2 bg-white rounded shadow-sm flex items-center justify-between text-sm";
+
+        const textSpan = document.createElement("span");
+        textSpan.textContent = text;
+
+        const removeBtn = document.createElement("span");
+        removeBtn.innerHTML = "&times;";
+        removeBtn.className =
+          "ml-4 text-red-500 hover:text-red-700 font-bold cursor-pointer";
+        removeBtn.onclick = () => {
+          itemElement.remove();
+          if (onRemoveCallback) onRemoveCallback();
+          saveState(); // Save state after removing an item
+        };
+
+        itemElement.appendChild(textSpan);
+        itemElement.appendChild(removeBtn);
+        return itemElement;
+      }
+
+      /**
+       * Adds a manually entered item to a content box.
+       */
+      function addManualItem(containerId, inputId, placeholder) {
+        const container = document.getElementById(containerId);
+        const input = document.getElementById(inputId);
+        const text = input.value.trim();
+        if (!text) return;
+
+        if (container.querySelector(".text-gray-500")) {
+          container.innerHTML = "";
+        }
+
+        const itemElement = createRemovableListItem(text, () => {
+          if (container.children.length === 0) {
+            container.innerHTML = `<p class="text-gray-500 italic">${placeholder}</p>`;
+          }
+        });
+        container.appendChild(itemElement);
+        input.value = "";
+      }
+
+      /**
+       * Adds an input field for an "other" allied health provider.
+       */
+      function addOtherAllied(formType, value = "") {
+        const prefix = formType === "review" ? "review_" : "";
+        const container = document.getElementById(
+          `${prefix}otherAlliedContainer`
+        );
+        const div = document.createElement("div");
+        div.className = "flex items-center gap-2";
+        div.innerHTML = `
+        <input type="text" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm" placeholder="Enter other allied health..." value="${value}">
+        <button type="button" class="ml-4 text-red-500 hover:text-red-700 font-bold cursor-pointer" aria-label="Remove">&times;</button>`;
+        div.querySelector("button").addEventListener("click", () => {
+          div.remove();
+          saveState();
+        });
+        container.appendChild(div);
+      }
+
+      /**
+       * Adds a specialist to the list.
+       */
+      function addSpecialist(formType, textValue = null) {
+        const prefix = formType === "review" ? "review_" : "";
+        const input = document.getElementById(`${prefix}specialistInput`);
+        const list = document.getElementById(`${prefix}specialistList`);
+        const placeholder = document.getElementById(
+          `${prefix}specialistPlaceholder`
+        );
+        const text = textValue || input.value.trim();
+        if (!text) return;
+
+        if (placeholder) placeholder.style.display = "none";
+
+        const li = document.createElement("li");
+        li.className = "flex justify-between items-center";
+        li.dataset.specialist = "true";
+        li.innerHTML = `<span>${text}</span>`;
+
+        const removeBtn = document.createElement("span");
+        removeBtn.innerHTML = "&times;";
+        removeBtn.className =
+          "ml-4 text-red-500 hover:text-red-700 font-bold cursor-pointer";
+        removeBtn.onclick = () => {
+          li.remove();
+          if (
+            list.querySelectorAll("li[data-specialist]").length === 0 &&
+            placeholder
+          ) {
+            placeholder.style.display = "list-item";
+          }
+          saveState();
+        };
+
+        li.appendChild(removeBtn);
+        list.appendChild(li);
+        if (!textValue) {
+          input.value = "";
+          input.focus();
+        }
+      }
+
+      // ===================================================================================
+      // --- AUTO-SAVE & RESTORE LOGIC ---
+      // ===================================================================================
+
+      /**
+       * Gathers all form data and saves it to localStorage.
+       */
+      function saveState() {
+        const state = {
+          inputs: {},
+          dynamic: {},
+          activeScreen: "",
+        };
+
+        // Determine active screen
+        if (
+          !document
+            .getElementById("gpccmpContainer")
+            .classList.contains("hidden")
+        ) {
+          state.activeScreen = "gpccmp";
+        } else if (
+          !document
+            .getElementById("reviewContainer")
+            .classList.contains("hidden")
+        ) {
+          state.activeScreen = "review";
+        } else {
+          state.activeScreen = "selection";
+        }
+
+        // Save all input, select, textarea values
+        document.querySelectorAll("input, select, textarea").forEach((el) => {
+          if (!el.id) return;
+          if (el.type === "checkbox" || el.type === "radio") {
+            state.inputs[el.id] = el.checked;
+          } else {
+            state.inputs[el.id] = el.value;
+          }
+        });
+
+        // Save dynamically added items
+        state.dynamic.otherConditions = Array.from(
+          document.querySelectorAll("#otherConditionsContainer input")
+        ).map((el) => el.value);
+        state.dynamic.assessments = Array.from(
+          document.querySelectorAll("#assessmentsContainer .p-2")
+        ).map((el) => el.dataset.assessment);
+        state.dynamic.otherAllied = Array.from(
+          document.querySelectorAll("#otherAlliedContainer input")
+        ).map((el) => el.value);
+        state.dynamic.specialists = Array.from(
+          document.querySelectorAll(
+            "#specialistList li[data-specialist] > span:first-child"
+          )
+        ).map((el) => el.textContent);
+        state.dynamic.reviewDates = Array.from(
+          document.querySelectorAll("#reviewDatesContainer .p-2")
+        ).map((el) => el.dataset.date);
+
+        state.dynamic.review_otherAllied = Array.from(
+          document.querySelectorAll("#review_otherAlliedContainer input")
+        ).map((el) => el.value);
+        state.dynamic.review_specialists = Array.from(
+          document.querySelectorAll(
+            "#review_specialistList li[data-specialist] > span:first-child"
+          )
+        ).map((el) => el.textContent);
+        state.dynamic.review_achievedGoals = Array.from(
+          document.querySelectorAll(
+            "#review_achievedGoalsContainer .p-2 > span:first-child"
+          )
+        ).map((el) => el.textContent);
+        state.dynamic.review_newGoals = Array.from(
+          document.querySelectorAll(
+            "#review_newGoalsContainer .p-2 > span:first-child"
+          )
+        ).map((el) => el.textContent);
+
+        localStorage.setItem(localStorageKey, JSON.stringify(state));
+      }
+
+      /**
+       * Restores form state from localStorage.
+       */
+      function restoreState() {
+        const state = JSON.parse(localStorage.getItem(localStorageKey));
+        if (!state) return;
+
+        // Restore active screen
+        document.getElementById("selectionScreen").classList.add("hidden");
+        document.getElementById("gpccmpContainer").classList.add("hidden");
+        document.getElementById("reviewContainer").classList.add("hidden");
+        if (state.activeScreen === "gpccmp") {
+          document.getElementById("gpccmpContainer").classList.remove("hidden");
+        } else if (state.activeScreen === "review") {
+          document.getElementById("reviewContainer").classList.remove("hidden");
+        } else {
+          document.getElementById("selectionScreen").classList.remove("hidden");
+        }
+
+        // Restore all input, select, textarea values
+        for (const id in state.inputs) {
+          const el = document.getElementById(id);
+          if (el) {
+            if (el.type === "checkbox" || el.type === "radio") {
+              el.checked = state.inputs[id];
+            } else {
+              el.value = state.inputs[id];
+            }
+          }
+        }
+
+        // Restore dynamic items
+        document.getElementById("otherConditionsContainer").innerHTML = "";
+        state.dynamic.otherConditions.forEach((val) => addOtherCondition(val));
+
+        document.getElementById("assessmentsContainer").innerHTML = "";
+        state.dynamic.assessments.forEach((val) => addSelectedAssessment(val));
+
+        document.getElementById("otherAlliedContainer").innerHTML = "";
+        state.dynamic.otherAllied.forEach((val) =>
+          addOtherAllied("gpccmp", val)
+        );
+
+        document.getElementById("specialistList").innerHTML =
+          '<li id="specialistPlaceholder" class="text-gray-500 italic">No specialists added yet.</li>';
+        state.dynamic.specialists.forEach((val) =>
+          addSpecialist("gpccmp", val)
+        );
+
+        document.getElementById("reviewDatesContainer").innerHTML = "";
+        state.dynamic.reviewDates.forEach((val) => addReviewDate(val));
+
+        document.getElementById("review_otherAlliedContainer").innerHTML = "";
+        state.dynamic.review_otherAllied.forEach((val) =>
+          addOtherAllied("review", val)
+        );
+
+        document.getElementById("review_specialistList").innerHTML =
+          '<li id="review_specialistPlaceholder" class="text-gray-500 italic">No new specialists added.</li>';
+        state.dynamic.review_specialists.forEach((val) =>
+          addSpecialist("review", val)
+        );
+
+        document.getElementById("review_achievedGoalsContainer").innerHTML =
+          '<p class="text-gray-500 italic">No achieved goals added.</p>';
+        if (state.dynamic.review_achievedGoals.length > 0)
+          document.getElementById("review_achievedGoalsContainer").innerHTML =
+            "";
+        state.dynamic.review_achievedGoals.forEach((val) => {
+          document
+            .getElementById("review_achievedGoalsContainer")
+            .appendChild(createRemovableListItem(val));
+        });
+
+        document.getElementById("review_newGoalsContainer").innerHTML =
+          '<p class="text-gray-500 italic">No new or revised goals added.</p>';
+        if (state.dynamic.review_newGoals.length > 0)
+          document.getElementById("review_newGoalsContainer").innerHTML = "";
+        state.dynamic.review_newGoals.forEach((val) => {
+          document
+            .getElementById("review_newGoalsContainer")
+            .appendChild(createRemovableListItem(val));
+        });
+
+        // Trigger UI updates after restoring data
+        updatePatientState();
+        updateGeneratedContent();
+        updateDiabeticScreeningVisibility();
+
+        // Manually trigger change events for elements that control UI visibility
+        document
+          .getElementById("smokingStatus")
+          .dispatchEvent(new Event("change"));
+        const myMedicareNo = document.querySelector(
+          'input[name="myMedicare"][value="no"]'
+        );
+        if (myMedicareNo && myMedicareNo.checked)
+          myMedicareNo.dispatchEvent(new Event("change"));
+      }
+
+      // ===================================================================================
+      // --- DATA GATHERING & EXPORT LOGIC ---
+      // ===================================================================================
+      /**
+       * Gathers all data from the GPCCMP form into a structured object.
+       * @returns {object} The structured data object.
+       */
+      function getGpccmpFormattedData() {
+        const myMedicareRadio = document.querySelector(
+          'input[name="myMedicare"]:checked'
+        );
+        const myMedicareValue = myMedicareRadio
+          ? myMedicareRadio.value
+          : "Not specified";
+
+        const data = {
+          patientName: document.getElementById("patientName").value || "N/A",
+          assessmentDate: formatAusDate(
+            document.getElementById("gpccmp_assessmentDate").value
+          ),
+          medicareNumber:
+            document.getElementById("medicareNumber").value || "N/A",
+          dob: formatAusDate(document.getElementById("dob").value),
+          age: calculateAge(document.getElementById("dob").value) || "N/A",
+          gender: document.getElementById("gender").value || "N/A",
+          atsi: document.getElementById("atsiStatus").checked ? "Yes" : "No",
+          regularGp: document.getElementById("regularGp").value || "N/A",
+          myMedicare:
+            myMedicareValue.charAt(0).toUpperCase() + myMedicareValue.slice(1),
+          consentPlan: document.getElementById("consentPlan").checked
+            ? "Obtained"
+            : "Not Obtained",
+          consentShare: document.getElementById("consentShare").checked
+            ? "Obtained"
+            : "Not Obtained",
+          conditions: [],
+          clinicalComments:
+            document.getElementById("clinicalComments").value.trim() || "None.",
+          riskFactors: { smoking: {}, others: [] },
+          medications:
+            document.getElementById("medicationList").value.trim() ||
+            "None listed.",
+          goals: [],
+          actions: [],
+          services: [],
+          assessments: [],
+          screening: [],
+          careTeam: { allied: [], specialists: [] },
+          pharmacistDMMR: document.getElementById("pharmacistDMMR").checked,
+          copyOffered: document.getElementById("copyOffered").checked
+            ? "Yes"
+            : "No",
+          reviewDates: [],
+        };
+
+        const smokingSelect = document.getElementById("smokingStatus");
+        data.riskFactors.smoking.status =
+          smokingSelect.options[smokingSelect.selectedIndex].text;
+        data.riskFactors.smoking.packYears =
+          document.getElementById("packYears").value || "N/A";
+
+        document
+          .querySelectorAll(".condition-checkbox:checked")
+          .forEach((cb) => {
+            let text = document.querySelector(
+              `label[for="${cb.id}"]`
+            ).textContent;
+            const specifyInput = document.getElementById(`${cb.id}_specify`);
+            if (specifyInput && specifyInput.value)
+              text += `: ${specifyInput.value}`;
+            data.conditions.push(text);
+          });
+        document
+          .querySelectorAll("#otherConditionsContainer input")
+          .forEach((input) => {
+            if (input.value.trim()) data.conditions.push(input.value.trim());
+          });
+        document
+          .querySelectorAll(".risk-checkbox:checked")
+          .forEach((cb) =>
+            data.riskFactors.others.push(
+              document.querySelector(`label[for="${cb.id}"]`).textContent
+            )
+          );
+
+        document
+          .querySelectorAll("#goalsContainer .p-2 > span:first-child")
+          .forEach((span) => data.goals.push(span.textContent));
+        document
+          .querySelectorAll("#actionsContainer .p-2 > span:first-child")
+          .forEach((span) => data.actions.push(span.textContent));
+        document
+          .querySelectorAll("#servicesContainer .p-2 > span:first-child")
+          .forEach((span) => data.services.push(span.textContent));
+
+        document
+          .querySelectorAll("#assessmentsContainer .p-2")
+          .forEach((item) => data.assessments.push(item.dataset.assessment));
+        document
+          .querySelectorAll(
+            '#assessmentsSection input[type="checkbox"]:checked:not([id^="diabetic"])'
+          )
+          .forEach((cb) =>
+            data.screening.push(
+              document.querySelector(`label[for="${cb.id}"]`).textContent
+            )
+          );
+        if (document.getElementById("diabeticEye").checked)
+          data.screening.push(
+            document.querySelector('label[for="diabeticEye"]').textContent
+          );
+        if (document.getElementById("diabeticFoot").checked)
+          data.screening.push(
+            document.querySelector('label[for="diabeticFoot"]').textContent
+          );
+
+        document
+          .querySelectorAll("#alliedHealthList input:checked")
+          .forEach((cb) => data.careTeam.allied.push(cb.value));
+        document
+          .querySelectorAll("#otherAlliedContainer input")
+          .forEach((input) => {
+            if (input.value.trim())
+              data.careTeam.allied.push(input.value.trim());
+          });
+        document
+          .querySelectorAll(
+            "#specialistList li[data-specialist] > span:first-child"
+          )
+          .forEach((span) => data.careTeam.specialists.push(span.textContent));
+
+        document
+          .querySelectorAll("#reviewDatesContainer .p-2")
+          .forEach((item) => data.reviewDates.push(item.dataset.date));
+        return data;
+      }
+
+      /**
+       * Gathers all data from the Review form into a structured object.
+       * @returns {object} The structured data object.
+       */
+      function getReviewFormattedData() {
+        const data = {
+          patientName:
+            document.getElementById("review_patientName").value || "N/A",
+          medicareNumber:
+            document.getElementById("review_medicareNumber").value || "N/A",
+          dob: formatAusDate(document.getElementById("review_dob").value),
+          age:
+            calculateAge(document.getElementById("review_dob").value) || "N/A",
+          gender: document.getElementById("review_gender").value || "N/A",
+          reviewDate: formatAusDate(
+            document.getElementById("review_reviewDate").value
+          ),
+          achievedGoals: [],
+          newGoals: [],
+          teamFeedback:
+            document.getElementById("review_teamFeedback").value.trim() ||
+            "None documented.",
+          updateMedications: document
+            .getElementById("review_updateMedications")
+            .value.trim(),
+          updateDiagnoses: document
+            .getElementById("review_updateDiagnoses")
+            .value.trim(),
+          updateActions: document
+            .getElementById("review_updateActions")
+            .value.trim(),
+          newCareTeam: { allied: [], specialists: [] },
+          consentUpdates: document.getElementById("review_consentUpdates")
+            .checked
+            ? "Yes"
+            : "No",
+          consentShare: document.getElementById("review_consentShare").checked
+            ? "Yes"
+            : "No",
+          copyOffered: document.getElementById("review_copyOffered").checked
+            ? "Yes"
+            : "No",
+          nextReviewDate:
+            formatAusDate(
+              document.getElementById("review_nextReviewDate").value
+            ) || "Not scheduled.",
+        };
+
+        if (document.getElementById("review_noAchievedGoals").checked) {
+          data.achievedGoals.push("None");
+        } else {
+          document
+            .querySelectorAll(
+              "#review_achievedGoalsContainer .p-2 > span:first-child"
+            )
+            .forEach((item) => data.achievedGoals.push(item.textContent));
+        }
+        if (document.getElementById("review_noNewGoals").checked) {
+          data.newGoals.push("None");
+        } else {
+          document
+            .querySelectorAll(
+              "#review_newGoalsContainer .p-2 > span:first-child"
+            )
+            .forEach((item) => data.newGoals.push(item.textContent));
+        }
+
+        document
+          .querySelectorAll("#review_alliedHealthList input:checked")
+          .forEach((cb) => data.newCareTeam.allied.push(cb.value));
+        document
+          .querySelectorAll("#review_otherAlliedContainer input")
+          .forEach((input) => {
+            if (input.value.trim())
+              data.newCareTeam.allied.push(input.value.trim());
+          });
+        document
+          .querySelectorAll(
+            "#review_specialistList li[data-specialist] > span:first-child"
+          )
+          .forEach((span) =>
+            data.newCareTeam.specialists.push(span.textContent)
+          );
+
+        return data;
+      }
+
+      /**
+       * Generates and downloads a file (.txt or .rtf) with the form data.
+       * @param {string} formType - 'gpccmp' or 'review'.
+       * @param {string} fileFormat - 'txt' or 'rtf'.
+       */
+      function exportToFile(formType, fileFormat) {
+        let data, content, mimeType, fileExtension, filename;
+        const escapeRtf = (str) =>
+          str
+            .toString()
+            .replace(/\\/g, "\\\\")
+            .replace(/{/g, "\\{")
+            .replace(/}/g, "\\}")
+            .replace(/\n/g, "\\par\n");
+        // Use RTF hex code for hyphen (\'2d) and a regular space to ensure it's not converted to a dot point.
+        const rtfBullets = (items) =>
+          items.length
+            ? items
+                .map(
+                  (item) =>
+                    `{\\pard\\fi-360\\li720\\sa100 \\'2d ${escapeRtf(
+                      item
+                    )}\\par}`
+                )
+                .join("")
+            : "{\\pard\\li720\\i None listed.\\i0\\par}";
+        const rtfSectionTitle = (title) =>
+          `{\\pard\\sa100\\b\\ul ${escapeRtf(title)}\\ul0\\b0\\par}`;
+
+        if (formType === "gpccmp") {
+          data = getGpccmpFormattedData();
+          filename = `GPCCMP`;
+
+          if (fileFormat === "txt") {
+            mimeType = "text/plain;charset=utf-8";
+            fileExtension = ".txt";
+            content = `GP CARE AND COORDINATION MANAGEMENT PLAN (GPCCMP)\n================================================\n\n`;
+            content += `PATIENT DETAILS\n-----------------\n`;
+            content += `Name: ${data.patientName}\nAssessment Date: ${data.assessmentDate}\nMedicare Number: ${data.medicareNumber}\nDOB: ${data.dob}\nAge: ${data.age}\nGender: ${data.gender}\nAboriginal or Torres Strait Islander origin: ${data.atsi}\n\n`;
+            content += `MYMEDICARE REGISTRATION\n-------------------------\n`;
+            content += `Patient's regular GP: ${data.regularGp}\nRegistered at this clinic: ${data.myMedicare}\n\n`;
+            content += `PATIENT CONSENT\n---------------\nInformed consent for GPCCMP creation: ${data.consentPlan}\nConsent to share information with care team: ${data.consentShare}\n\n`;
+            content += `CHRONIC CONDITIONS AND RISK FACTORS\n-------------------------------------\n`;
+            content += `Conditions:\n${
+              data.conditions.length
+                ? data.conditions.map((c) => ` - ${c}`).join("\n")
+                : " - None listed."
+            }\n\n`;
+            content += `Clinical Summary & Comments:\n${data.clinicalComments}\n\n`;
+            content += `Risk Factors:\n - Smoking Status: ${data.riskFactors.smoking.status}\n`;
+            if (data.riskFactors.smoking.status !== "Never smoked")
+              content += `   Pack Years: ${data.riskFactors.smoking.packYears}\n`;
+            content += `${
+              data.riskFactors.others.length
+                ? data.riskFactors.others.map((r) => ` - ${r}`).join("\n")
+                : ""
+            }\n\n`;
+            content += `CURRENT MEDICATIONS\n-------------------\n${data.medications}\n\n`;
+            content += `HEALTH AND LIFESTYLE GOALS\n----------------------------\n${
+              data.goals.length
+                ? data.goals.map((g) => ` - ${g}`).join("\n")
+                : " - None listed."
+            }\n\n`;
+            content += `ACTIONS TO BE TAKEN BY PATIENT\n------------------------------\n${
+              data.actions.length
+                ? data.actions.map((a) => ` - ${a}`).join("\n")
+                : " - None listed."
+            }\n\n`;
+            content += `TREATMENT AND SERVICES NEEDED\n-----------------------------\n${
+              data.services.length
+                ? data.services.map((s) => ` - ${s}`).join("\n")
+                : " - None listed."
+            }\n\n`;
+            content += `RELEVANT HEALTH ASSESSMENTS AND SCREENING\n-----------------------------------------\n`;
+            content += `Assessments:\n${
+              data.assessments.length
+                ? data.assessments.map((a) => ` - ${a}`).join("\n")
+                : " - None listed."
+            }\n\n`;
+            content += `Screening:\n${
+              data.screening.length
+                ? data.screening.map((s) => ` - ${s}`).join("\n")
+                : " - None listed."
+            }\n\n`;
+            content += `CARE TEAM\n---------\n`;
+            content += `Allied Health:\n${
+              data.careTeam.allied.length
+                ? data.careTeam.allied.map((ah) => ` - ${ah}`).join("\n")
+                : " - None listed."
+            }\n`;
+            if (data.pharmacistDMMR)
+              content += ` ** Patient may be eligible for a Pharmacist DMMR (Item 900). **\n`;
+            content += `\nSpecialists:\n${
+              data.careTeam.specialists.length
+                ? data.careTeam.specialists.map((s) => ` - ${s}`).join("\n")
+                : " - None listed."
+            }\n\n`;
+            content += `PLAN DISTRIBUTION\n-----------------\nA copy of this plan was offered to the patient/carer: ${data.copyOffered}\n\n`;
+            content += `PLAN REVIEW\n-----------\nReview Dates:\n${
+              data.reviewDates.length
+                ? data.reviewDates
+                    .map((d) => ` - ${formatAusDate(d)}`)
+                    .join("\n")
+                : " - None scheduled."
+            }\n`;
+          } else {
+            // RTF
+            mimeType = "application/rtf;charset=utf-8";
+            fileExtension = ".rtf";
+            let riskFactorContent = `{\\pard\\li720\\sa100 Smoking Status: ${escapeRtf(
+              data.riskFactors.smoking.status
+            )}\\par}`;
+            if (data.riskFactors.smoking.status !== "Never smoked")
+              riskFactorContent += `{\\pard\\li1080\\sa100 Pack Years: ${escapeRtf(
+                data.riskFactors.smoking.packYears
+              )}\\par}`;
+            riskFactorContent += data.riskFactors.others
+              .map(
+                (item) =>
+                  `{\\pard\\fi-360\\li720\\sa100 \\'2d ${escapeRtf(item)}\\par}`
+              )
+              .join("");
+
+            content = `{\\rtf1\\ansi\\deff0 {\\fonttbl{\\f0 Inter;}} \\fs22\\sl276\\slmult1
+{\\pard\\qc\\b\\fs32 GP CARE AND COORDINATION MANAGEMENT PLAN (GPCCMP)\\b0\\fs22\\par\\par}
+${rtfSectionTitle("PATIENT DETAILS")}
+{\\pard\\li720\\sa100 Name: ${escapeRtf(data.patientName)}\\par}
+{\\pard\\li720\\sa100 Assessment Date: ${escapeRtf(data.assessmentDate)}\\par}
+{\\pard\\li720\\sa100 Medicare Number: ${escapeRtf(data.medicareNumber)}\\par}
+{\\pard\\li720\\sa100 DOB: ${escapeRtf(data.dob)}\\par}
+{\\pard\\li720\\sa100 Age: ${escapeRtf(data.age)}\\par}
+{\\pard\\li720\\sa100 Gender: ${escapeRtf(data.gender)}\\par}
+{\\pard\\li720\\sa100 Aboriginal or Torres Strait Islander origin: ${escapeRtf(
+              data.atsi
+            )}\\par}\\par
+${rtfSectionTitle("MYMEDICARE REGISTRATION")}
+{\\pard\\li720\\sa100 Patient's regular GP: ${escapeRtf(data.regularGp)}\\par}
+{\\pard\\li720\\sa100 Registered at this clinic: ${escapeRtf(
+              data.myMedicare
+            )}\\par}\\par
+${rtfSectionTitle("PATIENT CONSENT")}
+{\\pard\\li720\\sa100 Informed consent for GPCCMP creation: ${escapeRtf(
+              data.consentPlan
+            )}\\par}
+{\\pard\\li720\\sa100 Consent to share information with care team: ${escapeRtf(
+              data.consentShare
+            )}\\par}\\par
+${rtfSectionTitle("CHRONIC HEALTH CONDITIONS AND RISK FACTORS")}
+{\\pard\\b0 Conditions:}\\par
+${rtfBullets(data.conditions)}
+{\\pard\\b0 Clinical Summary & Comments:}\\par
+{\\pard\\li720\\sa100 ${escapeRtf(data.clinicalComments).replace(
+              /\n/g,
+              "\\par\\li720 "
+            )} \\par}
+{\\pard\\b0 Risk Factors:}\\par
+${riskFactorContent}\\par
+${rtfSectionTitle("CURRENT MEDICATIONS")}
+{\\pard\\li720\\sa100 ${escapeRtf(data.medications).replace(
+              /\n/g,
+              "\\par\\li720 "
+            )} \\par}\\par
+${rtfSectionTitle("HEALTH AND LIFESTYLE GOALS")}
+${rtfBullets(data.goals)}\\par
+${rtfSectionTitle("ACTIONS TO BE TAKEN BY PATIENT")}
+${rtfBullets(data.actions)}\\par
+${rtfSectionTitle("TREATMENT AND SERVICES NEEDED")}
+${rtfBullets(data.services)}\\par
+${rtfSectionTitle("RELEVANT HEALTH ASSESSMENTS AND SCREENING")}
+{\\pard\\b0 Assessments:}\\par
+${rtfBullets(data.assessments)}
+{\\pard\\b0 Screening:}\\par
+${rtfBullets(data.screening)}\\par
+${rtfSectionTitle("CARE TEAM MEMBERS")}
+{\\pard\\b0 Allied Health:}\\par
+${rtfBullets(data.careTeam.allied)}
+${
+  data.pharmacistDMMR
+    ? "{\\pard\\li720\\b ** Patient may be eligible for a Pharmacist DMMR (Item 900). **\\b0\\par}"
+    : ""
+}
+{\\pard\\b0 Specialists:}\\par
+${rtfBullets(data.careTeam.specialists)}\\par
+${rtfSectionTitle("PLAN DISTRIBUTION")}
+{\\pard\\li720\\sa100 A copy of this plan was offered to the patient/carer: ${escapeRtf(
+              data.copyOffered
+            )}\\par}\\par
+${rtfSectionTitle("PLAN REVIEW")}
+{\\pard\\b0 Review Dates:}\\par
+${rtfBullets(data.reviewDates.map((d) => formatAusDate(d)))}\\par
+}`;
+          }
+        } else {
+          // REVIEW
+          data = getReviewFormattedData();
+          filename = `GPCCMP_Review`;
+
+          if (fileFormat === "txt") {
+            mimeType = "text/plain;charset=utf-8";
+            fileExtension = ".txt";
+            content = `GP CARE AND COORDINATION MANAGEMENT PLAN - REVIEW\n================================================\n\n`;
+            content += `Patient Name: ${data.patientName}\nDOB: ${data.dob}\nAge: ${data.age}\nGender: ${data.gender}\nMedicare No: ${data.medicareNumber}\nDate of Review: ${data.reviewDate}\n\n`;
+            content += `REVIEW OF PATIENT GOALS\n-------------------------\n`;
+            content += `Achieved Goals:\n${
+              data.achievedGoals.length
+                ? data.achievedGoals.map((g) => ` - ${g}`).join("\n")
+                : " - None"
+            }\n\n`;
+            content += `New / Revised Goals:\n${
+              data.newGoals.length
+                ? data.newGoals.map((g) => ` - ${g}`).join("\n")
+                : " - None"
+            }\n\n`;
+            content += `FEEDBACK FROM MULTIDISCIPLINARY TEAM\n-------------------------------------\n${data.teamFeedback}\n\n`;
+            content += `UPDATES TO MANAGEMENT PLAN\n--------------------------\n`;
+            content += `Medication Changes:\n${data.updateMedications}\n\n`;
+            content += `Diagnosis/Condition Changes:\n${data.updateDiagnoses}\n\n`;
+            content += `Patient Action/Service Changes:\n${data.updateActions}\n\n`;
+            content += `NEW REFERRALS & CARE TEAM UPDATES\n-----------------------------------\n`;
+            content += `Allied Health:\n${
+              data.newCareTeam.allied.length
+                ? data.newCareTeam.allied.map((r) => ` - ${r}`).join("\n")
+                : " - None"
+            }\n`;
+            content += `Specialists:\n${
+              data.newCareTeam.specialists.length
+                ? data.newCareTeam.specialists.map((r) => ` - ${r}`).join("\n")
+                : " - None"
+            }\n\n`;
+            content += `PATIENT AGREEMENT & CONSENT\n---------------------------\n`;
+            content += `Patient agrees with the updated plan: ${data.consentUpdates}\n`;
+            content += `Patient consents to sharing information: ${data.consentShare}\n`;
+            content += `Copy of plan offered to patient/carer: ${data.copyOffered}\n\n`;
+            content += `NEXT PLAN REVIEW\n----------------\nScheduled for: ${data.nextReviewDate}\n`;
+          } else {
+            // RTF
+            mimeType = "application/rtf;charset=utf-8";
+            fileExtension = ".rtf";
+            content = `{\\rtf1\\ansi\\deff0 {\\fonttbl{\\f0 Inter;}} \\fs22\\sl276\\slmult1
+{\\pard\\qc\\b\\fs32 GPCCMP Review\\b0\\fs22\\par\\par}
+${rtfSectionTitle("PATIENT DETAILS")}
+{\\pard\\li720\\sa100 Name: ${escapeRtf(data.patientName)}\\par}
+{\\pard\\li720\\sa100 DOB: ${escapeRtf(data.dob)}\\par}
+{\\pard\\li720\\sa100 Age: ${escapeRtf(data.age)}\\par}
+{\\pard\\li720\\sa100 Gender: ${escapeRtf(data.gender)}\\par}
+{\\pard\\li720\\sa100 Medicare No: ${escapeRtf(data.medicareNumber)}\\par}
+{\\pard\\li720\\sa100 Date of Review: ${escapeRtf(data.reviewDate)}\\par}\\par
+${rtfSectionTitle("REVIEW OF PATIENT GOALS")}
+{\\pard\\b0 Achieved Goals:}\\par
+${rtfBullets(data.achievedGoals)}
+{\\pard\\b0 New / Revised Goals:}\\par
+${rtfBullets(data.newGoals)}\\par
+${rtfSectionTitle("FEEDBACK FROM MULTIDISCIPLINARY TEAM")}
+{\\pard\\li720\\sa100 ${escapeRtf(data.teamFeedback).replace(
+              /\n/g,
+              "\\par\\li720 "
+            )} \\par}\\par
+${rtfSectionTitle("UPDATES TO MANAGEMENT PLAN")}
+{\\pard\\b Medication Changes:\\b0\\par}
+{\\pard\\li720\\sa100 ${escapeRtf(data.updateMedications).replace(
+              /\n/g,
+              "\\par\\li720 "
+            )} \\par}
+{\\pard\\b Diagnosis/Condition Changes:\\b0\\par}
+{\\pard\\li720\\sa100 ${escapeRtf(data.updateDiagnoses).replace(
+              /\n/g,
+              "\\par\\li720 "
+            )} \\par}
+{\\pard\\b Patient Action/Service Changes:\\b0\\par}
+{\\pard\\li720\\sa100 ${escapeRtf(data.updateActions).replace(
+              /\n/g,
+              "\\par\\li720 "
+            )} \\par}\\par
+${rtfSectionTitle("NEW REFERRALS & CARE TEAM UPDATES")}
+{\\pard\\b0 Allied Health:}\\par
+${rtfBullets(data.newCareTeam.allied)}
+{\\pard\\b0 Specialists:}\\par
+${rtfBullets(data.newCareTeam.specialists)}\\par
+${rtfSectionTitle("PATIENT AGREEMENT & CONSENT")}
+{\\pard\\li720\\sa100 Patient agrees with the updated plan: ${escapeRtf(
+              data.consentUpdates
+            )}\\par}
+{\\pard\\li720\\sa100 Patient consents to sharing information: ${escapeRtf(
+              data.consentShare
+            )}\\par}
+{\\pard\\li720\\sa100 Copy of plan offered to patient/carer: ${escapeRtf(
+              data.copyOffered
+            )}\\par}\\par
+${rtfSectionTitle("NEXT PLAN REVIEW")}
+{\\pard\\li720\\sa100 Scheduled for: ${escapeRtf(data.nextReviewDate)}\\par}
+}`;
+          }
+        }
+
+        // Create a link and trigger the download
+        const blob = new Blob([content], { type: mimeType });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename + fileExtension;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      }
+    </script>
+  </body>
+</html>

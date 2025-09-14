@@ -1,9 +1,16 @@
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import Image from "next/image"
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -24,10 +31,13 @@ export default function HomePage() {
                 priority
               />
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 text-balance">GP Companion</h1>
+            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 text-balance">
+              GP Companion
+            </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto text-pretty">
-              Comprehensive medical tools and health assessments designed specifically for healthcare professionals.
-              Streamline your workflow with our secure, privacy-focused platform.
+              Comprehensive medical tools and health assessments designed
+              specifically for healthcare professionals. Streamline your
+              workflow with our secure, privacy-focused platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-primary hover:bg-primary/90">
@@ -44,9 +54,12 @@ export default function HomePage() {
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Essential Medical Tools</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Essential Medical Tools
+              </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Access comprehensive tools designed to enhance your clinical practice and improve patient care.
+                Access comprehensive tools designed to enhance your clinical
+                practice and improve patient care.
               </p>
             </div>
 
@@ -55,7 +68,12 @@ export default function HomePage() {
               <Card className="bg-card border-border hover:shadow-lg transition-shadow">
                 <CardHeader className="text-center pb-4">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg
+                      className="w-8 h-8 text-primary"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -64,13 +82,20 @@ export default function HomePage() {
                       />
                     </svg>
                   </div>
-                  <CardTitle className="text-2xl text-foreground">GPCCMP Tool</CardTitle>
+                  <CardTitle className="text-2xl text-foreground">
+                    GPCCMP Tool
+                  </CardTitle>
                   <CardDescription className="text-muted-foreground">
-                    Create comprehensive GP Chronic Care Management Plans with our streamlined workflow
+                    Create comprehensive GP Chronic Care Management Plans with
+                    our streamlined workflow
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <Button className="w-full bg-primary hover:bg-primary/90">Start GPCCMP</Button>
+                  <Button className="w-full bg-primary hover:bg-primary/90">
+                    <a href="/gpccmp" className="w-full block text-center">
+                      Start GPCCMP
+                    </a>
+                  </Button>
                 </CardContent>
               </Card>
 
@@ -78,7 +103,12 @@ export default function HomePage() {
               <Card className="bg-card border-border hover:shadow-lg transition-shadow">
                 <CardHeader className="text-center pb-4">
                   <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg
+                      className="w-8 h-8 text-secondary"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -87,31 +117,51 @@ export default function HomePage() {
                       />
                     </svg>
                   </div>
-                  <CardTitle className="text-2xl text-foreground">Health Assessments</CardTitle>
+                  <CardTitle className="text-2xl text-foreground">
+                    Health Assessments
+                  </CardTitle>
                   <CardDescription className="text-muted-foreground mb-4">
-                    Access comprehensive health assessment tools for various patient populations
+                    Access comprehensive health assessment tools for various
+                    patient populations
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="mb-6">
-                    <h4 className="font-semibold text-foreground mb-3">Featured Assessments:</h4>
+                    <h4 className="font-semibold text-foreground mb-3">
+                      Featured Assessments:
+                    </h4>
                     <div className="flex flex-wrap gap-2 mb-4">
-                      <Badge variant="secondary" className="bg-primary/20 text-primary-foreground hover:bg-primary/30">
+                      <Badge
+                        variant="secondary"
+                        className="bg-primary/20 text-primary-foreground hover:bg-primary/30"
+                      >
                         75+ Health Assessment
                       </Badge>
-                      <Badge variant="secondary" className="bg-primary/20 text-primary-foreground hover:bg-primary/30">
+                      <Badge
+                        variant="secondary"
+                        className="bg-primary/20 text-primary-foreground hover:bg-primary/30"
+                      >
                         45-49 Health Check
                       </Badge>
-                      <Badge variant="secondary" className="bg-primary/20 text-primary-foreground hover:bg-primary/30">
+                      <Badge
+                        variant="secondary"
+                        className="bg-primary/20 text-primary-foreground hover:bg-primary/30"
+                      >
                         ATSI Health Assessment
                       </Badge>
                     </div>
                     <p className="text-sm text-muted-foreground mb-4">
-                      Plus: Heart Health, Menopause, Veteran, Refugee, Intellectual Disability, Diabetes Risk, and RACF
+                      Plus: Heart Health, Menopause, Veteran, Refugee,
+                      Intellectual Disability, Diabetes Risk, and RACF
                       assessments
                     </p>
                   </div>
-                  <Button className="w-full bg-secondary hover:bg-secondary/90">View All Assessments</Button>
+                  <Button
+                    className="w-full bg-secondary hover:bg-secondary/90"
+                    asChild
+                  >
+                    <Link href="/HealthAssessments">View All Assessments</Link>
+                  </Button>
                 </CardContent>
               </Card>
             </div>
@@ -122,16 +172,24 @@ export default function HomePage() {
         <section className="bg-muted py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Why Choose GP Companion?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Why Choose GP Companion?
+              </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Built specifically for healthcare professionals with privacy and efficiency in mind.
+                Built specifically for healthcare professionals with privacy and
+                efficiency in mind.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-6 h-6 text-primary"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -140,27 +198,48 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">Privacy First</h3>
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  Privacy First
+                </h3>
                 <p className="text-muted-foreground">
-                  All data stays in your browser. No external servers, complete confidentiality.
+                  All data stays in your browser. No external servers, complete
+                  confidentiality.
                 </p>
               </div>
 
               <div className="text-center">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  <svg
+                    className="w-6 h-6 text-primary"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">Fast & Efficient</h3>
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  Fast & Efficient
+                </h3>
                 <p className="text-muted-foreground">
-                  Streamlined workflows that save time and reduce administrative burden.
+                  Streamlined workflows that save time and reduce administrative
+                  burden.
                 </p>
               </div>
 
               <div className="text-center">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-6 h-6 text-primary"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -169,9 +248,12 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">Free to Use</h3>
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  Free to Use
+                </h3>
                 <p className="text-muted-foreground">
-                  Completely free for all healthcare professionals. No hidden costs or subscriptions.
+                  Completely free for all healthcare professionals. No hidden
+                  costs or subscriptions.
                 </p>
               </div>
             </div>
@@ -181,5 +263,5 @@ export default function HomePage() {
 
       <Footer />
     </div>
-  )
+  );
 }
