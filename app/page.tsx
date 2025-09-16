@@ -14,12 +14,12 @@ import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-muted to-background py-20">
+        <section className="bg-gradient-to-br from-indigo-50/50 to-white py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="mb-8">
               <Image
@@ -31,22 +31,14 @@ export default function HomePage() {
                 priority
               />
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 text-balance">
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6 text-balance">
               GP Companion
             </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto text-pretty">
+            <p className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto text-pretty">
               Comprehensive medical tools and health assessments designed
               specifically for healthcare professionals. Streamline your
               workflow with our secure, privacy-focused platform.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Get Started
-              </Button>
-              <Button size="lg" variant="outline">
-                Learn More
-              </Button>
-            </div>
           </div>
         </section>
 
@@ -54,10 +46,10 @@ export default function HomePage() {
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                 Essential Medical Tools
               </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                 Access comprehensive tools designed to enhance your clinical
                 practice and improve patient care.
               </p>
@@ -65,11 +57,11 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* GPCCMP Tool */}
-              <Card className="bg-card border-border hover:shadow-lg transition-shadow">
+              <Card className="bg-white border-indigo-100 hover:shadow-lg transition-shadow">
                 <CardHeader className="text-center pb-4">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg
-                      className="w-8 h-8 text-primary"
+                      className="w-8 h-8 text-indigo-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -82,16 +74,16 @@ export default function HomePage() {
                       />
                     </svg>
                   </div>
-                  <CardTitle className="text-2xl text-foreground">
+                  <CardTitle className="text-2xl text-slate-900">
                     GPCCMP Tool
                   </CardTitle>
-                  <CardDescription className="text-muted-foreground">
+                  <CardDescription className="text-slate-600">
                     Create comprehensive GP Chronic Care Management Plans with
                     our streamlined workflow
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <Button className="w-full bg-primary hover:bg-primary/90">
+                  <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
                     <a href="/gpccmp" className="w-full block text-center">
                       Start GPCCMP
                     </a>
@@ -100,11 +92,11 @@ export default function HomePage() {
               </Card>
 
               {/* Health Assessments */}
-              <Card className="bg-card border-border hover:shadow-lg transition-shadow">
+              <Card className="bg-white border-indigo-100 hover:shadow-lg transition-shadow">
                 <CardHeader className="text-center pb-4">
-                  <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg
-                      className="w-8 h-8 text-secondary"
+                      className="w-8 h-8 text-indigo-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -117,47 +109,17 @@ export default function HomePage() {
                       />
                     </svg>
                   </div>
-                  <CardTitle className="text-2xl text-foreground">
+                  <CardTitle className="text-2xl text-slate-900">
                     Health Assessments
                   </CardTitle>
-                  <CardDescription className="text-muted-foreground mb-4">
+                  <CardDescription className="text-slate-600 mb-4">
                     Access comprehensive health assessment tools for various
                     patient populations
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="mb-6">
-                    <h4 className="font-semibold text-foreground mb-3">
-                      Featured Assessments:
-                    </h4>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      <Badge
-                        variant="secondary"
-                        className="bg-primary/20 text-primary-foreground hover:bg-primary/30"
-                      >
-                        75+ Health Assessment
-                      </Badge>
-                      <Badge
-                        variant="secondary"
-                        className="bg-primary/20 text-primary-foreground hover:bg-primary/30"
-                      >
-                        45-49 Health Check
-                      </Badge>
-                      <Badge
-                        variant="secondary"
-                        className="bg-primary/20 text-primary-foreground hover:bg-primary/30"
-                      >
-                        ATSI Health Assessment
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Plus: Heart Health, Menopause, Veteran, Refugee,
-                      Intellectual Disability, Diabetes Risk, and RACF
-                      assessments
-                    </p>
-                  </div>
                   <Button
-                    className="w-full bg-secondary hover:bg-secondary/90"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
                     asChild
                   >
                     <Link href="/HealthAssessments">View All Assessments</Link>
@@ -169,13 +131,13 @@ export default function HomePage() {
         </section>
 
         {/* Features Section */}
-        <section className="bg-muted py-20">
+        <section className="bg-indigo-50/40 py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                 Why Choose GP Companion?
               </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                 Built specifically for healthcare professionals with privacy and
                 efficiency in mind.
               </p>
@@ -183,9 +145,9 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <svg
-                    className="w-6 h-6 text-primary"
+                    className="w-6 h-6 text-indigo-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -198,19 +160,19 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">
                   Privacy First
                 </h3>
-                <p className="text-muted-foreground">
-                  All data stays in your browser. No external servers, complete
-                  confidentiality.
+                <p className="text-slate-600">
+                  All patient data stays in your browser. No external servers.
+                  Complete confidentiality.
                 </p>
               </div>
 
               <div className="text-center">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <svg
-                    className="w-6 h-6 text-primary"
+                    className="w-6 h-6 text-indigo-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -223,19 +185,19 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">
                   Fast & Efficient
                 </h3>
-                <p className="text-muted-foreground">
+                <p className="text-slate-600">
                   Streamlined workflows that save time and reduce administrative
                   burden.
                 </p>
               </div>
 
               <div className="text-center">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <svg
-                    className="w-6 h-6 text-primary"
+                    className="w-6 h-6 text-indigo-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -248,10 +210,10 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">
                   Free to Use
                 </h3>
-                <p className="text-muted-foreground">
+                <p className="text-slate-600">
                   Completely free for all healthcare professionals. No hidden
                   costs or subscriptions.
                 </p>
@@ -261,7 +223,7 @@ export default function HomePage() {
         </section>
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

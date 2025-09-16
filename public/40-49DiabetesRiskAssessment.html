@@ -143,61 +143,77 @@
   </head>
   <body class="text-gray-800">
     <nav
-      class="w-full bg-white border-b border-gray-200 fixed top-0 left-0 z-50"
+      class="bg-white border-b border-indigo-100 sticky top-0 z-50 shadow-sm"
     >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
+        <div class="flex justify-between items-center h-20">
+          <!-- logo + title -->
           <a href="/" class="flex items-center space-x-3">
             <img
               src="/images/gp-companion-logo.png"
               alt="GP Companion Logo"
-              width="40"
-              height="40"
-              class="w-10 h-10"
+              width="80"
+              height="80"
+              class="w-20 h-20"
             />
-            <span class="font-bold text-xl text-gray-900">GP Companion</span>
+            <span class="font-bold text-xl text-indigo-800">GP Companion</span>
           </a>
 
-          <div class="hidden md:flex items-center space-x-8">
+          <!-- desktop links -->
+          <div id="desktopMenu" class="hidden md:flex items-center space-x-4">
+            <a
+              href="/"
+              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              >Home</a
+            >
+            <a
+              href="/gpccmp"
+              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              >GPCCMP</a
+            >
+            <a
+              href="/HealthAssessments"
+              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              >Assessments</a
+            >
             <a
               href="/about"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
-              >About Website</a
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              >About</a
             >
             <a
               href="/developer"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
               >Developer</a
             >
             <a
               href="/privacy"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
-              >Privacy Policy</a
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              >Privacy</a
             >
             <a
               href="/contact"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
-              >Contact Developer</a
-            >
-            <a
-              href="/gpccmp"
-              class="inline-flex items-center px-3 py-2 bg-indigo-600 text-white rounded-md text-sm shadow-sm hover:bg-indigo-700"
-              >Start GPCCMP</a
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              >Contact</a
             >
           </div>
 
+          <!-- mobile button -->
           <div class="md:hidden">
             <button
-              type="button"
-              class="inline-flex items-center p-2 rounded-md text-gray-600 hover:bg-gray-100"
+              id="mobileMenuButton"
+              aria-expanded="false"
+              aria-controls="mobileMenu"
+              class="inline-flex items-center justify-center p-2 rounded-md text-indigo-700 hover:text-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               <span class="sr-only">Open menu</span>
+              <!-- bars icon -->
               <svg
+                id="menuOpenIcon"
                 class="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"
@@ -206,8 +222,64 @@
                   d="M4 6h16M4 12h16M4 18h16"
                 />
               </svg>
+              <!-- close icon (hidden by default) -->
+              <svg
+                id="menuCloseIcon"
+                class="h-6 w-6 hidden"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
           </div>
+        </div>
+      </div>
+
+      <!-- mobile menu (hidden by default) -->
+      <div id="mobileMenu" class="md:hidden hidden border-t border-indigo-100">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="/"
+            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            >Home</a
+          >
+          <a
+            href="/gpccmp"
+            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            >GPCCMP</a
+          >
+          <a
+            href="/HealthAssessments"
+            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            >Assessments</a
+          >
+          <a
+            href="/about"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >About</a
+          >
+          <a
+            href="/developer"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >Developer</a
+          >
+          <a
+            href="/privacy"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >Privacy</a
+          >
+          <a
+            href="/contact"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >Contact</a
+          >
         </div>
       </div>
     </nav>
@@ -336,7 +408,6 @@
         </div>
       </div>
     </div>
-
     <footer
       class="bg-indigo-950 text-indigo-100 border-t border-indigo-800 mt-auto"
     >
@@ -349,9 +420,8 @@
               >
                 <span class="text-white font-bold text-lg">GP</span>
               </div>
-              <span class="font-bold text-xl text-white"> GP Companion </span>
+              <span class="font-bold text-xl text-white">GP Companion</span>
             </div>
-
             <p class="text-indigo-200 text-sm max-w-md">
               Comprehensive medical tools and health assessments designed for
               healthcare professionals. Streamline your workflow with our
@@ -365,7 +435,7 @@
               <li>
                 <a
                   href="/about"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   About Website
                 </a>
@@ -373,7 +443,7 @@
               <li>
                 <a
                   href="/developer"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   Developer
                 </a>
@@ -381,7 +451,7 @@
               <li>
                 <a
                   href="/privacy"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   Privacy Policy
                 </a>
@@ -389,7 +459,7 @@
               <li>
                 <a
                   href="/contact"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   Contact Developer
                 </a>
@@ -401,22 +471,36 @@
             <h3 class="font-semibold text-white mb-4">Tools</h3>
             <ul class="space-y-2">
               <li>
-                <span class="text-indigo-200 text-sm">GPCCMP Tool</span>
+                <a
+                  href="/gpccmp"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
+                  GPCCMP Tool
+                </a>
               </li>
               <li>
-                <span class="text-indigo-200 text-sm">
+                <a
+                  href="/HealthAssessments"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
                   Health Assessments
-                </span>
+                </a>
               </li>
               <li>
-                <span class="text-indigo-200 text-sm">
+                <a
+                  href="/HealthAssessments"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
                   75+ Health Assessment
-                </span>
+                </a>
               </li>
               <li>
-                <span class="text-indigo-200 text-sm">
+                <a
+                  href="/HealthAssessments"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
                   ATSI Health Assessment
-                </span>
+                </a>
               </li>
             </ul>
           </div>

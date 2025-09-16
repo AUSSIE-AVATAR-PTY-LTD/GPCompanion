@@ -1,194 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ADF Veteran Health Assessment</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* bg-gray-100 */
-        }
-        .chevron-icon {
-            transition: transform 0.3s ease-in-out;
-        }
-        .chevron-icon.rotated {
-            transform: rotate(180deg);
-        }
-        .form-section-content.collapsed {
-            max-height: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out, padding 0.5s ease-in-out;
-        }
-        .form-section-content {
-            transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
-            max-height: 8000px; /* A large value to allow for content */
-            opacity: 1;
-        }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .modal-close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #6b7280;
-        }
-        .details-container {
-            padding-left: 1.85rem;
-            margin-top: 0.5rem;
-            margin-bottom: 0.75rem;
-        }
-        .subsection-title {
-            font-weight: 600;
-            margin-top: 1.25rem;
-            margin-bottom: 0.75rem;
-            color: #334155;
-            font-size: 1.1rem;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 0.5rem;
-        }
-        .snap-item {
-            padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .snap-item-header {
-            display: flex;
-            align-items: center;
-        }
-        .snap-item-details {
-            padding-top: 0.75rem;
-            margin-top: 0.75rem;
-            border-top: 1px solid #e2e8f0;
-        }
-        .score-display {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #166534;
-            background-color: #f0fdf4;
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-        }
-        .assessment-question {
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        .assessment-question:last-child {
-             border-bottom: none;
-        }
-        .risk-highlight {
-            background-color: #fef2f2;
-            border-left: 4px solid #ef4444;
-            padding: 0.75rem;
-            border-radius: 0.25rem;
-        }
-        .bmi-interpretation {
-            font-weight: 600;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.875rem;
-            margin-left: 0.5rem;
-        }
-        .bmi-healthy { background-color: #dcfce7; color: #166534; }
-        .bmi-overweight { background-color: #fef9c3; color: #854d0e; }
-        .bmi-obese, .bmi-underweight { background-color: #fee2e2; color: #991b1b; }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6; /* bg-gray-100 */
+      }
+      .chevron-icon {
+        transition: transform 0.3s ease-in-out;
+      }
+      .chevron-icon.rotated {
+        transform: rotate(180deg);
+      }
+      .form-section-content.collapsed {
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out,
+          padding 0.5s ease-in-out;
+      }
+      .form-section-content {
+        transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+        max-height: 8000px; /* A large value to allow for content */
+        opacity: 1;
+      }
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      .modal-content {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 800px;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      .modal-close-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #6b7280;
+      }
+      .details-container {
+        padding-left: 1.85rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0.75rem;
+      }
+      .subsection-title {
+        font-weight: 600;
+        margin-top: 1.25rem;
+        margin-bottom: 0.75rem;
+        color: #334155;
+        font-size: 1.1rem;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 0.5rem;
+      }
+      .snap-item {
+        padding: 0.75rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      .snap-item-header {
+        display: flex;
+        align-items: center;
+      }
+      .snap-item-details {
+        padding-top: 0.75rem;
+        margin-top: 0.75rem;
+        border-top: 1px solid #e2e8f0;
+      }
+      .score-display {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #166534;
+        background-color: #f0fdf4;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+      }
+      .assessment-question {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .assessment-question:last-child {
+        border-bottom: none;
+      }
+      .risk-highlight {
+        background-color: #fef2f2;
+        border-left: 4px solid #ef4444;
+        padding: 0.75rem;
+        border-radius: 0.25rem;
+      }
+      .bmi-interpretation {
+        font-weight: 600;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
+        margin-left: 0.5rem;
+      }
+      .bmi-healthy {
+        background-color: #dcfce7;
+        color: #166534;
+      }
+      .bmi-overweight {
+        background-color: #fef9c3;
+        color: #854d0e;
+      }
+      .bmi-obese,
+      .bmi-underweight {
+        background-color: #fee2e2;
+        color: #991b1b;
+      }
     </style>
-</head>
-<body class="text-gray-800">
-    
-<nav
-      class="w-full bg-white border-b border-gray-200 fixed top-0 left-0 z-50"
+  </head>
+  <body class="text-gray-800">
+    <nav
+      class="bg-white border-b border-indigo-100 sticky top-0 z-50 shadow-sm"
     >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
+        <div class="flex justify-between items-center h-20">
+          <!-- logo + title -->
           <a href="/" class="flex items-center space-x-3">
             <img
               src="/images/gp-companion-logo.png"
               alt="GP Companion Logo"
-              width="40"
-              height="40"
-              class="w-10 h-10"
+              width="80"
+              height="80"
+              class="w-20 h-20"
             />
-            <span class="font-bold text-xl text-gray-900">GP Companion</span>
+            <span class="font-bold text-xl text-indigo-800">GP Companion</span>
           </a>
 
-          <div class="hidden md:flex items-center space-x-8">
+          <!-- desktop links -->
+          <div id="desktopMenu" class="hidden md:flex items-center space-x-4">
+            <a
+              href="/"
+              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              >Home</a
+            >
+            <a
+              href="/gpccmp"
+              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              >GPCCMP</a
+            >
+            <a
+              href="/HealthAssessments"
+              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              >Assessments</a
+            >
             <a
               href="/about"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
-              >About Website</a
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              >About</a
             >
             <a
               href="/developer"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
               >Developer</a
             >
             <a
               href="/privacy"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
-              >Privacy Policy</a
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              >Privacy</a
             >
             <a
               href="/contact"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
-              >Contact Developer</a
-            >
-            <a
-              href="/gpccmp"
-              class="inline-flex items-center px-3 py-2 bg-indigo-600 text-white rounded-md text-sm shadow-sm hover:bg-indigo-700"
-              >Start GPCCMP</a
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              >Contact</a
             >
           </div>
 
+          <!-- mobile button -->
           <div class="md:hidden">
             <button
-              type="button"
-              class="inline-flex items-center p-2 rounded-md text-gray-600 hover:bg-gray-100"
+              id="mobileMenuButton"
+              aria-expanded="false"
+              aria-controls="mobileMenu"
+              class="inline-flex items-center justify-center p-2 rounded-md text-indigo-700 hover:text-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               <span class="sr-only">Open menu</span>
+              <!-- bars icon -->
               <svg
+                id="menuOpenIcon"
                 class="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"
@@ -197,82 +226,198 @@
                   d="M4 6h16M4 12h16M4 18h16"
                 />
               </svg>
+              <!-- close icon (hidden by default) -->
+              <svg
+                id="menuCloseIcon"
+                class="h-6 w-6 hidden"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
           </div>
         </div>
       </div>
+
+      <!-- mobile menu (hidden by default) -->
+      <div id="mobileMenu" class="md:hidden hidden border-t border-indigo-100">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="/"
+            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            >Home</a
+          >
+          <a
+            href="/gpccmp"
+            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            >GPCCMP</a
+          >
+          <a
+            href="/HealthAssessments"
+            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            >Assessments</a
+          >
+          <a
+            href="/about"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >About</a
+          >
+          <a
+            href="/developer"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >Developer</a
+          >
+          <a
+            href="/privacy"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >Privacy</a
+          >
+          <a
+            href="/contact"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >Contact</a
+          >
+        </div>
+      </div>
     </nav>
-
     <div class="container mx-auto p-4 sm:p-6 lg:p-8 mt-12">
-        <header class="text-center mb-10">
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Health Assessment for Former Serving Members of the Australian Defence Force</h1>
-            <p class="text-md text-gray-600 mt-2">GP Health Assessment Tool</p>
-            <p class="text-sm text-gray-700 mt-4 font-semibold">Developed by Dr Bobby Tork MD, FRACGP-RG</p>
-            <p class="text-xs text-gray-500 mt-1">&copy; 2025 Dr Bobby Tork</p>
-        </header>
+      <header class="text-center mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">
+          Health Assessment for Former Serving Members of the Australian Defence
+          Force
+        </h1>
+        <p class="text-md text-gray-600 mt-2">GP Health Assessment Tool</p>
+        <p class="text-sm text-gray-700 mt-4 font-semibold">
+          Developed by Dr Bobby Tork MD, FRACGP-RG
+        </p>
+        <p class="text-xs text-gray-500 mt-1">&copy; 2025 Dr Bobby Tork</p>
+      </header>
 
-        <div class="max-w-4xl mx-auto">
-            <div id="form-container"></div>
+      <div class="max-w-4xl mx-auto">
+        <div id="form-container"></div>
 
-            <div id="action-buttons" class="mt-8 flex justify-end space-x-4 hidden">
-                <button id="clear-form-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Clear Form</button>
-                <button id="save-txt-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Save as .txt</button>
-                <button id="save-rtf-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Save as .rtf</button>
-            </div>
-
-            <div id="report-container" class="mt-10 hidden">
-                <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
-                    <div class="p-6 bg-white">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Generated Assessment Report</h2>
-                        <pre id="report-output" class="p-4 bg-gray-50 rounded-lg whitespace-pre-wrap font-mono text-sm"></pre>
-                        <div class="mt-6 flex justify-end space-x-4">
-                            <button id="copy-report-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">Copy to Clipboard</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div id="action-buttons" class="mt-8 flex justify-end space-x-4 hidden">
+          <button
+            id="clear-form-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          >
+            Clear Form
+          </button>
+          <button
+            id="save-txt-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Save as .txt
+          </button>
+          <button
+            id="save-rtf-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Save as .rtf
+          </button>
         </div>
+
+        <div id="report-container" class="mt-10 hidden">
+          <div
+            class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+          >
+            <div class="p-6 bg-white">
+              <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                Generated Assessment Report
+              </h2>
+              <pre
+                id="report-output"
+                class="p-4 bg-gray-50 rounded-lg whitespace-pre-wrap font-mono text-sm"
+              ></pre>
+              <div class="mt-6 flex justify-end space-x-4">
+                <button
+                  id="copy-report-btn"
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+                >
+                  Copy to Clipboard
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
+
     <div id="restore-session-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h3 class="text-lg font-bold mb-2">Restore Previous Session?</h3>
-            <p class="text-gray-600 mb-4">We found saved data from your last session. Would you like to restore it?</p>
-            <div class="flex justify-center space-x-4">
-                 <button id="restore-no-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-gray-200 hover:bg-gray-300">Start Fresh</button>
-                 <button id="restore-yes-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">Yes, Restore</button>
-            </div>
+      <div class="modal-content">
+        <h3 class="text-lg font-bold mb-2">Restore Previous Session?</h3>
+        <p class="text-gray-600 mb-4">
+          We found saved data from your last session. Would you like to restore
+          it?
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            id="restore-no-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+          >
+            Start Fresh
+          </button>
+          <button
+            id="restore-yes-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+          >
+            Yes, Restore
+          </button>
         </div>
+      </div>
     </div>
     <div id="easter-egg-modal" class="modal-overlay hidden">
-        <div class="modal-content text-center">
-            <p class="font-semibold">Developed by Dr Bobby Tork MD, FRACGP-RG</p>
-            <p class="text-sm">&copy; 2025 Dr Bobby Tork</p>
-            <button id="close-easter-egg" class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">Close</button>
-        </div>
+      <div class="modal-content text-center">
+        <p class="font-semibold">Developed by Dr Bobby Tork MD, FRACGP-RG</p>
+        <p class="text-sm">&copy; 2025 Dr Bobby Tork</p>
+        <button
+          id="close-easter-egg"
+          class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+        >
+          Close
+        </button>
+      </div>
     </div>
     <div id="clear-confirm-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h3 class="text-lg font-bold mb-2">Are you sure?</h3>
-            <p class="text-gray-600 mb-4">All entered data will be lost. This action cannot be undone.</p>
-            <div class="flex justify-center space-x-4">
-                 <button id="cancel-clear-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-gray-200 hover:bg-gray-300">Cancel</button>
-                 <button id="confirm-clear-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700">Clear Form</button>
-            </div>
+      <div class="modal-content">
+        <h3 class="text-lg font-bold mb-2">Are you sure?</h3>
+        <p class="text-gray-600 mb-4">
+          All entered data will be lost. This action cannot be undone.
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            id="cancel-clear-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+          >
+            Cancel
+          </button>
+          <button
+            id="confirm-clear-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700"
+          >
+            Clear Form
+          </button>
         </div>
+      </div>
     </div>
     <div id="assessment-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modal-title" class="text-2xl font-bold">Assessment</h2>
-                <div id="modal-score-display" class="score-display">Score: 0</div>
-                <button id="modal-close-btn" class="modal-close-btn">&times;</button>
-            </div>
-            <div id="modal-body"></div>
-            <div id="modal-footer" class="mt-6 flex justify-end items-center"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modal-title" class="text-2xl font-bold">Assessment</h2>
+          <div id="modal-score-display" class="score-display">Score: 0</div>
+          <button id="modal-close-btn" class="modal-close-btn">&times;</button>
         </div>
+        <div id="modal-body"></div>
+        <div id="modal-footer" class="mt-6 flex justify-end items-center"></div>
+      </div>
     </div>
-
     <footer
       class="bg-indigo-950 text-indigo-100 border-t border-indigo-800 mt-auto"
     >
@@ -285,11 +430,8 @@
               >
                 <span class="text-white font-bold text-lg">GP</span>
               </div>
-              <span class="font-bold text-xl text-white">
-                GP Companion
-              </span>
+              <span class="font-bold text-xl text-white">GP Companion</span>
             </div>
-
             <p class="text-indigo-200 text-sm max-w-md">
               Comprehensive medical tools and health assessments designed for
               healthcare professionals. Streamline your workflow with our
@@ -303,7 +445,7 @@
               <li>
                 <a
                   href="/about"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   About Website
                 </a>
@@ -311,7 +453,7 @@
               <li>
                 <a
                   href="/developer"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   Developer
                 </a>
@@ -319,7 +461,7 @@
               <li>
                 <a
                   href="/privacy"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   Privacy Policy
                 </a>
@@ -327,7 +469,7 @@
               <li>
                 <a
                   href="/contact"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   Contact Developer
                 </a>
@@ -339,22 +481,36 @@
             <h3 class="font-semibold text-white mb-4">Tools</h3>
             <ul class="space-y-2">
               <li>
-                <span class="text-indigo-200 text-sm">GPCCMP Tool</span>
+                <a
+                  href="/gpccmp"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
+                  GPCCMP Tool
+                </a>
               </li>
               <li>
-                <span class="text-indigo-200 text-sm">
+                <a
+                  href="/HealthAssessments"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
                   Health Assessments
-                </span>
+                </a>
               </li>
               <li>
-                <span class="text-indigo-200 text-sm">
+                <a
+                  href="/HealthAssessments"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
                   75+ Health Assessment
-                </span>
+                </a>
               </li>
               <li>
-                <span class="text-indigo-200 text-sm">
+                <a
+                  href="/HealthAssessments"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
                   ATSI Health Assessment
-                </span>
+                </a>
               </li>
             </ul>
           </div>
@@ -370,32 +526,33 @@
     </footer>
 
     <script>
-        // --- DOM Element References ---
-        const formContainer = document.getElementById('form-container');
-        const saveTxtBtn = document.getElementById('save-txt-btn');
-        const saveRtfBtn = document.getElementById('save-rtf-btn');
-        const clearFormBtn = document.getElementById('clear-form-btn');
-        const actionButtons = document.getElementById('action-buttons');
-        const reportContainer = document.getElementById('report-container');
-        const reportOutput = document.getElementById('report-output');
-        const copyReportBtn = document.getElementById('copy-report-btn');
-        const assessmentModal = document.getElementById('assessment-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalBody = document.getElementById('modal-body');
-        const modalFooter = document.getElementById('modal-footer');
-        const modalCloseBtn = document.getElementById('modal-close-btn');
-        const modalScoreDisplay = document.getElementById('modal-score-display');
-        
-        // --- State Management ---
-        let lastAutoRecs = ''; // Stores the last set of automated recommendations
-        let lastCompletedAssessment = null; // Stores data for RTF report appendix
-        const LOCAL_STORAGE_KEY = 'adfHealthAssessmentData';
-        let saveTimeout;
+      // --- DOM Element References ---
+      const formContainer = document.getElementById("form-container");
+      const saveTxtBtn = document.getElementById("save-txt-btn");
+      const saveRtfBtn = document.getElementById("save-rtf-btn");
+      const clearFormBtn = document.getElementById("clear-form-btn");
+      const actionButtons = document.getElementById("action-buttons");
+      const reportContainer = document.getElementById("report-container");
+      const reportOutput = document.getElementById("report-output");
+      const copyReportBtn = document.getElementById("copy-report-btn");
+      const assessmentModal = document.getElementById("assessment-modal");
+      const modalTitle = document.getElementById("modal-title");
+      const modalBody = document.getElementById("modal-body");
+      const modalFooter = document.getElementById("modal-footer");
+      const modalCloseBtn = document.getElementById("modal-close-btn");
+      const modalScoreDisplay = document.getElementById("modal-score-display");
 
-        // --- Reusable HTML Templates ---
-        const getChevronIcon = () => `<svg class="chevron-icon w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+      // --- State Management ---
+      let lastAutoRecs = ""; // Stores the last set of automated recommendations
+      let lastCompletedAssessment = null; // Stores data for RTF report appendix
+      const LOCAL_STORAGE_KEY = "adfHealthAssessmentData";
+      let saveTimeout;
 
-        const getMbsSelectionHtml = () => `
+      // --- Reusable HTML Templates ---
+      const getChevronIcon = () =>
+        `<svg class="chevron-icon w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+
+      const getMbsSelectionHtml = () => `
             <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
                 <div class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"><h2 class="form-section-title">MBS Item Number</h2>${getChevronIcon()}</div>
                 <div class="p-6 bg-white form-section-content">
@@ -411,9 +568,9 @@
             </div>
         `;
 
-        const getPatientDetailsHtml = () => {
-            const today = new Date().toISOString().slice(0, 10);
-            return `
+      const getPatientDetailsHtml = () => {
+        const today = new Date().toISOString().slice(0, 10);
+        return `
             <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
                 <div class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"><h2 class="form-section-title">Patient Details</h2>${getChevronIcon()}</div>
                 <div class="p-6 bg-white form-section-content">
@@ -437,9 +594,9 @@
                     </div>
                 </div>
             </div>`;
-        };
-        
-        const getSnapEdHtml = () => `
+      };
+
+      const getSnapEdHtml = () => `
             <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
                 <div class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"><h2 class="form-section-title">SNAP & Substance Use Assessment</h2>${getChevronIcon()}</div>
                 <div class="p-6 bg-white form-section-content">
@@ -531,7 +688,7 @@
             </div>
         `;
 
-        const getPlanAndRecsHtml = () => `
+      const getPlanAndRecsHtml = () => `
             <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
                 <div class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"><h2 class="form-section-title">Plan & Recommendations</h2>${getChevronIcon()}</div>
                 <div class="p-6 bg-white form-section-content">
@@ -565,9 +722,9 @@
                     <textarea id="plan-recommendations" class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm h-48"></textarea>
                 </div>
             </div>`;
-        
-        function getAdfVeteranForm() {
-            return `
+
+      function getAdfVeteranForm() {
+        return `
                 ${getMbsSelectionHtml()}
                 ${getPatientDetailsHtml()}
                 <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
@@ -754,617 +911,966 @@
                 </div>
                 ${getPlanAndRecsHtml()}
             `;
-        }
-        
-        // --- CORE SCRIPT LOGIC ---
-        function initializeForm() {
-            formContainer.innerHTML = getAdfVeteranForm();
-            populateSocialIsolationQuestions();
-            actionButtons.classList.remove('hidden');
-            addAccordionListeners();
-            addDynamicListeners();
-        }
+      }
 
-        clearFormBtn.addEventListener('click', () => {
-            document.getElementById('clear-confirm-modal').classList.remove('hidden');
+      // --- CORE SCRIPT LOGIC ---
+      function initializeForm() {
+        formContainer.innerHTML = getAdfVeteranForm();
+        populateSocialIsolationQuestions();
+        actionButtons.classList.remove("hidden");
+        addAccordionListeners();
+        addDynamicListeners();
+      }
+
+      clearFormBtn.addEventListener("click", () => {
+        document
+          .getElementById("clear-confirm-modal")
+          .classList.remove("hidden");
+      });
+      document
+        .getElementById("cancel-clear-btn")
+        .addEventListener("click", () => {
+          document
+            .getElementById("clear-confirm-modal")
+            .classList.add("hidden");
         });
-        document.getElementById('cancel-clear-btn').addEventListener('click', () => {
-            document.getElementById('clear-confirm-modal').classList.add('hidden');
-        });
-        document.getElementById('confirm-clear-btn').addEventListener('click', () => {
-            document.getElementById('clear-confirm-modal').classList.add('hidden');
-            localStorage.removeItem(LOCAL_STORAGE_KEY); // Clear saved data
-            lastAutoRecs = ''; // Reset plan reconciliation state
-            lastCompletedAssessment = null; // Reset assessment appendix
-            initializeForm();
-            reportContainer.classList.add('hidden');
-            reportOutput.textContent = '';
+      document
+        .getElementById("confirm-clear-btn")
+        .addEventListener("click", () => {
+          document
+            .getElementById("clear-confirm-modal")
+            .classList.add("hidden");
+          localStorage.removeItem(LOCAL_STORAGE_KEY); // Clear saved data
+          lastAutoRecs = ""; // Reset plan reconciliation state
+          lastCompletedAssessment = null; // Reset assessment appendix
+          initializeForm();
+          reportContainer.classList.add("hidden");
+          reportOutput.textContent = "";
         });
 
-        saveTxtBtn.addEventListener('click', () => generateAndDisplayReport(true, 'txt'));
-        saveRtfBtn.addEventListener('click', () => generateAndDisplayReport(true, 'rtf'));
-        
-        copyReportBtn.addEventListener('click', () => {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(reportOutput.textContent).then(() => {
-                    copyReportBtn.textContent = 'Copied!';
-                    setTimeout(() => { copyReportBtn.textContent = 'Copy to Clipboard'; }, 2000);
-                }).catch(err => {
-                    console.error('Async: Could not copy text: ', err);
-                });
-            } else {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = reportOutput.textContent;
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    copyReportBtn.textContent = 'Copied!';
-                    setTimeout(() => { copyReportBtn.textContent = 'Copy to Clipboard'; }, 2000);
-                } catch (err) {
-                    console.error('Fallback: Oops, unable to copy', err);
-                }
-                document.body.removeChild(textArea);
+      saveTxtBtn.addEventListener("click", () =>
+        generateAndDisplayReport(true, "txt")
+      );
+      saveRtfBtn.addEventListener("click", () =>
+        generateAndDisplayReport(true, "rtf")
+      );
+
+      copyReportBtn.addEventListener("click", () => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(reportOutput.textContent)
+            .then(() => {
+              copyReportBtn.textContent = "Copied!";
+              setTimeout(() => {
+                copyReportBtn.textContent = "Copy to Clipboard";
+              }, 2000);
+            })
+            .catch((err) => {
+              console.error("Async: Could not copy text: ", err);
+            });
+        } else {
+          // Fallback for older browsers
+          const textArea = document.createElement("textarea");
+          textArea.value = reportOutput.textContent;
+          document.body.appendChild(textArea);
+          textArea.select();
+          try {
+            document.execCommand("copy");
+            copyReportBtn.textContent = "Copied!";
+            setTimeout(() => {
+              copyReportBtn.textContent = "Copy to Clipboard";
+            }, 2000);
+          } catch (err) {
+            console.error("Fallback: Oops, unable to copy", err);
+          }
+          document.body.removeChild(textArea);
+        }
+      });
+
+      function calculateAndDisplayAge() {
+        const dobInput = document.getElementById("patient-dob");
+        const ageDisplay = document.getElementById("patient-age-display");
+        if (!dobInput || !ageDisplay) return null;
+
+        const dob = dobInput.value;
+        if (!dob) {
+          ageDisplay.innerHTML = "Age will be calculated";
+          return null;
+        }
+        const birthDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+
+        ageDisplay.innerHTML = `Age: ${age}`;
+
+        return age;
+      }
+
+      function addAccordionListeners() {
+        document.querySelectorAll(".bg-indigo-700").forEach((header) => {
+          if (header.dataset.listener) return;
+          header.dataset.listener = true;
+          header.addEventListener("click", () => {
+            const content = header.nextElementSibling;
+            const chevron = header.querySelector(".chevron-icon");
+            content.classList.toggle("collapsed");
+            chevron.classList.toggle("rotated");
+          });
+        });
+      }
+
+      function addDynamicListeners() {
+        const dobInput = document.getElementById("patient-dob");
+        const genderSelect = document.getElementById("patient-gender");
+        const atsiCheckbox = document.getElementById("patient-atsi");
+        const patientNameInput = document.getElementById("patient-name");
+        const fhBreastCheckbox = document.getElementById("fh-breast");
+
+        // --- EASTER EGG ---
+        if (patientNameInput) {
+          patientNameInput.addEventListener("input", (e) => {
+            if (e.target.value.toLowerCase() === "big brother!") {
+              document
+                .getElementById("easter-egg-modal")
+                .classList.remove("hidden");
             }
+          });
+        }
+        document
+          .getElementById("close-easter-egg")
+          .addEventListener("click", () => {
+            document.getElementById("easter-egg-modal").classList.add("hidden");
+          });
+        // --- END EASTER EGG ---
+
+        const handlePatientDetailsChange = () => {
+          const age = calculateAndDisplayAge();
+          const isFemale = genderSelect.value === "female";
+          const isAtsi = atsiCheckbox.checked;
+          const hasFhBreast = fhBreastCheckbox.checked;
+
+          document
+            .getElementById("rec-breast-screening-label")
+            ?.classList.toggle("hidden", !isFemale);
+          document
+            .getElementById("rec-cervical-screening-label")
+            ?.classList.toggle("hidden", !isFemale);
+          document
+            .getElementById("rec-menopause-assessment-label")
+            ?.classList.toggle("hidden", !isFemale);
+          document
+            .getElementById("rec-atsi-assessment-label")
+            ?.classList.toggle("hidden", !isAtsi);
+
+          // Conditional Screening Logic
+          const bowelScreeningCheckbox = document.getElementById(
+            "rec-bowel-screening"
+          );
+          if (bowelScreeningCheckbox) {
+            bowelScreeningCheckbox.checked = age !== null && age >= 45;
+          }
+          const breastScreeningCheckbox = document.getElementById(
+            "rec-breast-screening"
+          );
+          if (breastScreeningCheckbox) {
+            breastScreeningCheckbox.checked =
+              isFemale && ((age !== null && age >= 50) || hasFhBreast);
+          }
+
+          updateAutomaticAssessments();
+          updateManagementPlan();
+        };
+
+        if (dobInput)
+          dobInput.addEventListener("change", handlePatientDetailsChange);
+        if (genderSelect)
+          genderSelect.addEventListener("change", handlePatientDetailsChange);
+        if (atsiCheckbox)
+          atsiCheckbox.addEventListener("change", handlePatientDetailsChange);
+        if (fhBreastCheckbox)
+          fhBreastCheckbox.addEventListener(
+            "change",
+            handlePatientDetailsChange
+          );
+
+        handlePatientDetailsChange();
+
+        const setupToggle = (checkboxId, detailsId) => {
+          const checkbox = document.getElementById(checkboxId);
+          const details = document.getElementById(detailsId);
+          if (checkbox && details) {
+            checkbox.addEventListener("change", (e) => {
+              details.classList.toggle("hidden", !e.target.checked);
+            });
+          }
+        };
+
+        const toggleMap = {
+          "risk-cholesterol": "risk-cholesterol-details",
+          "risk-bp": "risk-bp-details",
+          "risk-glucose": "risk-glucose-details",
+          "fh-breast": "fh-breast-details",
+          "fh-diabetes": "fh-diabetes-details",
+          "fh-colorectal": "fh-colorectal-details",
+          "fh-mental": "fh-mental-details",
+          "fh-other": "fh-other-details",
+          "exam-cvs": "exam-cvs-details",
+          "exam-resp": "exam-resp-details",
+          "exam-abdo": "exam-abdo-details",
+          "assess-smoking": "smoking-details-container",
+          "assess-nutrition": "nutrition-details-container",
+          "assess-alcohol": "alcohol-details-container",
+          "assess-activity": "activity-details-container",
+          "assess-mood": "mood-details-container",
+          "exam-hearing": "exam-hearing-details",
+          "exam-pain": "exam-pain-details",
+          "sleep-issues": "sleep-issues-details",
+          "anger-issues": "anger-issues-details",
+          "risk-harm": "risk-harm-details",
+          "sexual-health-assessed": "sexual-health-details",
+          "assess-substance-use": "substance-use-details-container",
+          "assess-social-isolation": "social-isolation-details-container",
+        };
+        Object.entries(toggleMap).forEach(([checkboxId, detailsId]) =>
+          setupToggle(checkboxId, detailsId)
+        );
+
+        document
+          .getElementById("height-cm")
+          ?.addEventListener("input", calculateBMI);
+        document
+          .getElementById("weight-kg")
+          ?.addEventListener("input", calculateBMI);
+        document
+          .getElementById("hr-rhythm")
+          ?.addEventListener("change", updateManagementPlan);
+
+        // SNAP specific listeners
+        document
+          .getElementById("smoking-status")
+          ?.addEventListener("change", (e) => {
+            document
+              .getElementById("smoking-pack-years")
+              .classList.toggle("hidden", e.target.value !== "current");
+            updateManagementPlan();
+          });
+        document
+          .getElementById("nutrition-status")
+          ?.addEventListener("change", (e) => {
+            document
+              .getElementById("nutrition-details")
+              .classList.toggle("hidden", e.target.value === "");
+            updateManagementPlan();
+          });
+        document
+          .getElementById("audit-c-score")
+          ?.addEventListener("input", updateManagementPlan);
+        document
+          .getElementById("activity-minutes")
+          ?.addEventListener("input", updateManagementPlan);
+
+        // Substance Use Listeners
+        document
+          .querySelectorAll('input[name="substance-use-choice"]')
+          .forEach((radio) => {
+            radio.addEventListener("change", (e) => {
+              const detailsDiv = document.getElementById(
+                "substance-use-further-details"
+              );
+              detailsDiv.classList.toggle("hidden", e.target.value !== "yes");
+              updateManagementPlan();
+            });
+          });
+
+        // Assessment modal launchers
+        const moodToolSelect = document.getElementById("mood-tool");
+        const launchMoodBtn = document.getElementById("launch-mood-assessment");
+        moodToolSelect?.addEventListener("change", () => {
+          launchMoodBtn.disabled = moodToolSelect.value === "";
         });
-        
-        function calculateAndDisplayAge() {
-            const dobInput = document.getElementById('patient-dob');
-            const ageDisplay = document.getElementById('patient-age-display');
-            if (!dobInput || !ageDisplay) return null;
+        launchMoodBtn?.addEventListener("click", (e) => {
+          e.preventDefault();
+          const tool = moodToolSelect.value;
+          if (tool) openAssessmentModal(tool, "mood-score");
+        });
 
-            const dob = dobInput.value;
-            if (!dob) {
-                ageDisplay.innerHTML = 'Age will be calculated';
-                return null;
-            }
-            const birthDate = new Date(dob);
-            const today = new Date();
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const m = today.getMonth() - birthDate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
-            
-            ageDisplay.innerHTML = `Age: ${age}`;
-            
-            return age;
-        }
+        const launchAuditCBtn = document.getElementById(
+          "launch-auditc-assessment"
+        );
+        launchAuditCBtn?.addEventListener("click", (e) => {
+          e.preventDefault();
+          openAssessmentModal("AUDITC", "audit-c-score");
+        });
 
-        function addAccordionListeners() {
-            document.querySelectorAll('.bg-indigo-700').forEach(header => {
-                if(header.dataset.listener) return;
-                header.dataset.listener = true;
-                header.addEventListener('click', () => {
-                    const content = header.nextElementSibling;
-                    const chevron = header.querySelector('.chevron-icon');
-                    content.classList.toggle('collapsed');
-                    chevron.classList.toggle('rotated');
-                });
-            });
-        }
-
-        function addDynamicListeners() {
-            const dobInput = document.getElementById('patient-dob');
-            const genderSelect = document.getElementById('patient-gender');
-            const atsiCheckbox = document.getElementById('patient-atsi');
-            const patientNameInput = document.getElementById('patient-name');
-            const fhBreastCheckbox = document.getElementById('fh-breast');
-
-            // --- EASTER EGG ---
-            if (patientNameInput) {
-                patientNameInput.addEventListener('input', (e) => {
-                    if (e.target.value.toLowerCase() === 'big brother!') {
-                        document.getElementById('easter-egg-modal').classList.remove('hidden');
-                    }
-                });
-            }
-            document.getElementById('close-easter-egg').addEventListener('click', () => {
-                document.getElementById('easter-egg-modal').classList.add('hidden');
-            });
-            // --- END EASTER EGG ---
-
-            const handlePatientDetailsChange = () => {
-                const age = calculateAndDisplayAge();
-                const isFemale = genderSelect.value === 'female';
-                const isAtsi = atsiCheckbox.checked;
-                const hasFhBreast = fhBreastCheckbox.checked;
-
-                document.getElementById('rec-breast-screening-label')?.classList.toggle('hidden', !isFemale);
-                document.getElementById('rec-cervical-screening-label')?.classList.toggle('hidden', !isFemale);
-                document.getElementById('rec-menopause-assessment-label')?.classList.toggle('hidden', !isFemale);
-                document.getElementById('rec-atsi-assessment-label')?.classList.toggle('hidden', !isAtsi);
-                
-                // Conditional Screening Logic
-                const bowelScreeningCheckbox = document.getElementById('rec-bowel-screening');
-                if (bowelScreeningCheckbox) {
-                    bowelScreeningCheckbox.checked = age !== null && age >= 45;
-                }
-                const breastScreeningCheckbox = document.getElementById('rec-breast-screening');
-                if (breastScreeningCheckbox) {
-                    breastScreeningCheckbox.checked = isFemale && ((age !== null && age >= 50) || hasFhBreast);
-                }
-
-                updateAutomaticAssessments();
-                updateManagementPlan(); 
-            };
-
-            if (dobInput) dobInput.addEventListener('change', handlePatientDetailsChange);
-            if (genderSelect) genderSelect.addEventListener('change', handlePatientDetailsChange);
-            if (atsiCheckbox) atsiCheckbox.addEventListener('change', handlePatientDetailsChange);
-            if (fhBreastCheckbox) fhBreastCheckbox.addEventListener('change', handlePatientDetailsChange);
-            
-            handlePatientDetailsChange();
-
-            const setupToggle = (checkboxId, detailsId) => {
-                const checkbox = document.getElementById(checkboxId);
-                const details = document.getElementById(detailsId);
-                if (checkbox && details) {
-                    checkbox.addEventListener('change', e => {
-                        details.classList.toggle('hidden', !e.target.checked);
-                    });
-                }
-            };
-            
-            const toggleMap = {
-                'risk-cholesterol': 'risk-cholesterol-details', 'risk-bp': 'risk-bp-details',
-                'risk-glucose': 'risk-glucose-details', 
-                'fh-breast': 'fh-breast-details', 'fh-diabetes': 'fh-diabetes-details', 
-                'fh-colorectal': 'fh-colorectal-details', 'fh-mental': 'fh-mental-details', 
-                'fh-other': 'fh-other-details', 'exam-cvs': 'exam-cvs-details', 
-                'exam-resp': 'exam-resp-details', 'exam-abdo': 'exam-abdo-details',
-                'assess-smoking': 'smoking-details-container', 'assess-nutrition': 'nutrition-details-container',
-                'assess-alcohol': 'alcohol-details-container', 'assess-activity': 'activity-details-container',
-                'assess-mood': 'mood-details-container',
-                'exam-hearing': 'exam-hearing-details', 'exam-pain': 'exam-pain-details',
-                'sleep-issues': 'sleep-issues-details', 'anger-issues': 'anger-issues-details',
-                'risk-harm': 'risk-harm-details',
-                'sexual-health-assessed': 'sexual-health-details',
-                'assess-substance-use': 'substance-use-details-container',
-                'assess-social-isolation': 'social-isolation-details-container'
-            };
-            Object.entries(toggleMap).forEach(([checkboxId, detailsId]) => setupToggle(checkboxId, detailsId));
-
-            document.getElementById('height-cm')?.addEventListener('input', calculateBMI);
-            document.getElementById('weight-kg')?.addEventListener('input', calculateBMI);
-            document.getElementById('hr-rhythm')?.addEventListener('change', updateManagementPlan);
-
-            // SNAP specific listeners
-            document.getElementById('smoking-status')?.addEventListener('change', e => {
-                document.getElementById('smoking-pack-years').classList.toggle('hidden', e.target.value !== 'current');
-                updateManagementPlan();
-            });
-            document.getElementById('nutrition-status')?.addEventListener('change', e => {
-                document.getElementById('nutrition-details').classList.toggle('hidden', e.target.value === '');
-                updateManagementPlan();
-            });
-            document.getElementById('audit-c-score')?.addEventListener('input', updateManagementPlan);
-            document.getElementById('activity-minutes')?.addEventListener('input', updateManagementPlan);
-            
-            // Substance Use Listeners
-            document.querySelectorAll('input[name="substance-use-choice"]').forEach(radio => {
-                radio.addEventListener('change', e => {
-                    const detailsDiv = document.getElementById('substance-use-further-details');
-                    detailsDiv.classList.toggle('hidden', e.target.value !== 'yes');
-                    updateManagementPlan();
-                });
-            });
-
-            // Assessment modal launchers
-            const moodToolSelect = document.getElementById('mood-tool');
-            const launchMoodBtn = document.getElementById('launch-mood-assessment');
-            moodToolSelect?.addEventListener('change', () => {
-                launchMoodBtn.disabled = moodToolSelect.value === '';
-            });
-            launchMoodBtn?.addEventListener('click', (e) => {
-                e.preventDefault();
-                const tool = moodToolSelect.value;
-                if(tool) openAssessmentModal(tool, 'mood-score');
-            });
-            
-            const launchAuditCBtn = document.getElementById('launch-auditc-assessment');
-            launchAuditCBtn?.addEventListener('click', (e) => {
-                e.preventDefault();
-                openAssessmentModal('AUDITC', 'audit-c-score');
-            });
-
-
-            document.getElementById('add-immunisation-btn')?.addEventListener('click', () => {
-                const container = document.getElementById('other-immunisations-container');
-                const newImmunisation = document.createElement('div');
-                newImmunisation.className = 'flex items-center mt-2';
-                newImmunisation.innerHTML = `
+        document
+          .getElementById("add-immunisation-btn")
+          ?.addEventListener("click", () => {
+            const container = document.getElementById(
+              "other-immunisations-container"
+            );
+            const newImmunisation = document.createElement("div");
+            newImmunisation.className = "flex items-center mt-2";
+            newImmunisation.innerHTML = `
                     <label class="flex items-center my-2 flex-grow"><input type="checkbox" checked data-custom="true" class="h-4 w-4 text-indigo-600 mr-2"> <input type="text" class="flex-grow p-1 border-b focus:outline-none focus:border-indigo-500" placeholder="Enter immunisation name..."></label>
                     <button class="ml-4 text-red-500 hover:text-red-700 font-bold cursor-pointer" onclick="this.parentElement.remove()">X</button>
                 `;
-                container.appendChild(newImmunisation);
-                newImmunisation.querySelector('input[type="text"]').focus();
+            container.appendChild(newImmunisation);
+            newImmunisation.querySelector('input[type="text"]').focus();
+          });
+
+        const autoUpdateElements = [
+          "risk-cholesterol",
+          "risk-bp",
+          "risk-glucose",
+          "fh-diabetes",
+          "fh-breast",
+          "fh-colorectal",
+          "patient-atsi",
+          "exam-pain",
+          "sleep-issues",
+          "anger-issues",
+          "risk-harm",
+        ];
+        autoUpdateElements.forEach((id) => {
+          document.getElementById(id)?.addEventListener("change", () => {
+            updateAutomaticAssessments();
+            updateManagementPlan();
+          });
+        });
+
+        // Add listener to save form state on any input
+        formContainer.addEventListener("input", debouncedSave);
+        formContainer.addEventListener("change", debouncedSave);
+      }
+
+      function updateAutomaticAssessments() {
+        const isChecked = (id) => document.getElementById(id)?.checked;
+
+        const anyBiomedicalRisk =
+          isChecked("risk-cholesterol") ||
+          isChecked("risk-bp") ||
+          isChecked("risk-glucose");
+        const anyLifestyleRisk =
+          document.getElementById("smoking-status")?.value === "current" ||
+          document.getElementById("nutrition-status")?.value === "poor" ||
+          parseInt(document.getElementById("activity-minutes")?.value) < 150;
+        document.getElementById("rec-heart-health-assessment").checked =
+          anyBiomedicalRisk || anyLifestyleRisk;
+
+        const diabetesRisk =
+          parseInt(document.getElementById("activity-minutes")?.value) < 150 ||
+          document.getElementById("nutrition-status")?.value === "poor" ||
+          isChecked("patient-atsi") ||
+          isChecked("risk-glucose") ||
+          isChecked("fh-diabetes");
+        document.getElementById("rec-diabetes-risk-assessment").checked =
+          diabetesRisk;
+      }
+
+      function updateManagementPlan() {
+        const planTextarea = document.getElementById("plan-recommendations");
+        if (!planTextarea) return;
+
+        let autoRecs = new Set();
+        const isChecked = (id) => document.getElementById(id)?.checked;
+        const getValue = (id) => document.getElementById(id)?.value || "";
+        const getRadioValue = (name) =>
+          document.querySelector(`input[name="${name}"]:checked`)?.value;
+
+        // BMI Trigger
+        const bmi = parseFloat(getValue("bmi"));
+        if (!isNaN(bmi)) {
+          if (bmi >= 30) {
+            autoRecs.add(
+              "- Patient has obesity (BMI ≥ 30). Discussed eligibility for a GP Management Plan (GPMP) and referral to a dietitian/exercise physiologist."
+            );
+          } else if (bmi >= 25) {
+            autoRecs.add(
+              "- Patient is overweight (BMI 25-29.9). Discussed lifestyle modifications including diet and exercise to achieve a healthy weight."
+            );
+          } else if (bmi < 18.5) {
+            autoRecs.add(
+              "- Patient is underweight (BMI < 18.5). Discussed nutritional assessment and strategies for healthy weight gain. Consider investigating for underlying causes."
+            );
+          }
+        }
+
+        // Heart Rate Trigger
+        if (getValue("hr-rhythm") === "Irregular") {
+          autoRecs.add(
+            "- Irregular pulse noted. Recommend ECG to investigate for potential arrhythmia (e.g., Atrial Fibrillation)."
+          );
+        }
+
+        // Biomedical Risk Triggers
+        if (isChecked("risk-cholesterol"))
+          autoRecs.add("- Review and optimise treatment of dyslipidaemia.");
+        if (isChecked("risk-bp"))
+          autoRecs.add("- Review and optimise treatment of hypertension.");
+        if (isChecked("risk-glucose"))
+          autoRecs.add(
+            "- Review and optimise treatment of impaired glucose metabolism."
+          );
+
+        // SNAP Triggers
+        if (getValue("smoking-status") === "current") {
+          autoRecs.add(
+            "- Discuss smoking cessation strategies, including nicotine replacement therapy and counseling support (e.g., Quitline 13 7848)."
+          );
+        }
+        if (getValue("nutrition-status") === "poor") {
+          autoRecs.add(
+            "- Encourage a balanced diet including at least 5 servings of vegetables and 2 servings of fruit daily. Consider referral to a dietitian."
+          );
+        }
+        const auditC = parseInt(getValue("audit-c-score"), 10);
+        if (!isNaN(auditC) && auditC >= 5) {
+          autoRecs.add(
+            "- AUDIT-C score suggests unhealthy alcohol intake. Discussed safe alcohol limits and offered support resources (e.g., Open Arms, local drug and alcohol services)."
+          );
+        }
+        const activity = parseInt(getValue("activity-minutes"), 10);
+        if (!isNaN(activity) && activity < 150) {
+          autoRecs.add(
+            "- Recommend aiming for at least 150 minutes of moderate-intensity aerobic activity per week."
+          );
+        }
+        if (getRadioValue("substance-use-choice") === "yes") {
+          autoRecs.add(
+            "- Patient reports recreational substance use. Provided education on risks, harm minimisation strategies, and offered referral to a drug and alcohol counselling service (e.g., Open Arms)."
+          );
+        }
+
+        // Veteran-Specific Triggers
+        if (isChecked("exam-pain"))
+          autoRecs.add(
+            "- Develop a pain management plan, consider referral to a pain specialist or physiotherapist."
+          );
+        if (isChecked("sleep-issues"))
+          autoRecs.add(
+            "- Provide sleep hygiene advice and consider further assessment for sleep disorders."
+          );
+        if (isChecked("anger-issues"))
+          autoRecs.add(
+            "- Consider referral to anger management resources or psychology via a Mental Health Treatment Plan (e.g., Open Arms - Veterans & Families Counselling)."
+          );
+        if (isChecked("risk-harm"))
+          autoRecs.add(
+            "- IMMEDIATE ACTION: Enacted safety plan and arranged urgent referral to mental health services (e.g., local CATT/PECT, Open Arms 24/7 support line 1800 011 046)."
+          );
+
+        // Social Isolation Trigger
+        const socialScore = calculateSocialIsolationScore(false); // Don't update UI, just get score
+        if (socialScore >= 6) {
+          autoRecs.add(
+            "- Patient may be experiencing social isolation. Discussed local community groups, veteran support networks (e.g., RSL, Open Arms), and social prescribing options."
+          );
+        }
+
+        // Family History Trigger
+        if (isChecked("fh-breast") || isChecked("fh-colorectal")) {
+          autoRecs.add(
+            "- Consider escalated screening for breast and/or bowel cancer as per guidelines."
+          );
+        }
+
+        const newAutoRecsText = Array.from(autoRecs).join("\n");
+        const currentText = planTextarea.value;
+
+        // Reconcile user-entered text
+        const userText = currentText.replace(lastAutoRecs, "").trim();
+
+        planTextarea.value = (
+          newAutoRecsText +
+          (newAutoRecsText && userText ? "\n\n" : "") +
+          userText
+        ).trim();
+        lastAutoRecs = newAutoRecsText; // Update the last known auto-recs
+      }
+
+      function interpretBMI(bmi) {
+        const interpretationSpan = document.getElementById(
+          "bmi-interpretation-text"
+        );
+        if (!interpretationSpan) return;
+
+        interpretationSpan.className = "bmi-interpretation"; // Reset classes
+
+        if (isNaN(bmi) || bmi <= 0) {
+          interpretationSpan.textContent = "";
+          return;
+        }
+
+        if (bmi < 18.5) {
+          interpretationSpan.textContent = "Underweight";
+          interpretationSpan.classList.add("bmi-underweight");
+        } else if (bmi >= 18.5 && bmi < 25) {
+          interpretationSpan.textContent = "Healthy";
+          interpretationSpan.classList.add("bmi-healthy");
+        } else if (bmi >= 25 && bmi < 30) {
+          interpretationSpan.textContent = "Overweight";
+          interpretationSpan.classList.add("bmi-overweight");
+        } else {
+          // bmi >= 30
+          interpretationSpan.textContent = "Obese";
+          interpretationSpan.classList.add("bmi-obese");
+        }
+      }
+
+      function calculateBMI() {
+        const height = parseFloat(document.getElementById("height-cm")?.value);
+        const weight = parseFloat(document.getElementById("weight-kg")?.value);
+        const bmiInput = document.getElementById("bmi");
+        let bmi = NaN;
+        if (height > 0 && weight > 0) {
+          bmi = weight / (height / 100) ** 2;
+          bmiInput.value = bmi.toFixed(2);
+        } else {
+          bmiInput.value = "";
+        }
+        interpretBMI(bmi);
+        updateManagementPlan(); // Update plan whenever BMI changes
+      }
+
+      function generateAndDisplayReport(download = false, format = "txt") {
+        const reportData = buildReportFromForm();
+        reportOutput.textContent = reportData.text;
+        reportContainer.classList.remove("hidden");
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+
+        if (download) {
+          const fileName = `ADF_Veteran_Assessment_${
+            reportData.patientName.replace(/ /g, "_") || "report"
+          }`;
+          if (format === "rtf") {
+            downloadFile(`${fileName}.rtf`, reportData.rtf, "application/rtf");
+          } else {
+            downloadFile(`${fileName}.txt`, reportData.text, "text/plain");
+          }
+        }
+      }
+
+      function downloadFile(filename, content, mimeType) {
+        const element = document.createElement("a");
+        const blob = new Blob([content], { type: mimeType });
+        element.href = URL.createObjectURL(blob);
+        element.download = filename;
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      }
+
+      function formatAusDate(dateString) {
+        if (!dateString) return "N/A";
+        const [year, month, day] = dateString.split("-");
+        return `${day}/${month}/${year}`;
+      }
+
+      function buildReportFromForm() {
+        let textReport = "";
+        let rtfReport =
+          "{\\rtf1\\ansi\\deff0{\\fonttbl{\\f0 Inter;}}\\pard\\sa0\\sl276\\slmult1 ";
+
+        const getValue = (id) =>
+          document.getElementById(id)?.value.trim() || "";
+        const isChecked = (id) => document.getElementById(id)?.checked;
+        const getRadioValue = (name) =>
+          document.querySelector(`input[name="${name}"]:checked`)?.value ||
+          "N/A";
+
+        const escapeRtf = (str) => {
+          if (typeof str !== "string") return "";
+          return str
+            .replace(/\\/g, "\\\\")
+            .replace(/{/g, "\\{")
+            .replace(/}/g, "\\}")
+            .replace(/\n/g, "\\par\n");
+        };
+
+        const addSection = (title, content) => {
+          let cleanedContent = [];
+          if (Array.isArray(content)) {
+            cleanedContent = content.filter(
+              (line) => line && line.trim() !== ""
+            );
+          } else if (typeof content === "string" && content.trim()) {
+            cleanedContent = [content];
+          }
+
+          if (cleanedContent.length > 0) {
+            textReport += `${title.toUpperCase()}:\n`;
+            rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(
+              title.toUpperCase()
+            )}\\ul0\\b0\\par}`;
+
+            cleanedContent.forEach((line) => {
+              const isListItem = line.startsWith("- ");
+              const lineText = isListItem ? line.substring(2) : line;
+
+              textReport += `${isListItem ? "  - " : ""}${lineText}\n`;
+              rtfReport += `{\\pard\\fi360\\sa100\\sl276\\slmult1\\fs22 ${
+                isListItem ? "- " : ""
+              }${escapeRtf(lineText)}\\par}`;
             });
-            
-            const autoUpdateElements = [
-                'risk-cholesterol', 'risk-bp', 'risk-glucose',
-                'fh-diabetes', 'fh-breast', 'fh-colorectal', 'patient-atsi',
-                'exam-pain', 'sleep-issues', 'anger-issues', 'risk-harm'
-            ];
-            autoUpdateElements.forEach(id => {
-                document.getElementById(id)?.addEventListener('change', () => {
-                    updateAutomaticAssessments();
-                    updateManagementPlan();
-                });
-            });
+            textReport += "\n";
+          }
+        };
 
-            // Add listener to save form state on any input
-            formContainer.addEventListener('input', debouncedSave);
-            formContainer.addEventListener('change', debouncedSave);
+        const addFreeTextSection = (title, elementId) => {
+          const content = getValue(elementId);
+          if (content) {
+            textReport += `${title.toUpperCase()}:\n${content}\n\n`;
+            rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(
+              title.toUpperCase()
+            )}\\ul0\\b0\\par}`;
+            rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\fs22 ${escapeRtf(
+              content
+            )}\\par}`;
+          }
+        };
+
+        // --- Header ---
+        const headerTitle =
+          "Assessment: Health Assessment for Former Serving Members of the Australian Defence Force";
+        const mbsItem = `MBS Item Number: ${getRadioValue("mbs-item")}`;
+        textReport += `${headerTitle}\n${mbsItem}\n\n`;
+        rtfReport += `{\\pard\\qc\\b\\fs32 ${escapeRtf(headerTitle)}\\par}`;
+        rtfReport += `{\\pard\\qc\\fs24 ${escapeRtf(mbsItem)}\\par\\par}`;
+
+        // --- Patient Details ---
+        const patientDetails = [
+          `- Name: ${getValue("patient-name") || "N/A"}`,
+          `- DOB: ${formatAusDate(getValue("patient-dob"))}`,
+          `- ${
+            document.getElementById("patient-age-display")?.textContent ||
+            "Age: N/A"
+          }`,
+          `- Gender: ${getValue("patient-gender") || "N/A"}`,
+          `- Medicare: ${getValue("patient-medicare") || "N/A"}`,
+          `- Date: ${formatAusDate(getValue("assessment-date"))}`,
+          `- Aboriginal and/or Torres Strait Islander origin: ${
+            isChecked("patient-atsi") ? "Yes" : "No"
+          }`,
+        ];
+        addSection("Patient Details", patientDetails);
+
+        // --- Service History ---
+        addFreeTextSection("Service History", "service-history");
+        addFreeTextSection("Reason for Discharge", "discharge-reason");
+        addFreeTextSection("DVA Status", "dva-status");
+
+        // --- Social History ---
+        const socialHistory = [
+          `- Relationship Status: ${getValue("relationship-status") || "N/A"}`,
+          `- Number of Children: ${getValue("children") || "N/A"}`,
+          `- Current Occupation: ${getValue("occupation") || "N/A"}`,
+        ];
+        addSection("Social History", socialHistory);
+
+        // --- History & Meds ---
+        addFreeTextSection(
+          "Current & Past Medical History",
+          "past-medical-history"
+        );
+        addFreeTextSection("Current Medications", "regular-medications");
+        if (isChecked("meds-reviewed-checkbox"))
+          addSection("Medication Review", [
+            "- Medication list reviewed and reconciled with patient.",
+          ]);
+
+        // --- Risk Factors ---
+        let biomedicalRisks = [];
+        if (isChecked("risk-cholesterol"))
+          biomedicalRisks.push(
+            `- High cholesterol (${
+              getRadioValue("cholesterol-meds") || "status not specified"
+            })`
+          );
+        if (isChecked("risk-bp"))
+          biomedicalRisks.push(
+            `- High blood pressure (${
+              getRadioValue("bp-meds") || "status not specified"
+            })`
+          );
+        if (isChecked("risk-glucose"))
+          biomedicalRisks.push(
+            `- Impaired glucose metabolism (${
+              getRadioValue("glucose-meds") || "status not specified"
+            })`
+          );
+        if (getValue("other-biomedical-risks"))
+          biomedicalRisks.push(
+            `- Other: ${getValue("other-biomedical-risks")}`
+          );
+        addSection("Biomedical Risk Factors", biomedicalRisks);
+
+        let familyHistory = [];
+        const addFhDetail = (checkboxId, description) => {
+          if (isChecked(checkboxId))
+            familyHistory.push(
+              `- ${description}${
+                document
+                  .querySelector(`#${checkboxId}-details textarea`)
+                  ?.value.trim()
+                  ? `: ${document
+                      .querySelector(`#${checkboxId}-details textarea`)
+                      .value.trim()}`
+                  : ""
+              }`
+            );
+        };
+        addFhDetail("fh-breast", "Breast cancer");
+        addFhDetail("fh-diabetes", "Diabetes");
+        addFhDetail("fh-colorectal", "Colorectal Cancer");
+        addFhDetail("fh-mental", "Mental Health conditions");
+        addFhDetail("fh-other", "Other chronic disease");
+        addSection("Significant Family History", familyHistory);
+
+        // --- SNAP ---
+        let snapItems = [];
+        if (isChecked("assess-smoking"))
+          snapItems.push(
+            `- Smoking: ${getValue("smoking-status") || "Not specified"}${
+              getValue("smoking-status") === "current"
+                ? ` (Pack Years: ${getValue("smoking-pack-years") || "N/A"})`
+                : ""
+            }`
+          );
+        if (isChecked("assess-nutrition"))
+          snapItems.push(
+            `- Nutrition: ${getValue("nutrition-status") || "Not specified"}${
+              getValue("nutrition-details")
+                ? ` (Details: ${getValue("nutrition-details")})`
+                : ""
+            }`
+          );
+        if (isChecked("assess-alcohol")) {
+          const auditCScore = getValue("audit-c-score");
+          const [score, interpretation] = auditCScore
+            .split("|")
+            .map((s) => s.trim());
+          let text = `- Alcohol: AUDIT-C Score: ${score || "N/A"}`;
+          if (interpretation) text += ` (${interpretation})`;
+          snapItems.push(text);
         }
-        
-        function updateAutomaticAssessments() {
-            const isChecked = id => document.getElementById(id)?.checked;
-            
-            const anyBiomedicalRisk = isChecked('risk-cholesterol') || isChecked('risk-bp') || isChecked('risk-glucose');
-            const anyLifestyleRisk = document.getElementById('smoking-status')?.value === 'current' || document.getElementById('nutrition-status')?.value === 'poor' || (parseInt(document.getElementById('activity-minutes')?.value) < 150);
-            document.getElementById('rec-heart-health-assessment').checked = anyBiomedicalRisk || anyLifestyleRisk;
-
-            const diabetesRisk = (parseInt(document.getElementById('activity-minutes')?.value) < 150) || document.getElementById('nutrition-status')?.value === 'poor' || isChecked('patient-atsi') || isChecked('risk-glucose') || isChecked('fh-diabetes');
-            document.getElementById('rec-diabetes-risk-assessment').checked = diabetesRisk;
+        if (isChecked("assess-activity"))
+          snapItems.push(
+            `- Physical Activity: ${
+              getValue("activity-minutes") || "N/A"
+            } minutes per week`
+          );
+        if (isChecked("assess-substance-use")) {
+          const use = getRadioValue("substance-use-choice");
+          let substanceText = `- Substance Use: Assessed as '${use}'.`;
+          if (use === "yes") {
+            substanceText += ` Details: ${
+              getValue("substance-details") || "Not provided"
+            }`;
+          }
+          snapItems.push(substanceText);
         }
+        addSection("SNAP & Substance Use Assessment", snapItems);
 
-        function updateManagementPlan() {
-            const planTextarea = document.getElementById('plan-recommendations');
-            if (!planTextarea) return;
+        // --- Examination ---
+        const bmiText =
+          document.getElementById("bmi-interpretation-text")?.textContent || "";
+        let examFindings = [
+          `- Blood Pressure: ${getValue("bp") || "N/A"} mmHg`,
+          `- Heart Rate: ${getValue("hr") || "N/A"} bpm (${getValue(
+            "hr-rhythm"
+          )})`,
+          `- Height: ${getValue("height-cm") || "N/A"} cm`,
+          `- Weight: ${getValue("weight-kg") || "N/A"} kg`,
+          `- Waist: ${getValue("waist") || "N/A"} cm`,
+          `- BMI: ${getValue("bmi") || "N/A"} kg/m² (${bmiText})`,
+        ];
+        if (isChecked("exam-cvs"))
+          examFindings.push(
+            `- Cardiovascular Exam: ${
+              document
+                .querySelector("#exam-cvs-details textarea")
+                ?.value.trim() || "Normal"
+            }`
+          );
+        if (isChecked("exam-resp"))
+          examFindings.push(
+            `- Respiratory Exam: ${
+              document
+                .querySelector("#exam-resp-details textarea")
+                ?.value.trim() || "Normal"
+            }`
+          );
+        if (isChecked("exam-abdo"))
+          examFindings.push(
+            `- Abdominal Exam: ${
+              document
+                .querySelector("#exam-abdo-details textarea")
+                ?.value.trim() || "Normal"
+            }`
+          );
+        if (isChecked("exam-hearing"))
+          examFindings.push(
+            `- Hearing Assessment: ${
+              document
+                .querySelector("#exam-hearing-details textarea")
+                ?.value.trim() || "Normal"
+            }`
+          );
+        if (isChecked("exam-pain"))
+          examFindings.push(
+            `- Bodily Pain Reported: ${
+              document
+                .querySelector("#exam-pain-details textarea")
+                ?.value.trim() || "Details not specified"
+            }`
+          );
+        if (getValue("exam-other"))
+          examFindings.push(`- Other Findings: ${getValue("exam-other")}`);
+        addSection("Examination", examFindings);
 
-            let autoRecs = new Set();
-            const isChecked = id => document.getElementById(id)?.checked;
-            const getValue = id => document.getElementById(id)?.value || '';
-            const getRadioValue = name => document.querySelector(`input[name="${name}"]:checked`)?.value;
-
-            // BMI Trigger
-            const bmi = parseFloat(getValue('bmi'));
-            if (!isNaN(bmi)) {
-                if (bmi >= 30) {
-                    autoRecs.add('- Patient has obesity (BMI ≥ 30). Discussed eligibility for a GP Management Plan (GPMP) and referral to a dietitian/exercise physiologist.');
-                } else if (bmi >= 25) {
-                    autoRecs.add('- Patient is overweight (BMI 25-29.9). Discussed lifestyle modifications including diet and exercise to achieve a healthy weight.');
-                } else if (bmi < 18.5) {
-                    autoRecs.add('- Patient is underweight (BMI < 18.5). Discussed nutritional assessment and strategies for healthy weight gain. Consider investigating for underlying causes.');
-                }
-            }
-
-            // Heart Rate Trigger
-            if (getValue('hr-rhythm') === 'Irregular') {
-                autoRecs.add('- Irregular pulse noted. Recommend ECG to investigate for potential arrhythmia (e.g., Atrial Fibrillation).');
-            }
-
-            // Biomedical Risk Triggers
-            if (isChecked('risk-cholesterol')) autoRecs.add('- Review and optimise treatment of dyslipidaemia.');
-            if (isChecked('risk-bp')) autoRecs.add('- Review and optimise treatment of hypertension.');
-            if (isChecked('risk-glucose')) autoRecs.add('- Review and optimise treatment of impaired glucose metabolism.');
-
-            // SNAP Triggers
-            if (getValue('smoking-status') === 'current') {
-                autoRecs.add('- Discuss smoking cessation strategies, including nicotine replacement therapy and counseling support (e.g., Quitline 13 7848).');
-            }
-            if (getValue('nutrition-status') === 'poor') {
-                autoRecs.add('- Encourage a balanced diet including at least 5 servings of vegetables and 2 servings of fruit daily. Consider referral to a dietitian.');
-            }
-            const auditC = parseInt(getValue('audit-c-score'), 10);
-            if (!isNaN(auditC) && auditC >= 5) {
-                autoRecs.add('- AUDIT-C score suggests unhealthy alcohol intake. Discussed safe alcohol limits and offered support resources (e.g., Open Arms, local drug and alcohol services).');
-            }
-            const activity = parseInt(getValue('activity-minutes'), 10);
-            if (!isNaN(activity) && activity < 150) {
-                autoRecs.add('- Recommend aiming for at least 150 minutes of moderate-intensity aerobic activity per week.');
-            }
-            if (getRadioValue('substance-use-choice') === 'yes') {
-                autoRecs.add('- Patient reports recreational substance use. Provided education on risks, harm minimisation strategies, and offered referral to a drug and alcohol counselling service (e.g., Open Arms).');
-            }
-
-            // Veteran-Specific Triggers
-            if (isChecked('exam-pain')) autoRecs.add('- Develop a pain management plan, consider referral to a pain specialist or physiotherapist.');
-            if (isChecked('sleep-issues')) autoRecs.add('- Provide sleep hygiene advice and consider further assessment for sleep disorders.');
-            if (isChecked('anger-issues')) autoRecs.add("- Consider referral to anger management resources or psychology via a Mental Health Treatment Plan (e.g., Open Arms - Veterans & Families Counselling).");
-            if (isChecked('risk-harm')) autoRecs.add("- IMMEDIATE ACTION: Enacted safety plan and arranged urgent referral to mental health services (e.g., local CATT/PECT, Open Arms 24/7 support line 1800 011 046).");
-            
-            // Social Isolation Trigger
-            const socialScore = calculateSocialIsolationScore(false); // Don't update UI, just get score
-            if (socialScore >= 6) {
-                 autoRecs.add('- Patient may be experiencing social isolation. Discussed local community groups, veteran support networks (e.g., RSL, Open Arms), and social prescribing options.');
-            }
-            
-            // Family History Trigger
-            if (isChecked('fh-breast') || isChecked('fh-colorectal')) {
-                autoRecs.add('- Consider escalated screening for breast and/or bowel cancer as per guidelines.');
-            }
-
-            const newAutoRecsText = Array.from(autoRecs).join('\n');
-            const currentText = planTextarea.value;
-            
-            // Reconcile user-entered text
-            const userText = currentText.replace(lastAutoRecs, '').trim();
-            
-            planTextarea.value = (newAutoRecsText + (newAutoRecsText && userText ? '\n\n' : '') + userText).trim();
-            lastAutoRecs = newAutoRecsText; // Update the last known auto-recs
+        // --- Mental Health ---
+        let mentalHealthItems = [];
+        if (isChecked("risk-harm"))
+          mentalHealthItems.push(
+            `- Risk of harm to self/others ASSESSED: ${
+              document
+                .querySelector("#risk-harm-details textarea")
+                ?.value.trim() || "Details not specified"
+            }`
+          );
+        if (isChecked("assess-mood")) {
+          const tool = getValue("mood-tool");
+          const scoreValue = getValue("mood-score");
+          const [score, interpretation] = scoreValue
+            .split("|")
+            .map((s) => s.trim());
+          let text = `- Emotional Wellbeing: Assessed using ${
+            tool || "N/A"
+          }. Score: ${score || "N/A"}`;
+          if (interpretation) text += ` (${interpretation})`;
+          mentalHealthItems.push(text);
         }
-
-        function interpretBMI(bmi) {
-            const interpretationSpan = document.getElementById('bmi-interpretation-text');
-            if (!interpretationSpan) return;
-
-            interpretationSpan.className = 'bmi-interpretation'; // Reset classes
-
-            if (isNaN(bmi) || bmi <= 0) {
-                interpretationSpan.textContent = '';
-                return;
-            }
-
-            if (bmi < 18.5) {
-                interpretationSpan.textContent = 'Underweight';
-                interpretationSpan.classList.add('bmi-underweight');
-            } else if (bmi >= 18.5 && bmi < 25) {
-                interpretationSpan.textContent = 'Healthy';
-                interpretationSpan.classList.add('bmi-healthy');
-            } else if (bmi >= 25 && bmi < 30) {
-                interpretationSpan.textContent = 'Overweight';
-                interpretationSpan.classList.add('bmi-overweight');
-            } else { // bmi >= 30
-                interpretationSpan.textContent = 'Obese';
-                interpretationSpan.classList.add('bmi-obese');
-            }
+        if (isChecked("assess-social-isolation")) {
+          const score = calculateSocialIsolationScore(false);
+          const interpretation = getScoreInterpretation(
+            "SocialIsolation",
+            score
+          );
+          mentalHealthItems.push(
+            `- Social Isolation: Score: ${score}/9 (${interpretation})`
+          );
         }
+        if (isChecked("sleep-issues"))
+          mentalHealthItems.push(
+            `- Sleep Difficulties Reported: ${
+              document
+                .querySelector("#sleep-issues-details textarea")
+                ?.value.trim() || "Details not specified"
+            }`
+          );
+        if (isChecked("anger-issues"))
+          mentalHealthItems.push(
+            `- Anger Issues Reported: ${
+              document
+                .querySelector("#anger-issues-details textarea")
+                ?.value.trim() || "Details not specified"
+            }`
+          );
+        if (isChecked("sexual-health-assessed"))
+          mentalHealthItems.push(
+            `- Sexual health assessed: ${
+              getValue("sexual-health-details-text") || "Not specified"
+            }`
+          );
+        addSection("Mental Health & Wellbeing", mentalHealthItems);
 
-        function calculateBMI() {
-            const height = parseFloat(document.getElementById('height-cm')?.value);
-            const weight = parseFloat(document.getElementById('weight-kg')?.value);
-            const bmiInput = document.getElementById('bmi');
-            let bmi = NaN;
-            if (height > 0 && weight > 0) {
-                bmi = weight / ((height / 100) ** 2);
-                bmiInput.value = bmi.toFixed(2);
-            } else {
-                bmiInput.value = '';
-            }
-            interpretBMI(bmi);
-            updateManagementPlan(); // Update plan whenever BMI changes
-        }
+        let investigations = [];
+        document
+          .querySelectorAll("#investigations-checkboxes input:checked")
+          .forEach((el) => investigations.push(`- ${el.value}`));
+        const otherInvestigations = getValue("investigations-other");
+        if (otherInvestigations)
+          investigations.push(`- Other: ${otherInvestigations}`);
+        addSection("Investigations", investigations);
 
-        function generateAndDisplayReport(download = false, format = 'txt') {
-            const reportData = buildReportFromForm();
-            reportOutput.textContent = reportData.text;
-            reportContainer.classList.remove('hidden');
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        addFreeTextSection("Patient's Other Health Concerns", "other-concerns");
 
-            if (download) {
-                const fileName = `ADF_Veteran_Assessment_${reportData.patientName.replace(/ /g, '_') || 'report'}`;
-                if (format === 'rtf') {
-                    downloadFile(`${fileName}.rtf`, reportData.rtf, 'application/rtf');
-                } else {
-                    downloadFile(`${fileName}.txt`, reportData.text, 'text/plain');
-                }
-            }
-        }
-        
-        function downloadFile(filename, content, mimeType) {
-            const element = document.createElement('a');
-            const blob = new Blob([content], { type: mimeType });
-            element.href = URL.createObjectURL(blob);
-            element.download = filename;
-            document.body.appendChild(element); 
-            element.click();
-            document.body.removeChild(element);
-        }
+        // --- PLAN & RECS ---
+        let assessments = [];
+        document
+          .querySelectorAll("#assessments-container input:checked")
+          .forEach((el) => assessments.push(`- ${el.value}`));
+        addSection("Recommended Assessments", assessments);
 
-        function formatAusDate(dateString) {
-            if (!dateString) return 'N/A';
-            const [year, month, day] = dateString.split('-');
-            return `${day}/${month}/${year}`;
-        }
+        let screening = [];
+        document
+          .querySelectorAll("#screening-container input:checked")
+          .forEach((el) => screening.push(`- ${el.value}`));
+        addSection("Recommended Screening", screening);
 
-        function buildReportFromForm() {
-            let textReport = '';
-            let rtfReport = '{\\rtf1\\ansi\\deff0{\\fonttbl{\\f0 Inter;}}\\pard\\sa0\\sl276\\slmult1 ';
+        let immunisations = [];
+        document
+          .querySelectorAll("#immunisations-container input:checked")
+          .forEach((el) => immunisations.push(`- ${el.value}`));
+        document
+          .querySelectorAll('#other-immunisations-container input[type="text"]')
+          .forEach((el) => {
+            if (el.value.trim() && el.previousElementSibling.checked)
+              immunisations.push(`- ${el.value.trim()}`);
+          });
+        addSection("Recommended Immunisations", immunisations);
 
-            const getValue = id => document.getElementById(id)?.value.trim() || '';
-            const isChecked = id => document.getElementById(id)?.checked;
-            const getRadioValue = name => document.querySelector(`input[name="${name}"]:checked`)?.value || 'N/A';
-            
-            const escapeRtf = (str) => {
-                if (typeof str !== 'string') return '';
-                return str.replace(/\\/g, '\\\\').replace(/{/g, '\\{').replace(/}/g, '\\}').replace(/\n/g, '\\par\n');
-            }
+        addFreeTextSection(
+          "Management plan, Referrals, and Follow-up actions",
+          "plan-recommendations"
+        );
 
-            const addSection = (title, content) => {
-                let cleanedContent = [];
-                if (Array.isArray(content)) {
-                    cleanedContent = content.filter(line => line && line.trim() !== '');
-                } else if (typeof content === 'string' && content.trim()) {
-                    cleanedContent = [content];
-                }
-
-                if (cleanedContent.length > 0) {
-                    textReport += `${title.toUpperCase()}:\n`;
-                    rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(title.toUpperCase())}\\ul0\\b0\\par}`;
-                    
-                    cleanedContent.forEach(line => {
-                        const isListItem = line.startsWith('- ');
-                        const lineText = isListItem ? line.substring(2) : line;
-                        
-                        textReport += `${isListItem ? '  - ' : ''}${lineText}\n`;
-                        rtfReport += `{\\pard\\fi360\\sa100\\sl276\\slmult1\\fs22 ${isListItem ? '- ' : ''}${escapeRtf(lineText)}\\par}`;
-                    });
-                    textReport += '\n';
-                }
-            };
-
-            const addFreeTextSection = (title, elementId) => {
-                const content = getValue(elementId);
-                if(content) {
-                    textReport += `${title.toUpperCase()}:\n${content}\n\n`;
-                    rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(title.toUpperCase())}\\ul0\\b0\\par}`;
-                    rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\fs22 ${escapeRtf(content)}\\par}`;
-                }
-            };
-
-            // --- Header ---
-            const headerTitle = "Assessment: Health Assessment for Former Serving Members of the Australian Defence Force";
-            const mbsItem = `MBS Item Number: ${getRadioValue('mbs-item')}`;
-            textReport += `${headerTitle}\n${mbsItem}\n\n`;
-            rtfReport += `{\\pard\\qc\\b\\fs32 ${escapeRtf(headerTitle)}\\par}`;
-            rtfReport += `{\\pard\\qc\\fs24 ${escapeRtf(mbsItem)}\\par\\par}`;
-
-            // --- Patient Details ---
-            const patientDetails = [
-                `- Name: ${getValue('patient-name') || 'N/A'}`,
-                `- DOB: ${formatAusDate(getValue('patient-dob'))}`,
-                `- ${document.getElementById('patient-age-display')?.textContent || 'Age: N/A'}`,
-                `- Gender: ${getValue('patient-gender') || 'N/A'}`,
-                `- Medicare: ${getValue('patient-medicare') || 'N/A'}`,
-                `- Date: ${formatAusDate(getValue('assessment-date'))}`,
-                `- Aboriginal and/or Torres Strait Islander origin: ${isChecked('patient-atsi') ? 'Yes' : 'No'}`
-            ];
-            addSection('Patient Details', patientDetails);
-
-            // --- Service History ---
-            addFreeTextSection('Service History', 'service-history');
-            addFreeTextSection('Reason for Discharge', 'discharge-reason');
-            addFreeTextSection('DVA Status', 'dva-status');
-
-            // --- Social History ---
-             const socialHistory = [
-                `- Relationship Status: ${getValue('relationship-status') || 'N/A'}`,
-                `- Number of Children: ${getValue('children') || 'N/A'}`,
-                `- Current Occupation: ${getValue('occupation') || 'N/A'}`
-            ];
-            addSection('Social History', socialHistory);
-
-            // --- History & Meds ---
-            addFreeTextSection('Current & Past Medical History', 'past-medical-history');
-            addFreeTextSection('Current Medications', 'regular-medications');
-            if(isChecked('meds-reviewed-checkbox')) addSection('Medication Review', ['- Medication list reviewed and reconciled with patient.']);
-
-            // --- Risk Factors ---
-            let biomedicalRisks = [];
-            if (isChecked('risk-cholesterol')) biomedicalRisks.push(`- High cholesterol (${getRadioValue('cholesterol-meds') || 'status not specified'})`);
-            if (isChecked('risk-bp')) biomedicalRisks.push(`- High blood pressure (${getRadioValue('bp-meds') || 'status not specified'})`);
-            if (isChecked('risk-glucose')) biomedicalRisks.push(`- Impaired glucose metabolism (${getRadioValue('glucose-meds') || 'status not specified'})`);
-            if (getValue('other-biomedical-risks')) biomedicalRisks.push(`- Other: ${getValue('other-biomedical-risks')}`);
-            addSection('Biomedical Risk Factors', biomedicalRisks);
-
-            let familyHistory = [];
-            const addFhDetail = (checkboxId, description) => {
-                if(isChecked(checkboxId)) familyHistory.push(`- ${description}${(document.querySelector(`#${checkboxId}-details textarea`)?.value.trim() ? `: ${document.querySelector(`#${checkboxId}-details textarea`).value.trim()}`: '')}`);
-            }
-            addFhDetail('fh-breast', 'Breast cancer');
-            addFhDetail('fh-diabetes', 'Diabetes');
-            addFhDetail('fh-colorectal', 'Colorectal Cancer');
-            addFhDetail('fh-mental', 'Mental Health conditions');
-            addFhDetail('fh-other', 'Other chronic disease');
-            addSection('Significant Family History', familyHistory);
-
-            // --- SNAP ---
-            let snapItems = [];
-            if (isChecked('assess-smoking')) snapItems.push(`- Smoking: ${getValue('smoking-status') || 'Not specified'}${getValue('smoking-status') === 'current' ? ` (Pack Years: ${getValue('smoking-pack-years') || 'N/A'})` : ''}`);
-            if (isChecked('assess-nutrition')) snapItems.push(`- Nutrition: ${getValue('nutrition-status') || 'Not specified'}${getValue('nutrition-details') ? ` (Details: ${getValue('nutrition-details')})` : ''}`);
-            if (isChecked('assess-alcohol')) {
-                const auditCScore = getValue('audit-c-score');
-                const [score, interpretation] = auditCScore.split('|').map(s => s.trim());
-                let text = `- Alcohol: AUDIT-C Score: ${score || 'N/A'}`;
-                if (interpretation) text += ` (${interpretation})`;
-                snapItems.push(text);
-            }
-            if (isChecked('assess-activity')) snapItems.push(`- Physical Activity: ${getValue('activity-minutes') || 'N/A'} minutes per week`);
-            if (isChecked('assess-substance-use')) {
-                const use = getRadioValue('substance-use-choice');
-                let substanceText = `- Substance Use: Assessed as '${use}'.`;
-                if (use === 'yes') {
-                    substanceText += ` Details: ${getValue('substance-details') || 'Not provided'}`;
-                }
-                snapItems.push(substanceText);
-            }
-            addSection('SNAP & Substance Use Assessment', snapItems);
-
-            // --- Examination ---
-            const bmiText = document.getElementById('bmi-interpretation-text')?.textContent || '';
-            let examFindings = [
-                `- Blood Pressure: ${getValue('bp') || 'N/A'} mmHg`, `- Heart Rate: ${getValue('hr') || 'N/A'} bpm (${getValue('hr-rhythm')})`,
-                `- Height: ${getValue('height-cm') || 'N/A'} cm`, `- Weight: ${getValue('weight-kg') || 'N/A'} kg`,
-                `- Waist: ${getValue('waist') || 'N/A'} cm`, `- BMI: ${getValue('bmi') || 'N/A'} kg/m² (${bmiText})`
-            ];
-            if(isChecked('exam-cvs')) examFindings.push(`- Cardiovascular Exam: ${document.querySelector('#exam-cvs-details textarea')?.value.trim() || 'Normal'}`);
-            if(isChecked('exam-resp')) examFindings.push(`- Respiratory Exam: ${document.querySelector('#exam-resp-details textarea')?.value.trim() || 'Normal'}`);
-            if(isChecked('exam-abdo')) examFindings.push(`- Abdominal Exam: ${document.querySelector('#exam-abdo-details textarea')?.value.trim() || 'Normal'}`);
-            if(isChecked('exam-hearing')) examFindings.push(`- Hearing Assessment: ${document.querySelector('#exam-hearing-details textarea')?.value.trim() || 'Normal'}`);
-            if(isChecked('exam-pain')) examFindings.push(`- Bodily Pain Reported: ${document.querySelector('#exam-pain-details textarea')?.value.trim() || 'Details not specified'}`);
-            if(getValue('exam-other')) examFindings.push(`- Other Findings: ${getValue('exam-other')}`);
-            addSection('Examination', examFindings);
-            
-            // --- Mental Health ---
-            let mentalHealthItems = [];
-            if(isChecked('risk-harm')) mentalHealthItems.push(`- Risk of harm to self/others ASSESSED: ${document.querySelector('#risk-harm-details textarea')?.value.trim() || 'Details not specified'}`);
-            if(isChecked('assess-mood')) {
-                const tool = getValue('mood-tool');
-                const scoreValue = getValue('mood-score');
-                const [score, interpretation] = scoreValue.split('|').map(s => s.trim());
-                let text = `- Emotional Wellbeing: Assessed using ${tool || 'N/A'}. Score: ${score || 'N/A'}`;
-                if (interpretation) text += ` (${interpretation})`;
-                mentalHealthItems.push(text);
-            }
-            if (isChecked('assess-social-isolation')) {
-                const score = calculateSocialIsolationScore(false);
-                const interpretation = getScoreInterpretation('SocialIsolation', score);
-                mentalHealthItems.push(`- Social Isolation: Score: ${score}/9 (${interpretation})`);
-            }
-            if(isChecked('sleep-issues')) mentalHealthItems.push(`- Sleep Difficulties Reported: ${document.querySelector('#sleep-issues-details textarea')?.value.trim() || 'Details not specified'}`);
-            if(isChecked('anger-issues')) mentalHealthItems.push(`- Anger Issues Reported: ${document.querySelector('#anger-issues-details textarea')?.value.trim() || 'Details not specified'}`);
-            if (isChecked('sexual-health-assessed')) mentalHealthItems.push(`- Sexual health assessed: ${getValue('sexual-health-details-text') || 'Not specified'}`);
-            addSection('Mental Health & Wellbeing', mentalHealthItems);
-
-            let investigations = [];
-            document.querySelectorAll('#investigations-checkboxes input:checked').forEach(el => investigations.push(`- ${el.value}`));
-            const otherInvestigations = getValue('investigations-other');
-            if (otherInvestigations) investigations.push(`- Other: ${otherInvestigations}`);
-            addSection('Investigations', investigations);
-            
-            addFreeTextSection("Patient's Other Health Concerns", 'other-concerns');
-
-            // --- PLAN & RECS ---
-            let assessments = [];
-            document.querySelectorAll('#assessments-container input:checked').forEach(el => assessments.push(`- ${el.value}`));
-            addSection('Recommended Assessments', assessments);
-            
-            let screening = [];
-            document.querySelectorAll('#screening-container input:checked').forEach(el => screening.push(`- ${el.value}`));
-            addSection('Recommended Screening', screening);
-
-            let immunisations = [];
-            document.querySelectorAll('#immunisations-container input:checked').forEach(el => immunisations.push(`- ${el.value}`));
-            document.querySelectorAll('#other-immunisations-container input[type="text"]').forEach(el => {
-                if (el.value.trim() && el.previousElementSibling.checked) immunisations.push(`- ${el.value.trim()}`);
-            });
-            addSection('Recommended Immunisations', immunisations);
-
-            addFreeTextSection('Management plan, Referrals, and Follow-up actions', 'plan-recommendations');
-            
-            // --- RTF APPENDIX ---
-            if (lastCompletedAssessment) {
-                rtfReport += `\\page `;
-                rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf('APPENDIX: ' + lastCompletedAssessment.title)}\\ul0\\b0\\par}`;
-                rtfReport += convertAssessmentHtmlToRtf(lastCompletedAssessment.html);
-            }
-
-            rtfReport += '}'; // Close RTF document
-
-            return { text: textReport.trim(), rtf: rtfReport, patientName: getValue('patient-name') };
+        // --- RTF APPENDIX ---
+        if (lastCompletedAssessment) {
+          rtfReport += `\\page `;
+          rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(
+            "APPENDIX: " + lastCompletedAssessment.title
+          )}\\ul0\\b0\\par}`;
+          rtfReport += convertAssessmentHtmlToRtf(lastCompletedAssessment.html);
         }
 
-        // --- ASSESSMENT MODAL LOGIC ---
-        const assessmentTemplates = {
-             'K10': {
-                title: 'Kessler Psychological Distress Scale (K10)',
-                type: 'radio-sum',
-                maxScore: 50,
-                html: () => `
+        rtfReport += "}"; // Close RTF document
+
+        return {
+          text: textReport.trim(),
+          rtf: rtfReport,
+          patientName: getValue("patient-name"),
+        };
+      }
+
+      // --- ASSESSMENT MODAL LOGIC ---
+      const assessmentTemplates = {
+        K10: {
+          title: "Kessler Psychological Distress Scale (K10)",
+          type: "radio-sum",
+          maxScore: 50,
+          html: () => `
                     <p class="text-gray-600 mb-4">Over the last 4 weeks, about how often did the patient feel...</p>
                     <div id="assessment-form-content" class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-                        ${['Tired out for no good reason?', 'Nervous?', 'So nervous that nothing could calm them down?', 'Hopeless?', 'Restless or fidgety?', 'So restless they could not sit still?', 'Depressed?', 'That everything was an effort?', 'So sad that nothing could cheer them up?', 'Worthless?'].map((q, i) => `
+                        ${[
+                          "Tired out for no good reason?",
+                          "Nervous?",
+                          "So nervous that nothing could calm them down?",
+                          "Hopeless?",
+                          "Restless or fidgety?",
+                          "So restless they could not sit still?",
+                          "Depressed?",
+                          "That everything was an effort?",
+                          "So sad that nothing could cheer them up?",
+                          "Worthless?",
+                        ]
+                          .map(
+                            (q, i) => `
                         <div class="assessment-question">
                             <p class="font-medium mb-2">${i + 1}. ${q}</p>
                             <div class="assessment-options text-sm space-y-2">
@@ -1374,28 +1880,109 @@
                                 <label><input type="radio" name="k10-q${i}" value="4"> Most of the time</label>
                                 <label><input type="radio" name="k10-q${i}" value="5"> All of the time</label>
                             </div>
-                        </div>`).join('')}
+                        </div>`
+                          )
+                          .join("")}
                     </div>
-                `
-            },
-             'DASS21': {
-                title: 'Depression Anxiety Stress Scales (DASS-21)',
-                type: 'dass-score',
-                html: () => `
+                `,
+        },
+        DASS21: {
+          title: "Depression Anxiety Stress Scales (DASS-21)",
+          type: "dass-score",
+          html: () => `
                     <p class="text-gray-600 mb-4">Please read each statement and indicate how much the statement applied to you <b>over the past week</b>.</p>
                     <div id="assessment-form-content" class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
                         ${[
-                            {q: 'I found it hard to wind down', scale: 'stress'}, {q: 'I was aware of dryness of my mouth', scale: 'anxiety'}, {q: 'I couldn’t seem to experience any positive feeling at all', scale: 'depression'},
-                            {q: 'I experienced breathing difficulty', scale: 'anxiety'}, {q: 'I found it difficult to work up the initiative to do things', scale: 'depression'}, {q: 'I tended to over-react to situations', scale: 'stress'},
-                            {q: 'I experienced trembling (e.g. in the hands)', scale: 'anxiety'}, {q: 'I felt that I was using a lot of nervous energy', scale: 'stress'},
-                            {q: 'I was worried about situations in which I might panic', scale: 'anxiety'}, {q: 'I felt that I had nothing to look forward to', scale: 'depression'},
-                            {q: 'I found myself getting agitated', scale: 'stress'}, {q: 'I found it difficult to relax', scale: 'stress'}, {q: 'I felt down-hearted and blue', scale: 'depression'},
-                            {q: 'I was intolerant of anything that kept me from getting on', scale: 'stress'}, {q: 'I felt I was close to panic', scale: 'anxiety'},
-                            {q: 'I was unable to become enthusiastic about anything', scale: 'depression'}, {q: 'I felt I was not worth much as a person', scale: 'depression'},
-                            {q: 'I felt that I was rather touchy', scale: 'stress'}, {q: 'I was aware of the action of my heart in the absence of physical exertion', scale: 'anxiety'},
-                            {q: 'I felt scared without any good reason', scale: 'anxiety'}, {q: 'I felt that life was meaningless', scale: 'depression'}
-                        ].map((item, i) => `
-                        <div class="assessment-question" data-scale="${item.scale}">
+                          {
+                            q: "I found it hard to wind down",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I was aware of dryness of my mouth",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I couldn’t seem to experience any positive feeling at all",
+                            scale: "depression",
+                          },
+                          {
+                            q: "I experienced breathing difficulty",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I found it difficult to work up the initiative to do things",
+                            scale: "depression",
+                          },
+                          {
+                            q: "I tended to over-react to situations",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I experienced trembling (e.g. in the hands)",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I felt that I was using a lot of nervous energy",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I was worried about situations in which I might panic",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I felt that I had nothing to look forward to",
+                            scale: "depression",
+                          },
+                          {
+                            q: "I found myself getting agitated",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I found it difficult to relax",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I felt down-hearted and blue",
+                            scale: "depression",
+                          },
+                          {
+                            q: "I was intolerant of anything that kept me from getting on",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I felt I was close to panic",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I was unable to become enthusiastic about anything",
+                            scale: "depression",
+                          },
+                          {
+                            q: "I felt I was not worth much as a person",
+                            scale: "depression",
+                          },
+                          {
+                            q: "I felt that I was rather touchy",
+                            scale: "stress",
+                          },
+                          {
+                            q: "I was aware of the action of my heart in the absence of physical exertion",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I felt scared without any good reason",
+                            scale: "anxiety",
+                          },
+                          {
+                            q: "I felt that life was meaningless",
+                            scale: "depression",
+                          },
+                        ]
+                          .map(
+                            (item, i) => `
+                        <div class="assessment-question" data-scale="${
+                          item.scale
+                        }">
                             <p class="font-medium mb-2">${i + 1}. ${item.q}</p>
                             <div class="assessment-options text-sm space-y-2">
                                 <label><input type="radio" name="dass-q${i}" value="0"> Did not apply to me at all</label>
@@ -1403,15 +1990,17 @@
                                 <label><input type="radio" name="dass-q${i}" value="2"> Applied to me to a considerable degree</label>
                                 <label><input type="radio" name="dass-q${i}" value="3"> Applied to me very much</label>
                             </div>
-                        </div>`).join('')}
+                        </div>`
+                          )
+                          .join("")}
                     </div>
-                `
-            },
-             'AUDITC': {
-                title: 'Alcohol Use Disorders Identification Test (AUDIT-C)',
-                type: 'radio-sum',
-                maxScore: 12,
-                html: () => `
+                `,
+        },
+        AUDITC: {
+          title: "Alcohol Use Disorders Identification Test (AUDIT-C)",
+          type: "radio-sum",
+          maxScore: 12,
+          html: () => `
                     <p class="text-gray-600 mb-4">Please answer the following questions about your alcohol use.</p>
                     <div id="assessment-form-content">
                         <div class="assessment-question">
@@ -1445,37 +2034,39 @@
                             </div>
                         </div>
                     </div>
-                `
-            },
-             'PCL5': {
-                title: 'PTSD Checklist for DSM-5 (PCL-5)',
-                type: 'radio-sum',
-                maxScore: 80,
-                html: () => `
+                `,
+        },
+        PCL5: {
+          title: "PTSD Checklist for DSM-5 (PCL-5)",
+          type: "radio-sum",
+          maxScore: 80,
+          html: () => `
                     <p class="text-gray-600 mb-4">In the <b>past month</b>, how much were you bothered by:</p>
                     <div id="assessment-form-content" class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
                         ${[
-                            'Repeated, disturbing, and unwanted memories of the stressful experience?',
-                            'Repeated, disturbing dreams of the stressful experience?',
-                            'Suddenly feeling or acting as if the stressful experience were actually happening again?',
-                            'Feeling very upset when something reminded you of the stressful experience?',
-                            'Having strong physical reactions when something reminded you of the stressful experience?',
-                            'Avoiding memories, thoughts, or feelings related to the stressful experience?',
-                            'Avoiding external reminders of the stressful experience?',
-                            'Trouble remembering important parts of the stressful experience?',
-                            'Having strong negative beliefs about yourself, other people, or the world?',
-                            'Blaming yourself or someone else for the stressful experience or what happened after it?',
-                            'Having strong negative feelings such as fear, horror, anger, guilt, or shame?',
-                            'Loss of interest in activities you used to enjoy?',
-                            'Feeling distant or cut off from other people?',
-                            'Trouble experiencing positive feelings?',
-                            'Behaving in an irritable or angry way?',
-                            'Taking too many risks or doing things that could cause you harm?',
-                            'Being “superalert” or watchful or on guard?',
-                            'Feeling jumpy or easily startled?',
-                            'Having difficulty concentrating?',
-                            'Trouble falling or staying asleep?'
-                        ].map((q, i) => `
+                          "Repeated, disturbing, and unwanted memories of the stressful experience?",
+                          "Repeated, disturbing dreams of the stressful experience?",
+                          "Suddenly feeling or acting as if the stressful experience were actually happening again?",
+                          "Feeling very upset when something reminded you of the stressful experience?",
+                          "Having strong physical reactions when something reminded you of the stressful experience?",
+                          "Avoiding memories, thoughts, or feelings related to the stressful experience?",
+                          "Avoiding external reminders of the stressful experience?",
+                          "Trouble remembering important parts of the stressful experience?",
+                          "Having strong negative beliefs about yourself, other people, or the world?",
+                          "Blaming yourself or someone else for the stressful experience or what happened after it?",
+                          "Having strong negative feelings such as fear, horror, anger, guilt, or shame?",
+                          "Loss of interest in activities you used to enjoy?",
+                          "Feeling distant or cut off from other people?",
+                          "Trouble experiencing positive feelings?",
+                          "Behaving in an irritable or angry way?",
+                          "Taking too many risks or doing things that could cause you harm?",
+                          "Being “superalert” or watchful or on guard?",
+                          "Feeling jumpy or easily startled?",
+                          "Having difficulty concentrating?",
+                          "Trouble falling or staying asleep?",
+                        ]
+                          .map(
+                            (q, i) => `
                         <div class="assessment-question">
                             <p class="font-medium mb-2">${i + 1}. ${q}</p>
                             <div class="assessment-options text-sm space-y-2">
@@ -1485,239 +2076,284 @@
                                 <label><input type="radio" name="pcl5-q${i}" value="3"> Quite a bit</label>
                                 <label><input type="radio" name="pcl5-q${i}" value="4"> Extremely</label>
                             </div>
-                        </div>`).join('')}
+                        </div>`
+                          )
+                          .join("")}
                     </div>
-                `
-            }
+                `,
+        },
+      };
+
+      function calculateCurrentScore(template) {
+        let score = 0;
+        if (template.type === "radio-sum") {
+          modalBody
+            .querySelectorAll('input[type="radio"]:checked')
+            .forEach((radio) => {
+              score += parseInt(radio.value) || 0;
+            });
+        } else if (template.type === "dass-score") {
+          const allAnswered =
+            modalBody.querySelectorAll(".assessment-question").length ===
+            modalBody.querySelectorAll('input[type="radio"]:checked').length;
+          return allAnswered ? "Complete" : "Incomplete";
+        }
+        return score;
+      }
+
+      function handleFinalise(toolKey, targetInputId) {
+        const template = assessmentTemplates[toolKey];
+        const targetInput = document.getElementById(targetInputId);
+        if (!targetInput) return;
+
+        // Store completed assessment for RTF appendix
+        lastCompletedAssessment = {
+          title: template.title,
+          html: modalBody.innerHTML,
         };
 
-        function calculateCurrentScore(template) {
-            let score = 0;
-            if (template.type === 'radio-sum') {
-                modalBody.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
-                    score += parseInt(radio.value) || 0;
-                });
-            } else if (template.type === 'dass-score') {
-                const allAnswered = modalBody.querySelectorAll('.assessment-question').length === modalBody.querySelectorAll('input[type="radio"]:checked').length;
-                return allAnswered ? 'Complete' : 'Incomplete';
+        if (template.type === "dass-score") {
+          let depressionScore = 0,
+            anxietyScore = 0,
+            stressScore = 0;
+          modalBody.querySelectorAll(".assessment-question").forEach((q) => {
+            const scale = q.dataset.scale;
+            const checkedRadio = q.querySelector('input[type="radio"]:checked');
+            if (checkedRadio) {
+              const value = parseInt(checkedRadio.value) || 0;
+              if (scale === "depression") depressionScore += value;
+              else if (scale === "anxiety") anxietyScore += value;
+              else if (scale === "stress") stressScore += value;
             }
-            return score;
+          });
+
+          const finalDepression = depressionScore * 2;
+          const finalAnxiety = anxietyScore * 2;
+          const finalStress = stressScore * 2;
+
+          const scoreString = `D:${finalDepression}, A:${finalAnxiety}, S:${finalStress}`;
+          const interpretation = getScoreInterpretation("DASS21", {
+            d: finalDepression,
+            a: finalAnxiety,
+            s: finalStress,
+          });
+          targetInput.value = `${scoreString} | ${interpretation}`;
+        } else {
+          const finalScore = calculateCurrentScore(template);
+          const interpretation = getScoreInterpretation(toolKey, finalScore);
+          const maxScore = template.maxScore ? ` / ${template.maxScore}` : "";
+          targetInput.value = `${finalScore}${maxScore} | ${interpretation}`;
         }
+        closeAssessmentModal();
+        updateManagementPlan();
+        debouncedSave(); // Explicitly save after finalizing an assessment
+      }
 
-        function handleFinalise(toolKey, targetInputId) {
-            const template = assessmentTemplates[toolKey];
-            const targetInput = document.getElementById(targetInputId);
-            if (!targetInput) return;
+      function openAssessmentModal(toolKey, targetInputId) {
+        const template = assessmentTemplates[toolKey];
+        if (!template) return;
 
-            // Store completed assessment for RTF appendix
-            lastCompletedAssessment = {
-                title: template.title,
-                html: modalBody.innerHTML
-            };
+        modalTitle.textContent = template.title;
+        modalBody.innerHTML = template.html();
 
-            if (template.type === 'dass-score') {
-                let depressionScore = 0, anxietyScore = 0, stressScore = 0;
-                modalBody.querySelectorAll('.assessment-question').forEach(q => {
-                    const scale = q.dataset.scale;
-                    const checkedRadio = q.querySelector('input[type="radio"]:checked');
-                    if (checkedRadio) {
-                        const value = parseInt(checkedRadio.value) || 0;
-                        if (scale === 'depression') depressionScore += value;
-                        else if (scale === 'anxiety') anxietyScore += value;
-                        else if (scale === 'stress') stressScore += value;
-                    }
-                });
-                
-                const finalDepression = depressionScore * 2;
-                const finalAnxiety = anxietyScore * 2;
-                const finalStress = stressScore * 2;
-                
-                const scoreString = `D:${finalDepression}, A:${finalAnxiety}, S:${finalStress}`;
-                const interpretation = getScoreInterpretation('DASS21', {d: finalDepression, a: finalAnxiety, s: finalStress});
-                targetInput.value = `${scoreString} | ${interpretation}`;
+        modalFooter.innerHTML = `<button id="modal-action-btn" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">Finalise & Close</button>`;
 
+        assessmentModal.classList.remove("hidden");
+
+        const updateScore = () => {
+          const currentScore = calculateCurrentScore(template);
+          modalScoreDisplay.textContent =
+            template.type === "dass-score"
+              ? currentScore
+              : `Score: ${currentScore}`;
+        };
+
+        modalBody.addEventListener("change", updateScore);
+        updateScore();
+
+        document
+          .getElementById("modal-action-btn")
+          .addEventListener("click", () =>
+            handleFinalise(toolKey, targetInputId)
+          );
+      }
+
+      function closeAssessmentModal() {
+        assessmentModal.classList.add("hidden");
+        modalBody.innerHTML = "";
+        modalFooter.innerHTML = "";
+      }
+
+      modalCloseBtn.addEventListener("click", closeAssessmentModal);
+      assessmentModal.addEventListener("click", (e) => {
+        if (e.target === assessmentModal) closeAssessmentModal();
+      });
+
+      // --- LOCAL STORAGE & DATA PERSISTENCE ---
+      function debouncedSave() {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(saveFormState, 500); // Save 500ms after the last input
+      }
+
+      function saveFormState() {
+        const elements = formContainer.querySelectorAll(
+          "input, textarea, select"
+        );
+        const data = {};
+        elements.forEach((el) => {
+          if (!el.id && !el.name) return;
+          const key = el.id || `${el.name}_${el.value}`;
+          if (el.type === "checkbox" || el.type === "radio") {
+            data[key] = el.checked;
+          } else {
+            data[key] = el.value;
+          }
+        });
+        // Also save custom immunisations
+        data["other-immunisations-container"] = document.getElementById(
+          "other-immunisations-container"
+        ).innerHTML;
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+      }
+
+      function loadFormState() {
+        const data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+        if (!data) return;
+
+        Object.keys(data).forEach((key) => {
+          if (key === "other-immunisations-container") {
+            document.getElementById(key).innerHTML = data[key];
+            return;
+          }
+          let el = document.getElementById(key);
+          if (!el) {
+            // Handle radio buttons saved by name_value
+            const parts = key.split("_");
+            const value = parts.pop();
+            const name = parts.join("_");
+            el = document.querySelector(
+              `input[name="${name}"][value="${value}"]`
+            );
+          }
+
+          if (el) {
+            if (el.type === "checkbox" || el.type === "radio") {
+              el.checked = data[key];
             } else {
-                const finalScore = calculateCurrentScore(template);
-                const interpretation = getScoreInterpretation(toolKey, finalScore);
-                const maxScore = template.maxScore ? ` / ${template.maxScore}` : '';
-                targetInput.value = `${finalScore}${maxScore} | ${interpretation}`;
+              el.value = data[key];
             }
-            closeAssessmentModal();
-            updateManagementPlan();
-            debouncedSave(); // Explicitly save after finalizing an assessment
-        }
-
-        function openAssessmentModal(toolKey, targetInputId) {
-            const template = assessmentTemplates[toolKey];
-            if (!template) return;
-
-            modalTitle.textContent = template.title;
-            modalBody.innerHTML = template.html();
-            
-            modalFooter.innerHTML = `<button id="modal-action-btn" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">Finalise & Close</button>`;
-            
-            assessmentModal.classList.remove('hidden');
-            
-            const updateScore = () => {
-                const currentScore = calculateCurrentScore(template);
-                modalScoreDisplay.textContent = template.type === 'dass-score' ? currentScore : `Score: ${currentScore}`;
-            };
-
-            modalBody.addEventListener('change', updateScore);
-            updateScore();
-
-            document.getElementById('modal-action-btn').addEventListener('click', () => handleFinalise(toolKey, targetInputId));
-        }
-
-        function closeAssessmentModal() {
-            assessmentModal.classList.add('hidden');
-            modalBody.innerHTML = '';
-            modalFooter.innerHTML = '';
-        }
-
-        modalCloseBtn.addEventListener('click', closeAssessmentModal);
-        assessmentModal.addEventListener('click', (e) => {
-            if (e.target === assessmentModal) closeAssessmentModal();
+          }
         });
 
-        // --- LOCAL STORAGE & DATA PERSISTENCE ---
-        function debouncedSave() {
-            clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(saveFormState, 500); // Save 500ms after the last input
+        // After loading data, update the entire UI to reflect the loaded state
+        updateAllToggles();
+        calculateAndDisplayAge();
+        calculateBMI();
+        calculateSocialIsolationScore();
+        updateAutomaticAssessments();
+        updateManagementPlan();
+      }
+
+      function updateAllToggles() {
+        const allCheckboxes = formContainer.querySelectorAll(
+          'input[type="checkbox"]'
+        );
+        allCheckboxes.forEach((checkbox) => {
+          // Manually trigger change event to ensure visibility toggles fire
+          checkbox.dispatchEvent(new Event("change"));
+        });
+        // Also handle radio-button controlled toggles
+        document
+          .querySelectorAll('input[name="substance-use-choice"]')
+          .forEach((radio) => {
+            if (radio.checked) radio.dispatchEvent(new Event("change"));
+          });
+      }
+
+      function checkForSavedData() {
+        if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
+          const modal = document.getElementById("restore-session-modal");
+          modal.classList.remove("hidden");
+
+          document.getElementById("restore-yes-btn").onclick = () => {
+            modal.classList.add("hidden");
+            loadFormState();
+          };
+          document.getElementById("restore-no-btn").onclick = () => {
+            modal.classList.add("hidden");
+            localStorage.removeItem(LOCAL_STORAGE_KEY);
+          };
         }
+      }
 
-        function saveFormState() {
-            const elements = formContainer.querySelectorAll('input, textarea, select');
-            const data = {};
-            elements.forEach(el => {
-                if (!el.id && !el.name) return;
-                const key = el.id || `${el.name}_${el.value}`;
-                if (el.type === 'checkbox' || el.type === 'radio') {
-                    data[key] = el.checked;
-                } else {
-                    data[key] = el.value;
-                }
-            });
-            // Also save custom immunisations
-            data['other-immunisations-container'] = document.getElementById('other-immunisations-container').innerHTML;
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+      // --- NEW & UPDATED FUNCTIONS ---
+
+      function getScoreInterpretation(tool, score) {
+        switch (tool) {
+          case "K10":
+            if (score >= 10 && score <= 19) return "Likely to be well.";
+            if (score >= 20 && score <= 24)
+              return "Likely to have a mild mental disorder.";
+            if (score >= 25 && score <= 29)
+              return "Likely to have a moderate mental disorder.";
+            if (score >= 30) return "Likely to have a severe mental disorder.";
+            return "Low psychological distress.";
+          case "DASS21":
+            const getCategory = (s, scale) => {
+              const thresholds = {
+                depression: [10, 14, 21, 28],
+                anxiety: [8, 10, 15, 20],
+                stress: [15, 19, 26, 34],
+              };
+              const labels = [
+                "Normal",
+                "Mild",
+                "Moderate",
+                "Severe",
+                "Extremely Severe",
+              ];
+              for (let i = 0; i < thresholds[scale].length; i++) {
+                if (s < thresholds[scale][i]) return labels[i];
+              }
+              return labels[4];
+            };
+            return `Depression: ${getCategory(
+              score.d,
+              "depression"
+            )}, Anxiety: ${getCategory(
+              score.a,
+              "anxiety"
+            )}, Stress: ${getCategory(score.s, "stress")}`;
+          case "PCL5":
+            if (score >= 31 && score <= 33)
+              return "PTSD is a provisional diagnosis and further assessment is required.";
+            if (score > 33)
+              return "PTSD is a provisional diagnosis and further assessment is required.";
+            return "PTSD is unlikely.";
+          case "AUDITC":
+            if (score >= 5) return "Unhealthy alcohol use likely.";
+            return "Low risk of unhealthy alcohol use.";
+          case "SocialIsolation":
+            if (score >= 3 && score <= 5) return "Not Lonely";
+            if (score >= 6 && score <= 7) return "Moderately Lonely";
+            if (score >= 8) return "Severely Lonely";
+            return "Score not calculated";
+          default:
+            return "Interpretation not available.";
         }
+      }
 
-        function loadFormState() {
-            const data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-            if (!data) return;
-
-            Object.keys(data).forEach(key => {
-                if (key === 'other-immunisations-container') {
-                    document.getElementById(key).innerHTML = data[key];
-                    return;
-                }
-                let el = document.getElementById(key);
-                if (!el) { // Handle radio buttons saved by name_value
-                    const parts = key.split('_');
-                    const value = parts.pop();
-                    const name = parts.join('_');
-                    el = document.querySelector(`input[name="${name}"][value="${value}"]`);
-                }
-
-                if (el) {
-                    if (el.type === 'checkbox' || el.type === 'radio') {
-                        el.checked = data[key];
-                    } else {
-                        el.value = data[key];
-                    }
-                }
-            });
-
-            // After loading data, update the entire UI to reflect the loaded state
-            updateAllToggles();
-            calculateAndDisplayAge();
-            calculateBMI();
-            calculateSocialIsolationScore();
-            updateAutomaticAssessments();
-            updateManagementPlan();
-        }
-
-        function updateAllToggles() {
-            const allCheckboxes = formContainer.querySelectorAll('input[type="checkbox"]');
-            allCheckboxes.forEach(checkbox => {
-                // Manually trigger change event to ensure visibility toggles fire
-                checkbox.dispatchEvent(new Event('change'));
-            });
-             // Also handle radio-button controlled toggles
-            document.querySelectorAll('input[name="substance-use-choice"]').forEach(radio => {
-                if (radio.checked) radio.dispatchEvent(new Event('change'));
-            });
-        }
-
-        function checkForSavedData() {
-            if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
-                const modal = document.getElementById('restore-session-modal');
-                modal.classList.remove('hidden');
-
-                document.getElementById('restore-yes-btn').onclick = () => {
-                    modal.classList.add('hidden');
-                    loadFormState();
-                };
-                document.getElementById('restore-no-btn').onclick = () => {
-                    modal.classList.add('hidden');
-                    localStorage.removeItem(LOCAL_STORAGE_KEY);
-                };
-            }
-        }
-
-        // --- NEW & UPDATED FUNCTIONS ---
-
-        function getScoreInterpretation(tool, score) {
-            switch (tool) {
-                case 'K10':
-                    if (score >= 10 && score <= 19) return 'Likely to be well.';
-                    if (score >= 20 && score <= 24) return 'Likely to have a mild mental disorder.';
-                    if (score >= 25 && score <= 29) return 'Likely to have a moderate mental disorder.';
-                    if (score >= 30) return 'Likely to have a severe mental disorder.';
-                    return 'Low psychological distress.';
-                case 'DASS21':
-                    const getCategory = (s, scale) => {
-                        const thresholds = {
-                            depression: [10, 14, 21, 28],
-                            anxiety: [8, 10, 15, 20],
-                            stress: [15, 19, 26, 34]
-                        };
-                        const labels = ['Normal', 'Mild', 'Moderate', 'Severe', 'Extremely Severe'];
-                        for (let i = 0; i < thresholds[scale].length; i++) {
-                            if (s < thresholds[scale][i]) return labels[i];
-                        }
-                        return labels[4];
-                    };
-                    return `Depression: ${getCategory(score.d, 'depression')}, Anxiety: ${getCategory(score.a, 'anxiety')}, Stress: ${getCategory(score.s, 'stress')}`;
-                case 'PCL5':
-                    if (score >= 31 && score <= 33) return 'PTSD is a provisional diagnosis and further assessment is required.';
-                    if (score > 33) return 'PTSD is a provisional diagnosis and further assessment is required.';
-                    return 'PTSD is unlikely.';
-                case 'AUDITC':
-                     if (score >= 5) return 'Unhealthy alcohol use likely.';
-                     return 'Low risk of unhealthy alcohol use.';
-                case 'SocialIsolation':
-                    if (score >= 3 && score <= 5) return 'Not Lonely';
-                    if (score >= 6 && score <= 7) return 'Moderately Lonely';
-                    if (score >= 8) return 'Severely Lonely';
-                    return 'Score not calculated';
-                default:
-                    return 'Interpretation not available.';
-            }
-        }
-        
-        function populateSocialIsolationQuestions() {
-            const container = document.getElementById('social-isolation-questions');
-            if (!container) return;
-            const questions = [
-                { id: 'companionship', text: '...that you lack companionship?' },
-                { id: 'left-out', text: '...left out?' },
-                { id: 'isolated', text: '...isolated from others?' }
-            ];
-            let html = '';
-            questions.forEach((q, i) => {
-                html += `
+      function populateSocialIsolationQuestions() {
+        const container = document.getElementById("social-isolation-questions");
+        if (!container) return;
+        const questions = [
+          { id: "companionship", text: "...that you lack companionship?" },
+          { id: "left-out", text: "...left out?" },
+          { id: "isolated", text: "...isolated from others?" },
+        ];
+        let html = "";
+        questions.forEach((q, i) => {
+          html += `
                     <div class="assessment-question">
                         <p class="font-medium mb-2">${i + 1}. ${q.text}</p>
                         <div class="flex space-x-4 text-sm">
@@ -1727,61 +2363,79 @@
                         </div>
                     </div>
                 `;
-            });
-            container.innerHTML = html;
-            container.querySelectorAll('input[type="radio"]').forEach(radio => {
-                radio.addEventListener('change', () => {
-                    calculateSocialIsolationScore();
-                    updateManagementPlan();
-                });
-            });
-        }
-
-        function calculateSocialIsolationScore(updateUI = true) {
-            let score = 0;
-            const radios = document.querySelectorAll('#social-isolation-questions input[type="radio"]:checked');
-            radios.forEach(radio => {
-                score += parseInt(radio.value);
-            });
-
-            if (updateUI) {
-                const resultDiv = document.getElementById('social-isolation-result');
-                if (radios.length < 3) {
-                    resultDiv.textContent = 'Score will be calculated';
-                    return null;
-                }
-                const interpretation = getScoreInterpretation('SocialIsolation', score);
-                resultDiv.textContent = `Score: ${score} / 9 (${interpretation})`;
-            }
-            return score;
-        }
-
-        function convertAssessmentHtmlToRtf(htmlString) {
-            const escapeRtf = (str) => str.replace(/\\/g, '\\\\').replace(/{/g, '\\{').replace(/}/g, '\\}').replace(/\n/g, '\\par\n');
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(htmlString, 'text/html');
-            let rtf = '';
-
-            doc.querySelectorAll('.assessment-question').forEach(questionDiv => {
-                const questionText = questionDiv.querySelector('p')?.textContent.trim();
-                if (questionText) {
-                    rtf += `{\\pard\\sa100\\sl276\\slmult1\\b\\fs22 ${escapeRtf(questionText)}\\par\\b0}`;
-                }
-
-                const checkedRadio = questionDiv.querySelector('input[type="radio"]:checked');
-                if (checkedRadio) {
-                    const answerText = checkedRadio.parentElement.textContent.trim();
-                    rtf += `{\\pard\\fi360\\sa100\\sl276\\slmult1\\fs22 Answer: ${escapeRtf(answerText)}\\par}`;
-                }
-            });
-            return rtf;
-        }
-
-        // --- Initial Load ---
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeForm();
-            checkForSavedData();
         });
+        container.innerHTML = html;
+        container.querySelectorAll('input[type="radio"]').forEach((radio) => {
+          radio.addEventListener("change", () => {
+            calculateSocialIsolationScore();
+            updateManagementPlan();
+          });
+        });
+      }
+
+      function calculateSocialIsolationScore(updateUI = true) {
+        let score = 0;
+        const radios = document.querySelectorAll(
+          '#social-isolation-questions input[type="radio"]:checked'
+        );
+        radios.forEach((radio) => {
+          score += parseInt(radio.value);
+        });
+
+        if (updateUI) {
+          const resultDiv = document.getElementById("social-isolation-result");
+          if (radios.length < 3) {
+            resultDiv.textContent = "Score will be calculated";
+            return null;
+          }
+          const interpretation = getScoreInterpretation(
+            "SocialIsolation",
+            score
+          );
+          resultDiv.textContent = `Score: ${score} / 9 (${interpretation})`;
+        }
+        return score;
+      }
+
+      function convertAssessmentHtmlToRtf(htmlString) {
+        const escapeRtf = (str) =>
+          str
+            .replace(/\\/g, "\\\\")
+            .replace(/{/g, "\\{")
+            .replace(/}/g, "\\}")
+            .replace(/\n/g, "\\par\n");
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlString, "text/html");
+        let rtf = "";
+
+        doc.querySelectorAll(".assessment-question").forEach((questionDiv) => {
+          const questionText = questionDiv
+            .querySelector("p")
+            ?.textContent.trim();
+          if (questionText) {
+            rtf += `{\\pard\\sa100\\sl276\\slmult1\\b\\fs22 ${escapeRtf(
+              questionText
+            )}\\par\\b0}`;
+          }
+
+          const checkedRadio = questionDiv.querySelector(
+            'input[type="radio"]:checked'
+          );
+          if (checkedRadio) {
+            const answerText = checkedRadio.parentElement.textContent.trim();
+            rtf += `{\\pard\\fi360\\sa100\\sl276\\slmult1\\fs22 Answer: ${escapeRtf(
+              answerText
+            )}\\par}`;
+          }
+        });
+        return rtf;
+      }
+
+      // --- Initial Load ---
+      document.addEventListener("DOMContentLoaded", () => {
+        initializeForm();
+        checkForSavedData();
+      });
     </script>
-</body>
+  </body>
 </html>

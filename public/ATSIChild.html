@@ -1,239 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aboriginal and Torres Strait Islander Health Assessment Tool (Child <15)</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Aboriginal and Torres Strait Islander Health Assessment Tool (Child <15)
+    </title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        /* --- Base Styles --- */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* bg-gray-100 */
-        }
-        /* --- Form Section Styling --- */
-        .form-section-header {
-            cursor: pointer;
-        }
-        .form-section-title {
-            color: white;
-        }
-        .form-section-content {
-            transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out, padding 0.5s ease-in-out;
-            max-height: 8000px; /* A large value to allow for content */
-            opacity: 1;
-        }
-        .form-section-content.collapsed {
-            max-height: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            opacity: 0;
-            overflow: hidden;
-        }
-        .chevron-icon {
-            transition: transform 0.3s ease-in-out;
-        }
-        .chevron-icon.rotated {
-            transform: rotate(180deg);
-        }
-        /* --- Input and Label Styles --- */
-        .input-field {
-            display: block;
-            width: 100%;
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-            background-color: #f9fafb; /* bg-gray-50 */
-            border-width: 1px;
-            border-color: #d1d5db; /* border-gray-300 */
-            border-radius: 0.375rem; /* rounded-md */
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-        }
-        .input-field:focus {
-            outline: 2px solid transparent;
-            outline-offset: 2px;
-            border-color: #4f46e5; /* indigo-600 */
-            box-shadow: 0 0 0 1px #4f46e5;
-        }
-        .input-field[readonly] {
-            background-color: #e5e7eb; /* bg-gray-200 */
-            cursor: not-allowed;
-        }
-        .subsection-title {
-            font-size: 1.125rem; /* text-lg */
-            font-weight: 600; /* font-semibold */
-            color: #1f2937; /* text-gray-800 */
-            margin-bottom: 0.75rem;
-            border-bottom-width: 1px;
-            padding-bottom: 0.5rem;
-        }
-        .details-container {
-            padding-left: 1.75rem;
-            margin-top: 0.5rem;
-            margin-bottom: 0.75rem;
-        }
-        /* --- Alternating Background for Readability --- */
-        .form-section-content > div:nth-child(odd) .subsection-title {
-             background-color: #f9fafb; /* bg-gray-50 */
-             padding-left: 1rem;
-             padding-right: 1rem;
-             margin-left: -1rem;
-             margin-right: -1rem;
-             border-radius: 0.25rem;
-        }
-        /* --- Age Display & Eligibility --- */
-        .age-display {
-            padding: 0.75rem;
-            background-color: #f3f4f6; /* bg-gray-100 */
-            border-radius: 0.375rem; /* rounded-md */
-            text-align: center;
-            font-weight: 500;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 42px;
-        }
-        .age-display.error {
-            color: #dc2626; /* red-600 */
-            font-weight: 700; /* font-bold */
-            background-color: #fee2e2; /* red-100 */
-            border: 1px solid #fca5a5; /* red-300 */
-        }
-        .hidden {
-            display: none;
-        }
-        /* --- Subtle Add Button --- */
-        .add-btn {
-            background-color: #4f46e5; /* indigo-600 */
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 1.75rem; /* 28px */
-            height: 1.75rem; /* 28px */
-            font-weight: 600;
-            font-size: 1.25rem;
-            line-height: 1;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: background-color 0.2s;
-        }
-        .add-btn:hover {
-            background-color: #4338ca; /* indigo-700 */
-        }
-        /* --- Modal Styles --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            transition: opacity 0.3s ease;
-        }
-        .modal-content {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 400px;
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-        }
-        .modal-overlay:not(.hidden) .modal-content {
-            transform: scale(1);
-        }
-        /* --- Toast Notification --- */
-        #toast-notification {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #1f2937; /* bg-gray-800 */
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s, visibility 0.5s, bottom 0.5s;
-        }
-        #toast-notification.show {
-            opacity: 1;
-            visibility: visible;
-            bottom: 30px;
-        }
+      /* --- Base Styles --- */
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6; /* bg-gray-100 */
+      }
+      /* --- Form Section Styling --- */
+      .form-section-header {
+        cursor: pointer;
+      }
+      .form-section-title {
+        color: white;
+      }
+      .form-section-content {
+        transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out,
+          padding 0.5s ease-in-out;
+        max-height: 8000px; /* A large value to allow for content */
+        opacity: 1;
+      }
+      .form-section-content.collapsed {
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        opacity: 0;
+        overflow: hidden;
+      }
+      .chevron-icon {
+        transition: transform 0.3s ease-in-out;
+      }
+      .chevron-icon.rotated {
+        transform: rotate(180deg);
+      }
+      /* --- Input and Label Styles --- */
+      .input-field {
+        display: block;
+        width: 100%;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        background-color: #f9fafb; /* bg-gray-50 */
+        border-width: 1px;
+        border-color: #d1d5db; /* border-gray-300 */
+        border-radius: 0.375rem; /* rounded-md */
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+      }
+      .input-field:focus {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        border-color: #4f46e5; /* indigo-600 */
+        box-shadow: 0 0 0 1px #4f46e5;
+      }
+      .input-field[readonly] {
+        background-color: #e5e7eb; /* bg-gray-200 */
+        cursor: not-allowed;
+      }
+      .subsection-title {
+        font-size: 1.125rem; /* text-lg */
+        font-weight: 600; /* font-semibold */
+        color: #1f2937; /* text-gray-800 */
+        margin-bottom: 0.75rem;
+        border-bottom-width: 1px;
+        padding-bottom: 0.5rem;
+      }
+      .details-container {
+        padding-left: 1.75rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0.75rem;
+      }
+      /* --- Alternating Background for Readability --- */
+      .form-section-content > div:nth-child(odd) .subsection-title {
+        background-color: #f9fafb; /* bg-gray-50 */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin-left: -1rem;
+        margin-right: -1rem;
+        border-radius: 0.25rem;
+      }
+      /* --- Age Display & Eligibility --- */
+      .age-display {
+        padding: 0.75rem;
+        background-color: #f3f4f6; /* bg-gray-100 */
+        border-radius: 0.375rem; /* rounded-md */
+        text-align: center;
+        font-weight: 500;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+      }
+      .age-display.error {
+        color: #dc2626; /* red-600 */
+        font-weight: 700; /* font-bold */
+        background-color: #fee2e2; /* red-100 */
+        border: 1px solid #fca5a5; /* red-300 */
+      }
+      .hidden {
+        display: none;
+      }
+      /* --- Subtle Add Button --- */
+      .add-btn {
+        background-color: #4f46e5; /* indigo-600 */
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 1.75rem; /* 28px */
+        height: 1.75rem; /* 28px */
+        font-weight: 600;
+        font-size: 1.25rem;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: background-color 0.2s;
+      }
+      .add-btn:hover {
+        background-color: #4338ca; /* indigo-700 */
+      }
+      /* --- Modal Styles --- */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        transition: opacity 0.3s ease;
+      }
+      .modal-content {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 400px;
+        transform: scale(0.95);
+        transition: transform 0.3s ease;
+      }
+      .modal-overlay:not(.hidden) .modal-content {
+        transform: scale(1);
+      }
+      /* --- Toast Notification --- */
+      #toast-notification {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #1f2937; /* bg-gray-800 */
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s, visibility 0.5s, bottom 0.5s;
+      }
+      #toast-notification.show {
+        opacity: 1;
+        visibility: visible;
+        bottom: 30px;
+      }
     </style>
-</head>
-<body class="text-gray-800">
-    
-<nav
-      class="w-full bg-white border-b border-gray-200 fixed top-0 left-0 z-50"
+  </head>
+  <body class="text-gray-800">
+    <nav
+      class="bg-white border-b border-indigo-100 sticky top-0 z-50 shadow-sm"
     >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
+        <div class="flex justify-between items-center h-20">
+          <!-- logo + title -->
           <a href="/" class="flex items-center space-x-3">
             <img
               src="/images/gp-companion-logo.png"
               alt="GP Companion Logo"
-              width="40"
-              height="40"
-              class="w-10 h-10"
+              width="80"
+              height="80"
+              class="w-20 h-20"
             />
-            <span class="font-bold text-xl text-gray-900">GP Companion</span>
+            <span class="font-bold text-xl text-indigo-800">GP Companion</span>
           </a>
 
-          <div class="hidden md:flex items-center space-x-8">
+          <!-- desktop links -->
+          <div id="desktopMenu" class="hidden md:flex items-center space-x-4">
+            <a
+              href="/"
+              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              >Home</a
+            >
+            <a
+              href="/gpccmp"
+              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              >GPCCMP</a
+            >
+            <a
+              href="/HealthAssessments"
+              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              >Assessments</a
+            >
             <a
               href="/about"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
-              >About Website</a
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              >About</a
             >
             <a
               href="/developer"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
               >Developer</a
             >
             <a
               href="/privacy"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
-              >Privacy Policy</a
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              >Privacy</a
             >
             <a
               href="/contact"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
-              >Contact Developer</a
-            >
-            <a
-              href="/gpccmp"
-              class="inline-flex items-center px-3 py-2 bg-indigo-600 text-white rounded-md text-sm shadow-sm hover:bg-indigo-700"
-              >Start GPCCMP</a
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              >Contact</a
             >
           </div>
 
+          <!-- mobile button -->
           <div class="md:hidden">
             <button
-              type="button"
-              class="inline-flex items-center p-2 rounded-md text-gray-600 hover:bg-gray-100"
+              id="mobileMenuButton"
+              aria-expanded="false"
+              aria-controls="mobileMenu"
+              class="inline-flex items-center justify-center p-2 rounded-md text-indigo-700 hover:text-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               <span class="sr-only">Open menu</span>
+              <!-- bars icon -->
               <svg
+                id="menuOpenIcon"
                 class="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"
@@ -242,74 +263,197 @@
                   d="M4 6h16M4 12h16M4 18h16"
                 />
               </svg>
+              <!-- close icon (hidden by default) -->
+              <svg
+                id="menuCloseIcon"
+                class="h-6 w-6 hidden"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
           </div>
         </div>
       </div>
+
+      <!-- mobile menu (hidden by default) -->
+      <div id="mobileMenu" class="md:hidden hidden border-t border-indigo-100">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="/"
+            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            >Home</a
+          >
+          <a
+            href="/gpccmp"
+            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            >GPCCMP</a
+          >
+          <a
+            href="/HealthAssessments"
+            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            >Assessments</a
+          >
+          <a
+            href="/about"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >About</a
+          >
+          <a
+            href="/developer"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >Developer</a
+          >
+          <a
+            href="/privacy"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >Privacy</a
+          >
+          <a
+            href="/contact"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >Contact</a
+          >
+        </div>
+      </div>
     </nav>
-
     <div class="container mx-auto p-4 sm:p-6 lg:p-8 mt-12">
-        <header class="text-center mb-10">
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Aboriginal and Torres Strait Islander Health Assessment Tool</h1>
-            <p class="text-md text-gray-600 mt-2">MBS Item 715</p>
-            <p class="text-lg text-gray-800 mt-4 font-medium">For an Aboriginal or Torres Strait Islander child who is less than 15 years old</p>
-            <p class="text-sm text-gray-700 mt-4 font-semibold">Developed by Dr Bobby Tork MD, FRACGP-RG</p>
-            <p class="text-xs text-gray-500 mt-1">&copy; 2025 Dr Bobby Tork</p>
-        </header>
+      <header class="text-center mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">
+          Aboriginal and Torres Strait Islander Health Assessment Tool
+        </h1>
+        <p class="text-md text-gray-600 mt-2">MBS Item 715</p>
+        <p class="text-lg text-gray-800 mt-4 font-medium">
+          For an Aboriginal or Torres Strait Islander child who is less than 15
+          years old
+        </p>
+        <p class="text-sm text-gray-700 mt-4 font-semibold">
+          Developed by Dr Bobby Tork MD, FRACGP-RG
+        </p>
+        <p class="text-xs text-gray-500 mt-1">&copy; 2025 Dr Bobby Tork</p>
+      </header>
 
-        <div class="max-w-4xl mx-auto">
-            <div id="eligibility-message-container"></div>
-            <div id="form-container"></div>
+      <div class="max-w-4xl mx-auto">
+        <div id="eligibility-message-container"></div>
+        <div id="form-container"></div>
 
-            <div id="action-buttons" class="mt-8 flex justify-end space-x-4">
-                <button id="clear-form-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Clear Form</button>
-                <button id="save-txt-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Save as .txt</button>
-                <button id="save-rtf-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Save as .rtf</button>
-            </div>
-
-            <div id="report-container" class="mt-10 hidden">
-                <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
-                    <div class="p-6 bg-white">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Generated Assessment Report</h2>
-                        <pre id="report-output" class="p-4 bg-gray-50 rounded-lg whitespace-pre-wrap font-mono text-sm"></pre>
-                        <div class="mt-6 flex justify-end space-x-4">
-                            <button id="print-report-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700">Print Report</button>
-                            <button id="copy-report-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">Copy to Clipboard</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div id="action-buttons" class="mt-8 flex justify-end space-x-4">
+          <button
+            id="clear-form-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Clear Form
+          </button>
+          <button
+            id="save-txt-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Save as .txt
+          </button>
+          <button
+            id="save-rtf-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Save as .rtf
+          </button>
         </div>
+
+        <div id="report-container" class="mt-10 hidden">
+          <div
+            class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+          >
+            <div class="p-6 bg-white">
+              <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                Generated Assessment Report
+              </h2>
+              <pre
+                id="report-output"
+                class="p-4 bg-gray-50 rounded-lg whitespace-pre-wrap font-mono text-sm"
+              ></pre>
+              <div class="mt-6 flex justify-end space-x-4">
+                <button
+                  id="print-report-btn"
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
+                >
+                  Print Report
+                </button>
+                <button
+                  id="copy-report-btn"
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+                >
+                  Copy to Clipboard
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-   
+
     <div id="easter-egg-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <p class="font-semibold">Developed by Dr Bobby Tork MD, FRACGP-RG</p>
-            <p class="text-sm">&copy; 2025 Dr Bobby Tork</p>
-            <button id="close-easter-egg" class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">Close</button>
-        </div>
+      <div class="modal-content">
+        <p class="font-semibold">Developed by Dr Bobby Tork MD, FRACGP-RG</p>
+        <p class="text-sm">&copy; 2025 Dr Bobby Tork</p>
+        <button
+          id="close-easter-egg"
+          class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+        >
+          Close
+        </button>
+      </div>
     </div>
     <div id="clear-confirm-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h3 class="text-lg font-bold mb-2">Are you sure?</h3>
-            <p class="text-gray-600 mb-4">All entered data will be lost. This action cannot be undone.</p>
-            <div class="flex justify-center space-x-4">
-                <button id="cancel-clear-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-gray-200 hover:bg-gray-300">Cancel</button>
-                <button id="confirm-clear-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700">Confirm Clear</button>
-            </div>
+      <div class="modal-content">
+        <h3 class="text-lg font-bold mb-2">Are you sure?</h3>
+        <p class="text-gray-600 mb-4">
+          All entered data will be lost. This action cannot be undone.
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            id="cancel-clear-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+          >
+            Cancel
+          </button>
+          <button
+            id="confirm-clear-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700"
+          >
+            Confirm Clear
+          </button>
         </div>
+      </div>
     </div>
     <div id="restore-confirm-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h3 class="text-lg font-bold mb-2">Restore Session?</h3>
-            <p class="text-gray-600 mb-4">We found saved data from a previous session. Would you like to restore it?</p>
-            <div class="flex justify-center space-x-4">
-                <button id="cancel-restore-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-gray-200 hover:bg-gray-300">No, Start Fresh</button>
-                <button id="confirm-restore-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">Yes, Restore</button>
-            </div>
+      <div class="modal-content">
+        <h3 class="text-lg font-bold mb-2">Restore Session?</h3>
+        <p class="text-gray-600 mb-4">
+          We found saved data from a previous session. Would you like to restore
+          it?
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            id="cancel-restore-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+          >
+            No, Start Fresh
+          </button>
+          <button
+            id="confirm-restore-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+          >
+            Yes, Restore
+          </button>
         </div>
+      </div>
     </div>
-
     <footer
       class="bg-indigo-950 text-indigo-100 border-t border-indigo-800 mt-auto"
     >
@@ -322,11 +466,8 @@
               >
                 <span class="text-white font-bold text-lg">GP</span>
               </div>
-              <span class="font-bold text-xl text-white">
-                GP Companion
-              </span>
+              <span class="font-bold text-xl text-white">GP Companion</span>
             </div>
-
             <p class="text-indigo-200 text-sm max-w-md">
               Comprehensive medical tools and health assessments designed for
               healthcare professionals. Streamline your workflow with our
@@ -340,7 +481,7 @@
               <li>
                 <a
                   href="/about"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   About Website
                 </a>
@@ -348,7 +489,7 @@
               <li>
                 <a
                   href="/developer"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   Developer
                 </a>
@@ -356,7 +497,7 @@
               <li>
                 <a
                   href="/privacy"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   Privacy Policy
                 </a>
@@ -364,7 +505,7 @@
               <li>
                 <a
                   href="/contact"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   Contact Developer
                 </a>
@@ -376,22 +517,36 @@
             <h3 class="font-semibold text-white mb-4">Tools</h3>
             <ul class="space-y-2">
               <li>
-                <span class="text-indigo-200 text-sm">GPCCMP Tool</span>
+                <a
+                  href="/gpccmp"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
+                  GPCCMP Tool
+                </a>
               </li>
               <li>
-                <span class="text-indigo-200 text-sm">
+                <a
+                  href="/HealthAssessments"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
                   Health Assessments
-                </span>
+                </a>
               </li>
               <li>
-                <span class="text-indigo-200 text-sm">
+                <a
+                  href="/HealthAssessments"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
                   75+ Health Assessment
-                </span>
+                </a>
               </li>
               <li>
-                <span class="text-indigo-200 text-sm">
+                <a
+                  href="/HealthAssessments"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
                   ATSI Health Assessment
-                </span>
+                </a>
               </li>
             </ul>
           </div>
@@ -406,29 +561,31 @@
       </div>
     </footer>
 
-
     <div id="toast-notification"></div>
 
     <script>
-        // --- DOM Element References ---
-        const formContainer = document.getElementById('form-container');
-        const eligibilityMessageContainer = document.getElementById('eligibility-message-container');
-        const saveTxtBtn = document.getElementById('save-txt-btn');
-        const saveRtfBtn = document.getElementById('save-rtf-btn');
-        const clearFormBtn = document.getElementById('clear-form-btn');
-        const actionButtons = document.getElementById('action-buttons');
-        const reportContainer = document.getElementById('report-container');
-        const reportOutput = document.getElementById('report-output');
-        const printReportBtn = document.getElementById('print-report-btn');
-        const copyReportBtn = document.getElementById('copy-report-btn');
-        const LOCAL_STORAGE_KEY = 'atsiChildHealthAssessmentData_v2'; // Updated key for new version
+      // --- DOM Element References ---
+      const formContainer = document.getElementById("form-container");
+      const eligibilityMessageContainer = document.getElementById(
+        "eligibility-message-container"
+      );
+      const saveTxtBtn = document.getElementById("save-txt-btn");
+      const saveRtfBtn = document.getElementById("save-rtf-btn");
+      const clearFormBtn = document.getElementById("clear-form-btn");
+      const actionButtons = document.getElementById("action-buttons");
+      const reportContainer = document.getElementById("report-container");
+      const reportOutput = document.getElementById("report-output");
+      const printReportBtn = document.getElementById("print-report-btn");
+      const copyReportBtn = document.getElementById("copy-report-btn");
+      const LOCAL_STORAGE_KEY = "atsiChildHealthAssessmentData_v2"; // Updated key for new version
 
-        // --- Reusable HTML Templates ---
-        const getChevronIcon = () => `<svg class="chevron-icon w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+      // --- Reusable HTML Templates ---
+      const getChevronIcon = () =>
+        `<svg class="chevron-icon w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
 
-        const getPatientDetailsHtml = () => {
-            const today = new Date().toISOString().slice(0, 10);
-            return `
+      const getPatientDetailsHtml = () => {
+        const today = new Date().toISOString().slice(0, 10);
+        return `
             <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
                 <div class="form-section-header text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center">
                     <h2 class="form-section-title">Patient Details</h2>
@@ -453,31 +610,45 @@
                     <p class="text-sm text-gray-500 mt-4"><span class="text-red-500">*</span> Indicates a required field.</p>
                 </div>
             </div>`;
-        };
-       
-        const getCheckboxWithDetails = (id, label, placeholder = "Details...") => `
+      };
+
+      const getCheckboxWithDetails = (
+        id,
+        label,
+        placeholder = "Details..."
+      ) => `
             <label class="flex items-center my-2"><input type="checkbox" id="${id}-checkbox" class="h-4 w-4 text-indigo-600 mr-3 rounded border-gray-300"> ${label}</label>
             <div id="${id}-details-container" class="details-container hidden">
                 <textarea id="${id}-details" class="input-field" placeholder="${placeholder}"></textarea>
             </div>
         `;
 
-        const getRadioWithDetails = (id, label, options, detailTriggerValue, placeholder = "Details...") => {
-            const radioButtons = options.map(opt => `
+      const getRadioWithDetails = (
+        id,
+        label,
+        options,
+        detailTriggerValue,
+        placeholder = "Details..."
+      ) => {
+        const radioButtons = options
+          .map(
+            (opt) => `
                 <label class="flex items-center"><input type="radio" name="${id}-radio" value="${opt.value}" class="h-4 w-4 text-indigo-600 mr-2 rounded-full border-gray-300"> ${opt.label}</label>
-            `).join('');
-            return `
+            `
+          )
+          .join("");
+        return `
                 <p class="font-medium mb-2">${label}</p>
                 <div class="flex flex-wrap gap-x-4">${radioButtons}</div>
                 <div id="${id}-details-container" class="details-container hidden">
                     <textarea id="${id}-details" class="input-field" placeholder="${placeholder}"></textarea>
                 </div>
             `;
-        };
+      };
 
-        // --- 715 Assessment Form Function for Child ---
-        function getIndigenousHealthForm_Child() {
-            return `
+      // --- 715 Assessment Form Function for Child ---
+      function getIndigenousHealthForm_Child() {
+        return `
                 ${getPatientDetailsHtml()}
                 <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
                     <div class="form-section-header text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center"><h2 class="form-section-title">Introduction</h2>${getChevronIcon()}</div>
@@ -488,7 +659,10 @@
                             <label for="prev-assessment-date" class="block text-sm font-medium text-gray-700 mb-1">Previous health assessment date:</label>
                             <input type="date" id="prev-assessment-date" class="input-field">
                         </div>
-                        ${getCheckboxWithDetails('usual-gp', 'Usual GP confirmed')}
+                        ${getCheckboxWithDetails(
+                          "usual-gp",
+                          "Usual GP confirmed"
+                        )}
                         <label class="flex items-center my-2"><input type="checkbox" id="consent-obtained-checkbox" class="h-4 w-4 text-indigo-600 mr-3 rounded border-gray-300"> Consent obtained to perform health assessment with input from other staff including nurses.</label>
                     </div>
                 </div>
@@ -500,8 +674,16 @@
                             <div class="space-y-8">
                                 <div id="perinatal-section">
                                     <h3 class="subsection-title">Perinatal & Early Years</h3>
-                                    ${getCheckboxWithDetails('in-utero', 'In-utero history', 'e.g alcohol and drug exposure, trauma, complications.')}
-                                    ${getCheckboxWithDetails('birth-history', 'Birth/Neonatal history', 'e.g. birth weight, delivery type, complications.')}
+                                    ${getCheckboxWithDetails(
+                                      "in-utero",
+                                      "In-utero history",
+                                      "e.g alcohol and drug exposure, trauma, complications."
+                                    )}
+                                    ${getCheckboxWithDetails(
+                                      "birth-history",
+                                      "Birth/Neonatal history",
+                                      "e.g. birth weight, delivery type, complications."
+                                    )}
                                     <div id="feeding-history-section" class="mt-4">
                                         <p class="font-medium mb-2">Feeding History:</p>
                                         <div id="feeding-history-container" class="flex flex-wrap gap-x-4">
@@ -526,16 +708,84 @@
                                         </div>
                                         <div class="pt-2">
                                             <h4 class="font-semibold text-gray-600 mb-2">Anemia & Nutrition Screening</h4>
-                                            ${getRadioWithDetails('anemia-diet', 'Dietary iron intake assessed (e.g., red meat consumption)?', [{label: 'Adequate', value: 'adequate'}, {label: 'Inadequate', value: 'inadequate'}], 'inadequate')}
-                                            <div class="mt-4">${getRadioWithDetails('anemia-symptoms', 'Any symptoms like fatigue or pallor noted?', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes')}</div>
+                                            ${getRadioWithDetails(
+                                              "anemia-diet",
+                                              "Dietary iron intake assessed (e.g., red meat consumption)?",
+                                              [
+                                                {
+                                                  label: "Adequate",
+                                                  value: "adequate",
+                                                },
+                                                {
+                                                  label: "Inadequate",
+                                                  value: "inadequate",
+                                                },
+                                              ],
+                                              "inadequate"
+                                            )}
+                                            <div class="mt-4">${getRadioWithDetails(
+                                              "anemia-symptoms",
+                                              "Any symptoms like fatigue or pallor noted?",
+                                              [
+                                                { label: "Yes", value: "yes" },
+                                                { label: "No", value: "no" },
+                                              ],
+                                              "yes"
+                                            )}</div>
                                         </div>
-                                        <div>${getRadioWithDetails('physical-activity', 'Physical activity', [{label: 'Normal/adequate', value: 'adequate'}, {label: 'Abnormal/inadequate', value: 'inadequate'}], 'inadequate')}</div>
+                                        <div>${getRadioWithDetails(
+                                          "physical-activity",
+                                          "Physical activity",
+                                          [
+                                            {
+                                              label: "Normal/adequate",
+                                              value: "adequate",
+                                            },
+                                            {
+                                              label: "Abnormal/inadequate",
+                                              value: "inadequate",
+                                            },
+                                          ],
+                                          "inadequate"
+                                        )}</div>
                                         <div id="dental-hygiene-section" class="hidden">
                                             <h4 class="font-semibold text-gray-600 mb-2">Dental Hygiene</h4>
-                                            ${getRadioWithDetails('dental-hygiene-practice', 'Practices age-appropriate dental hygiene?', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'no')}
-                                            <div class="mt-4">${getRadioWithDetails('dental-checkup', 'Sees a dentist regularly for check up?', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'no')}</div>
-                                            <div class="mt-4">${getRadioWithDetails('dental-sugary-drinks', 'Regular consumption of sugary drinks?', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes')}</div>
-                                            <div class="mt-4">${getRadioWithDetails('dental-decay', 'Visible plaque or decay on examination?', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes')}</div>
+                                            ${getRadioWithDetails(
+                                              "dental-hygiene-practice",
+                                              "Practices age-appropriate dental hygiene?",
+                                              [
+                                                { label: "Yes", value: "yes" },
+                                                { label: "No", value: "no" },
+                                              ],
+                                              "no"
+                                            )}
+                                            <div class="mt-4">${getRadioWithDetails(
+                                              "dental-checkup",
+                                              "Sees a dentist regularly for check up?",
+                                              [
+                                                { label: "Yes", value: "yes" },
+                                                { label: "No", value: "no" },
+                                              ],
+                                              "no"
+                                            )}</div>
+                                            <div class="mt-4">${getRadioWithDetails(
+                                              "dental-sugary-drinks",
+                                              "Regular consumption of sugary drinks?",
+                                              [
+                                                { label: "Yes", value: "yes" },
+                                                { label: "No", value: "no" },
+                                              ],
+                                              "yes"
+                                            )}</div>
+                                            <div class="mt-4">${getRadioWithDetails(
+                                              "dental-decay",
+                                              "Visible plaque or decay on examination?",
+                                              [
+                                                { label: "Yes", value: "yes" },
+                                                { label: "No", value: "no" },
+                                              ],
+                                              "yes"
+                                            )}</div>
                                             <label for="dental-comments" class="block text-sm font-medium text-gray-700 mb-1 mt-4">Comments:</label>
                                             <textarea id="dental-comments" class="input-field h-20"></textarea>
                                         </div>
@@ -558,12 +808,44 @@
                                             <div id="hospital-admission-details-container" class="details-container hidden"><textarea id="hospital-admission-details" class="input-field" placeholder="Details of admission..."></textarea></div>
                                         </div>
                                         <div><label for="regular-medications" class="block text-sm font-medium text-gray-700 mb-1">Regular Medications:</label><textarea id="regular-medications" class="input-field h-24"></textarea></div>
-                                        <div>${getRadioWithDetails('family-history', 'Significant family medical history', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes')}</div>
+                                        <div>${getRadioWithDetails(
+                                          "family-history",
+                                          "Significant family medical history",
+                                          [
+                                            { label: "Yes", value: "yes" },
+                                            { label: "No", value: "no" },
+                                          ],
+                                          "yes"
+                                        )}</div>
                                         <div id="rhd-section" class="hidden">
                                             <h4 class="font-semibold text-gray-600 mb-2">Rheumatic Heart Disease (RHD) Screening (Ages 5-14)</h4>
-                                            ${getRadioWithDetails('rhd-sore-throat', 'History of recurrent sore throats or skin sores?', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes')}
-                                            <div class="mt-4">${getRadioWithDetails('rhd-joint-pain', 'History of joint pain/swelling?', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes')}</div>
-                                            <div class="mt-4">${getRadioWithDetails('rhd-family-history', 'Known family history of RHD or rheumatic fever?', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes')}</div>
+                                            ${getRadioWithDetails(
+                                              "rhd-sore-throat",
+                                              "History of recurrent sore throats or skin sores?",
+                                              [
+                                                { label: "Yes", value: "yes" },
+                                                { label: "No", value: "no" },
+                                              ],
+                                              "yes"
+                                            )}
+                                            <div class="mt-4">${getRadioWithDetails(
+                                              "rhd-joint-pain",
+                                              "History of joint pain/swelling?",
+                                              [
+                                                { label: "Yes", value: "yes" },
+                                                { label: "No", value: "no" },
+                                              ],
+                                              "yes"
+                                            )}</div>
+                                            <div class="mt-4">${getRadioWithDetails(
+                                              "rhd-family-history",
+                                              "Known family history of RHD or rheumatic fever?",
+                                              [
+                                                { label: "Yes", value: "yes" },
+                                                { label: "No", value: "no" },
+                                              ],
+                                              "yes"
+                                            )}</div>
                                         </div>
                                         <div>
                                             <p class="font-medium mb-2">Immunisation status:</p>
@@ -585,20 +867,134 @@
                                 <div id="social-wellbeing-section">
                                     <h3 class="subsection-title">Social, Environmental & Emotional Wellbeing</h3>
                                     <div class="space-y-4">
-                                        <div>${getCheckboxWithDetails('family-relationships', 'Family relationships and social circumstances')}</div>
-                                        <div>${getCheckboxWithDetails('living-conditions', 'Environmental and living conditions')}</div>
-                                        <div>${getRadioWithDetails('env-factors', 'Exposure to harmful environmental factors (e.g cigarette smoke etc)', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes')}</div>
-                                        <div id="education-section" class="hidden">${getRadioWithDetails('education-progress', 'Educational progress', [{label: 'Normal/Appropriate', value: 'normal'}, {label: 'Concerns noted', value: 'concerns'}], 'concerns')}</div>
+                                        <div>${getCheckboxWithDetails(
+                                          "family-relationships",
+                                          "Family relationships and social circumstances"
+                                        )}</div>
+                                        <div>${getCheckboxWithDetails(
+                                          "living-conditions",
+                                          "Environmental and living conditions"
+                                        )}</div>
+                                        <div>${getRadioWithDetails(
+                                          "env-factors",
+                                          "Exposure to harmful environmental factors (e.g cigarette smoke etc)",
+                                          [
+                                            { label: "Yes", value: "yes" },
+                                            { label: "No", value: "no" },
+                                          ],
+                                          "yes"
+                                        )}</div>
+                                        <div id="education-section" class="hidden">${getRadioWithDetails(
+                                          "education-progress",
+                                          "Educational progress",
+                                          [
+                                            {
+                                              label: "Normal/Appropriate",
+                                              value: "normal",
+                                            },
+                                            {
+                                              label: "Concerns noted",
+                                              value: "concerns",
+                                            },
+                                          ],
+                                          "concerns"
+                                        )}</div>
                                         <div class="pt-2">
                                             <h4 class="font-semibold text-gray-600 mb-2">Social and Emotional Wellbeing (SEWB)</h4>
-                                            ${getRadioWithDetails('sewb-community', 'Connection to community and culture?', [{label: 'Strong', value: 'strong'}, {label: 'Some Concerns', value: 'concerns'}, {label: 'Disconnected', value: 'disconnected'}], 'concerns')}
-                                            <div class="mt-4">${getRadioWithDetails('sewb-identity', 'Sense of identity and belonging?', [{label: 'Strong', value: 'strong'}, {label: 'Some Concerns', value: 'concerns'}, {label: 'Disconnected', value: 'disconnected'}], 'concerns')}</div>
-                                            <div class="mt-4">${getRadioWithDetails('sewb-racism', 'Any experiences with racism or discrimination?', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes')}</div>
+                                            ${getRadioWithDetails(
+                                              "sewb-community",
+                                              "Connection to community and culture?",
+                                              [
+                                                {
+                                                  label: "Strong",
+                                                  value: "strong",
+                                                },
+                                                {
+                                                  label: "Some Concerns",
+                                                  value: "concerns",
+                                                },
+                                                {
+                                                  label: "Disconnected",
+                                                  value: "disconnected",
+                                                },
+                                              ],
+                                              "concerns"
+                                            )}
+                                            <div class="mt-4">${getRadioWithDetails(
+                                              "sewb-identity",
+                                              "Sense of identity and belonging?",
+                                              [
+                                                {
+                                                  label: "Strong",
+                                                  value: "strong",
+                                                },
+                                                {
+                                                  label: "Some Concerns",
+                                                  value: "concerns",
+                                                },
+                                                {
+                                                  label: "Disconnected",
+                                                  value: "disconnected",
+                                                },
+                                              ],
+                                              "concerns"
+                                            )}</div>
+                                            <div class="mt-4">${getRadioWithDetails(
+                                              "sewb-racism",
+                                              "Any experiences with racism or discrimination?",
+                                              [
+                                                { label: "Yes", value: "yes" },
+                                                { label: "No", value: "no" },
+                                              ],
+                                              "yes"
+                                            )}</div>
                                         </div>
-                                        <div>${getRadioWithDetails('stressful-events', 'Has the patient had any significantly stressful life events?', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes')}</div>
-                                        <div id="mental-health-section" class="hidden">${getRadioWithDetails('mental-health-history', 'Significant history of mental health conditions', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes', 'Details of mental health history...')}<div id="self-harm-container" class="details-container hidden">${getRadioWithDetails('self-harm-history', 'History of self harm', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes')}</div></div>
-                                        <div id="substance-use-section" class="hidden">${getRadioWithDetails('substance-use', 'Does the patient use any substances including recreational drugs and alcohol?', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes', 'e.g. type, duration, frequency and quantity')}</div>
-                                        <div id="sexual-health-section" class="hidden">${getRadioWithDetails('sexually-active', 'Is the patient sexually active?', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes')}<label for="sexual-health-comments" class="block text-sm font-medium text-gray-700 mb-1 mt-2">Sexual/ reproductive history:</label><textarea id="sexual-health-comments" class="input-field h-20"></textarea></div>
+                                        <div>${getRadioWithDetails(
+                                          "stressful-events",
+                                          "Has the patient had any significantly stressful life events?",
+                                          [
+                                            { label: "Yes", value: "yes" },
+                                            { label: "No", value: "no" },
+                                          ],
+                                          "yes"
+                                        )}</div>
+                                        <div id="mental-health-section" class="hidden">${getRadioWithDetails(
+                                          "mental-health-history",
+                                          "Significant history of mental health conditions",
+                                          [
+                                            { label: "Yes", value: "yes" },
+                                            { label: "No", value: "no" },
+                                          ],
+                                          "yes",
+                                          "Details of mental health history..."
+                                        )}<div id="self-harm-container" class="details-container hidden">${getRadioWithDetails(
+          "self-harm-history",
+          "History of self harm",
+          [
+            { label: "Yes", value: "yes" },
+            { label: "No", value: "no" },
+          ],
+          "yes"
+        )}</div></div>
+                                        <div id="substance-use-section" class="hidden">${getRadioWithDetails(
+                                          "substance-use",
+                                          "Does the patient use any substances including recreational drugs and alcohol?",
+                                          [
+                                            { label: "Yes", value: "yes" },
+                                            { label: "No", value: "no" },
+                                          ],
+                                          "yes",
+                                          "e.g. type, duration, frequency and quantity"
+                                        )}</div>
+                                        <div id="sexual-health-section" class="hidden">${getRadioWithDetails(
+                                          "sexually-active",
+                                          "Is the patient sexually active?",
+                                          [
+                                            { label: "Yes", value: "yes" },
+                                            { label: "No", value: "no" },
+                                          ],
+                                          "yes"
+                                        )}<label for="sexual-health-comments" class="block text-sm font-medium text-gray-700 mb-1 mt-2">Sexual/ reproductive history:</label><textarea id="sexual-health-comments" class="input-field h-20"></textarea></div>
                                     </div>
                                 </div>
                             </div>
@@ -620,26 +1016,59 @@
                         </div>
                         <div class="mt-6">
                             <h3 class="subsection-title">Examinations</h3>
-                            <div id="newborn-check-section" class="hidden">${getCheckboxWithDetails('newborn-check', 'Newborn baby check')}</div>
+                            <div id="newborn-check-section" class="hidden">${getCheckboxWithDetails(
+                              "newborn-check",
+                              "Newborn baby check"
+                            )}</div>
                            
                             <label class="flex items-center my-2"><input type="checkbox" id="vision-exam-checkbox" class="h-4 w-4 text-indigo-600 mr-3 rounded border-gray-300"> Eye/vision examination</label>
                             <div id="vision-exam-details-container" class="details-container hidden">
-                                <div class="mt-2">${getRadioWithDetails('gross-vision', 'Gross vision assessment', [{label: 'Normal', value: 'normal'}, {label: 'Abnormal', value: 'abnormal'}], 'abnormal')}</div>
+                                <div class="mt-2">${getRadioWithDetails(
+                                  "gross-vision",
+                                  "Gross vision assessment",
+                                  [
+                                    { label: "Normal", value: "normal" },
+                                    { label: "Abnormal", value: "abnormal" },
+                                  ],
+                                  "abnormal"
+                                )}</div>
                                 <div id="vision-acuity-container" class="mt-4"><div class="grid grid-cols-3 gap-2"><input type="text" id="vision-va-r" class="input-field" placeholder="VA R"><input type="text" id="vision-va-l" class="input-field" placeholder="VA L"><input type="text" id="vision-va-b" class="input-field" placeholder="VA Both"></div></div>
-                                <div id="trachoma-section" class="mt-4">${getRadioWithDetails('trachoma-concern', 'Concerns regarding trachoma?', [{label: 'Yes', value: 'yes'}, {label: 'No', value: 'no'}], 'yes')}</div>
+                                <div id="trachoma-section" class="mt-4">${getRadioWithDetails(
+                                  "trachoma-concern",
+                                  "Concerns regarding trachoma?",
+                                  [
+                                    { label: "Yes", value: "yes" },
+                                    { label: "No", value: "no" },
+                                  ],
+                                  "yes"
+                                )}</div>
                                 <textarea id="vision-exam-details" class="input-field mt-4" placeholder="Other eye/vision details..."></textarea>
                             </div>
 
                             <div class="border-t pt-4 mt-4">
                                 <label class="flex items-center my-2"><input type="checkbox" id="ent-exam-checkbox" class="h-4 w-4 text-indigo-600 mr-3 rounded border-gray-300"> ENT examination</label>
                                 <div id="ent-exam-details-container" class="details-container hidden">
-                                    <div class="mt-2">${getRadioWithDetails('gross-hearing', 'Gross hearing assessment', [{label: 'Normal', value: 'normal'}, {label: 'Abnormal', value: 'abnormal'}], 'abnormal')}</div>
+                                    <div class="mt-2">${getRadioWithDetails(
+                                      "gross-hearing",
+                                      "Gross hearing assessment",
+                                      [
+                                        { label: "Normal", value: "normal" },
+                                        {
+                                          label: "Abnormal",
+                                          value: "abnormal",
+                                        },
+                                      ],
+                                      "abnormal"
+                                    )}</div>
                                     <div class="mt-4"><label class="flex items-center"><input type="checkbox" id="ent-otitis-signs" class="h-4 w-4 text-indigo-600 mr-2 rounded border-gray-300"> Visible signs of Otitis Media on otoscopy?</label></div>
                                     <div class="mt-2"><label class="flex items-center"><input type="checkbox" id="ent-discharge-history" class="h-4 w-4 text-indigo-600 mr-2 rounded border-gray-300"> History of ear discharge?</label></div>
                                     <textarea id="ent-exam-details" class="input-field mt-2" placeholder="Other ENT details..."></textarea>
                                 </div>
                             </div>
-                            ${getCheckboxWithDetails('oral-exam', 'Oral examination')}
+                            ${getCheckboxWithDetails(
+                              "oral-exam",
+                              "Oral examination"
+                            )}
                             <div class="border-t pt-4 mt-4">
                                 <label class="flex items-center my-2"><input type="checkbox" id="skin-exam-checkbox" class="h-4 w-4 text-indigo-600 mr-3 rounded border-gray-300"> Skin examination if indicated</label>
                                 <div id="skin-exam-details-container" class="details-container hidden">
@@ -649,8 +1078,14 @@
                                     <textarea id="skin-exam-details" class="input-field mt-2" placeholder="Other skin details..."></textarea>
                                 </div>
                             </div>
-                            ${getCheckboxWithDetails('resp-exam', 'Respiratory examination')}
-                            ${getCheckboxWithDetails('cardiac-exam', 'Cardiovascular examination')}
+                            ${getCheckboxWithDetails(
+                              "resp-exam",
+                              "Respiratory examination"
+                            )}
+                            ${getCheckboxWithDetails(
+                              "cardiac-exam",
+                              "Cardiovascular examination"
+                            )}
                             <div id="dev-assessment-section">
                                 <label class="flex items-center my-2"><input type="checkbox" id="dev-assessment-checkbox" class="h-4 w-4 text-indigo-600 mr-3 rounded border-gray-300"> Developmental assessment</label>
                                 <div id="dev-assessment-details-container" class="details-container hidden">
@@ -661,7 +1096,10 @@
                                     <label class="flex items-center my-2 font-semibold"><input type="checkbox" id="dev-abnormality-checkbox" class="h-4 w-4 text-indigo-600 mr-3 rounded border-gray-300"> Developmental abnormality noted</label>
                                 </div>
                             </div>
-                            ${getCheckboxWithDetails('parent-interaction', 'Assessment of child/parent interaction')}
+                            ${getCheckboxWithDetails(
+                              "parent-interaction",
+                              "Assessment of child/parent interaction"
+                            )}
                         </div>
                     </div>
                 </div>
@@ -707,820 +1145,1426 @@
                     </div>
                 </div>
             `;
+      }
+
+      // --- Core Application Initialization ---
+      document.addEventListener("DOMContentLoaded", () => {
+        // Check for saved data and show the restore modal if it exists.
+        // Otherwise, initialize a fresh form.
+        if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
+          document
+            .getElementById("restore-confirm-modal")
+            .classList.remove("hidden");
+        } else {
+          initializeForm();
         }
-       
-        // --- Core Application Initialization ---
-        document.addEventListener('DOMContentLoaded', () => {
-            // Check for saved data and show the restore modal if it exists.
-            // Otherwise, initialize a fresh form.
-            if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
-                document.getElementById('restore-confirm-modal').classList.remove('hidden');
-            } else {
-                initializeForm();
-            }
 
-            // Add event listeners for the restore modal buttons
-            document.getElementById('confirm-restore-btn').addEventListener('click', () => {
-                document.getElementById('restore-confirm-modal').classList.add('hidden');
-                initializeForm(); // Build form
-                loadFormFromLocalStorage(); // Populate with saved data
-                showToast('Previous session has been restored.');
-            });
+        // Add event listeners for the restore modal buttons
+        document
+          .getElementById("confirm-restore-btn")
+          .addEventListener("click", () => {
+            document
+              .getElementById("restore-confirm-modal")
+              .classList.add("hidden");
+            initializeForm(); // Build form
+            loadFormFromLocalStorage(); // Populate with saved data
+            showToast("Previous session has been restored.");
+          });
 
-            document.getElementById('cancel-restore-btn').addEventListener('click', () => {
-                document.getElementById('restore-confirm-modal').classList.add('hidden');
-                localStorage.removeItem(LOCAL_STORAGE_KEY); // Clear saved data
-                initializeForm(); // Build a fresh form
-                showToast('A new form has been started.');
-            });
-           
-            // Add listeners for other page actions
-            addPageActionListeners();
+        document
+          .getElementById("cancel-restore-btn")
+          .addEventListener("click", () => {
+            document
+              .getElementById("restore-confirm-modal")
+              .classList.add("hidden");
+            localStorage.removeItem(LOCAL_STORAGE_KEY); // Clear saved data
+            initializeForm(); // Build a fresh form
+            showToast("A new form has been started.");
+          });
+
+        // Add listeners for other page actions
+        addPageActionListeners();
+      });
+
+      /**
+       * Builds the form's HTML structure and attaches all necessary dynamic event listeners.
+       */
+      function initializeForm() {
+        // Build the initial HTML for the form
+        formContainer.innerHTML = getIndigenousHealthForm_Child();
+
+        // Attach event listeners for UI interactions like accordions and dynamic fields
+        addAccordionListeners();
+        addDynamicListeners();
+      }
+
+      /**
+       * Attaches event listeners to the main page action buttons (Save, Clear, etc.).
+       */
+      function addPageActionListeners() {
+        saveTxtBtn.addEventListener("click", () =>
+          generateAndDisplayReport(true, "txt")
+        );
+        saveRtfBtn.addEventListener("click", () =>
+          generateAndDisplayReport(true, "rtf")
+        );
+
+        clearFormBtn.addEventListener("click", () => {
+          document
+            .getElementById("clear-confirm-modal")
+            .classList.remove("hidden");
         });
 
-        /**
-         * Builds the form's HTML structure and attaches all necessary dynamic event listeners.
-         */
-        function initializeForm() {
-            // Build the initial HTML for the form
-            formContainer.innerHTML = getIndigenousHealthForm_Child();
-           
-            // Attach event listeners for UI interactions like accordions and dynamic fields
-            addAccordionListeners();
-            addDynamicListeners();
-        }
-       
-        /**
-         * Attaches event listeners to the main page action buttons (Save, Clear, etc.).
-         */
-        function addPageActionListeners() {
-            saveTxtBtn.addEventListener('click', () => generateAndDisplayReport(true, 'txt'));
-            saveRtfBtn.addEventListener('click', () => generateAndDisplayReport(true, 'rtf'));
-           
-            clearFormBtn.addEventListener('click', () => {
-                document.getElementById('clear-confirm-modal').classList.remove('hidden');
-            });
+        document
+          .getElementById("cancel-clear-btn")
+          .addEventListener("click", () => {
+            document
+              .getElementById("clear-confirm-modal")
+              .classList.add("hidden");
+          });
 
-            document.getElementById('cancel-clear-btn').addEventListener('click', () => {
-                document.getElementById('clear-confirm-modal').classList.add('hidden');
-            });
+        document
+          .getElementById("confirm-clear-btn")
+          .addEventListener("click", () => {
+            localStorage.removeItem(LOCAL_STORAGE_KEY);
+            initializeForm(); // Re-initialize a blank form
+            reportContainer.classList.add("hidden");
+            reportOutput.textContent = "";
+            document
+              .getElementById("clear-confirm-modal")
+              .classList.add("hidden");
+            showToast("Form has been cleared.");
+          });
 
-            document.getElementById('confirm-clear-btn').addEventListener('click', () => {
-                localStorage.removeItem(LOCAL_STORAGE_KEY);
-                initializeForm(); // Re-initialize a blank form
-                reportContainer.classList.add('hidden');
-                reportOutput.textContent = '';
-                document.getElementById('clear-confirm-modal').classList.add('hidden');
-                showToast('Form has been cleared.');
-            });
+        printReportBtn.addEventListener("click", () => {
+          const reportContent = reportOutput.textContent;
+          const printWindow = window.open("", "", "height=800,width=800");
+          printWindow.document.write(
+            "<html><head><title>Print Report</title><style>body { font-family: monospace; white-space: pre-wrap; }</style></head><body>"
+          );
+          printWindow.document.write(`<pre>${reportContent}</pre>`);
+          printWindow.document.write("</body></html>");
+          printWindow.document.close();
+          printWindow.focus();
+          setTimeout(() => {
+            printWindow.print();
+          }, 500);
+        });
 
-            printReportBtn.addEventListener('click', () => {
-                const reportContent = reportOutput.textContent;
-                const printWindow = window.open('', '', 'height=800,width=800');
-                printWindow.document.write('<html><head><title>Print Report</title><style>body { font-family: monospace; white-space: pre-wrap; }</style></head><body>');
-                printWindow.document.write(`<pre>${reportContent}</pre>`);
-                printWindow.document.write('</body></html>');
-                printWindow.document.close();
-                printWindow.focus();
-                setTimeout(() => { printWindow.print(); }, 500);
-            });
-
-            copyReportBtn.addEventListener('click', () => {
-                const reportText = reportOutput.textContent;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(reportText).then(() => {
-                        showToast('Report copied to clipboard!');
-                    }).catch(err => {
-                        console.error('Failed to copy text with modern API: ', err);
-                        // Fallback for iFrame restrictions
-                        const textArea = document.createElement("textarea");
-                        textArea.value = reportText;
-                        document.body.appendChild(textArea);
-                        textArea.focus();
-                        textArea.select();
-                        try {
-                            document.execCommand('copy');
-                            showToast('Report copied to clipboard!');
-                        } catch (err) {
-                            console.error('Fallback copy failed: ', err);
-                        }
-                        document.body.removeChild(textArea);
-                    });
-                } else {
-                     // Fallback for older browsers
-                    const textArea = document.createElement("textarea");
-                    textArea.value = reportText;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    try {
-                        document.execCommand('copy');
-                        showToast('Report copied to clipboard!');
-                    } catch (err) {
-                        console.error('Failed to copy text with fallback: ', err);
-                    }
-                    document.body.removeChild(textArea);
+        copyReportBtn.addEventListener("click", () => {
+          const reportText = reportOutput.textContent;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard
+              .writeText(reportText)
+              .then(() => {
+                showToast("Report copied to clipboard!");
+              })
+              .catch((err) => {
+                console.error("Failed to copy text with modern API: ", err);
+                // Fallback for iFrame restrictions
+                const textArea = document.createElement("textarea");
+                textArea.value = reportText;
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                  document.execCommand("copy");
+                  showToast("Report copied to clipboard!");
+                } catch (err) {
+                  console.error("Fallback copy failed: ", err);
                 }
-            });
-        }
-
-        // --- Calculation & Dynamic UI Functions ---
-        function calculateAndDisplayAge() {
-            const dobInput = document.getElementById('patient-dob');
-            const ageDisplay = document.getElementById('patient-age-display');
-            if (!dobInput || !ageDisplay) return { age: null, months: null, isValid: false };
-
-            const dob = dobInput.value;
-            ageDisplay.classList.remove('error');
-            eligibilityMessageContainer.innerHTML = ''; 
-
-            if (!dob) {
-                ageDisplay.innerHTML = 'Age will be calculated here';
-                return { age: null, months: null, isValid: false };
+                document.body.removeChild(textArea);
+              });
+          } else {
+            // Fallback for older browsers
+            const textArea = document.createElement("textarea");
+            textArea.value = reportText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+              document.execCommand("copy");
+              showToast("Report copied to clipboard!");
+            } catch (err) {
+              console.error("Failed to copy text with fallback: ", err);
             }
+            document.body.removeChild(textArea);
+          }
+        });
+      }
 
-            const birthDate = new Date(dob);
-            const today = new Date();
-            let age = today.getFullYear() - birthDate.getFullYear();
-            let months = today.getMonth() - birthDate.getMonth();
-            if (months < 0 || (months === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
-                months += 12;
+      // --- Calculation & Dynamic UI Functions ---
+      function calculateAndDisplayAge() {
+        const dobInput = document.getElementById("patient-dob");
+        const ageDisplay = document.getElementById("patient-age-display");
+        if (!dobInput || !ageDisplay)
+          return { age: null, months: null, isValid: false };
+
+        const dob = dobInput.value;
+        ageDisplay.classList.remove("error");
+        eligibilityMessageContainer.innerHTML = "";
+
+        if (!dob) {
+          ageDisplay.innerHTML = "Age will be calculated here";
+          return { age: null, months: null, isValid: false };
+        }
+
+        const birthDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        let months = today.getMonth() - birthDate.getMonth();
+        if (
+          months < 0 ||
+          (months === 0 && today.getDate() < birthDate.getDate())
+        ) {
+          age--;
+          months += 12;
+        }
+        if (today.getDate() < birthDate.getDate()) {
+          months--;
+        }
+        const totalMonths = age * 12 + months;
+
+        ageDisplay.innerHTML = `Age: ${age}`;
+
+        let isValid = true;
+        if (age >= 15) {
+          ageDisplay.innerHTML = `Eligibility Error: Patient is ${age}. Must be < 15.`;
+          ageDisplay.classList.add("error");
+          isValid = false;
+        }
+        return { age, totalMonths, isValid };
+      }
+
+      function calculateBMI() {
+        const heightInput = document.getElementById("height-cm");
+        const weightInput = document.getElementById("weight-kg");
+        const bmiInput = document.getElementById("bmi");
+        if (!heightInput || !weightInput || !bmiInput) return;
+
+        const height = parseFloat(heightInput.value);
+        const weight = parseFloat(weightInput.value);
+
+        if (height > 0 && weight > 0) {
+          const heightInMeters = height / 100;
+          const bmi = weight / (heightInMeters * heightInMeters);
+          bmiInput.value = bmi.toFixed(2);
+        } else {
+          bmiInput.value = "";
+        }
+      }
+
+      // --- Helper Functions ---
+      function downloadFile(filename, content, mimeType) {
+        const element = document.createElement("a");
+        const blob = new Blob([content], { type: mimeType });
+        element.href = URL.createObjectURL(blob);
+        element.download = filename;
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      }
+
+      function addAccordionListeners() {
+        document.querySelectorAll(".form-section-header").forEach((header) => {
+          if (header.dataset.listenerAttached) return;
+          header.dataset.listenerAttached = true;
+          header.addEventListener("click", () => {
+            const content = header.nextElementSibling;
+            const chevron = header.querySelector(".chevron-icon");
+            content.classList.toggle("collapsed");
+            chevron.classList.toggle("rotated");
+          });
+        });
+      }
+
+      function addDynamicListeners() {
+        const dobInput = document.getElementById("patient-dob");
+        const genderSelect = document.getElementById("patient-gender");
+        const assessmentDateInput = document.getElementById("assessment-date");
+        const patientNameInput = document.getElementById("patient-name");
+
+        // --- EASTER EGG ---
+        if (patientNameInput) {
+          patientNameInput.addEventListener("input", (e) => {
+            // Obfuscated trigger phrase: "bobby" is "Ym9iYnk=" in Base64
+            if (e.target.value.toLowerCase() === atob("Ym9iYnk=")) {
+              document
+                .getElementById("easter-egg-modal")
+                .classList.remove("hidden");
             }
-            if (today.getDate() < birthDate.getDate()) {
-                months--;
-            }
-            const totalMonths = age * 12 + months;
-
-            ageDisplay.innerHTML = `Age: ${age}`;
-           
-            let isValid = true;
-            if (age >= 15) {
-                ageDisplay.innerHTML = `Eligibility Error: Patient is ${age}. Must be < 15.`;
-                ageDisplay.classList.add('error');
-                isValid = false;
-            }
-            return { age, totalMonths, isValid };
+          });
         }
+        document
+          .getElementById("close-easter-egg")
+          .addEventListener("click", () => {
+            document.getElementById("easter-egg-modal").classList.add("hidden");
+          });
+        // --- END EASTER EGG ---
 
-        function calculateBMI() {
-            const heightInput = document.getElementById('height-cm');
-            const weightInput = document.getElementById('weight-kg');
-            const bmiInput = document.getElementById('bmi');
-            if (!heightInput || !weightInput || !bmiInput) return;
+        const handlePatientDetailsChange = () => {
+          const { age, totalMonths, isValid } = calculateAndDisplayAge();
 
-            const height = parseFloat(heightInput.value);
-            const weight = parseFloat(weightInput.value);
-
-            if (height > 0 && weight > 0) {
-                const heightInMeters = height / 100;
-                const bmi = weight / (heightInMeters * heightInMeters);
-                bmiInput.value = bmi.toFixed(2);
-            } else {
-                bmiInput.value = '';
-            }
-        }
-
-        // --- Helper Functions ---
-        function downloadFile(filename, content, mimeType) {
-            const element = document.createElement('a');
-            const blob = new Blob([content], { type: mimeType });
-            element.href = URL.createObjectURL(blob);
-            element.download = filename;
-            document.body.appendChild(element); 
-            element.click();
-            document.body.removeChild(element);
-        }
-
-        function addAccordionListeners() {
-            document.querySelectorAll('.form-section-header').forEach(header => {
-                if(header.dataset.listenerAttached) return;
-                header.dataset.listenerAttached = true;
-                header.addEventListener('click', () => {
-                    const content = header.nextElementSibling;
-                    const chevron = header.querySelector('.chevron-icon');
-                    content.classList.toggle('collapsed');
-                    chevron.classList.toggle('rotated');
-                });
-            });
-        }
-       
-        function addDynamicListeners() {
-            const dobInput = document.getElementById('patient-dob');
-            const genderSelect = document.getElementById('patient-gender');
-            const assessmentDateInput = document.getElementById('assessment-date');
-            const patientNameInput = document.getElementById('patient-name');
-
-            // --- EASTER EGG ---
-            if (patientNameInput) {
-                patientNameInput.addEventListener('input', (e) => {
-                    // Obfuscated trigger phrase: "bobby" is "Ym9iYnk=" in Base64
-                    if (e.target.value.toLowerCase() === atob('Ym9iYnk=')) {
-                        document.getElementById('easter-egg-modal').classList.remove('hidden');
-                    }
-                });
-            }
-            document.getElementById('close-easter-egg').addEventListener('click', () => {
-                document.getElementById('easter-egg-modal').classList.add('hidden');
-            });
-            // --- END EASTER EGG ---
-
-            const handlePatientDetailsChange = () => {
-                const { age, totalMonths, isValid } = calculateAndDisplayAge();
-               
-                document.getElementById('perinatal-section')?.classList.toggle('hidden', age === null || age >= 3);
-                document.getElementById('newborn-check-section')?.classList.toggle('hidden', totalMonths === null || totalMonths > 6);
-                document.getElementById('vision-acuity-container')?.classList.toggle('hidden', age === null || age < 3);
-                document.getElementById('dev-assessment-single')?.classList.toggle('hidden', age !== null && age < 5);
-                document.getElementById('dev-assessment-breakdown')?.classList.toggle('hidden', age === null || age >= 5);
-                document.getElementById('education-section')?.classList.toggle('hidden', age === null || age < 4);
-                document.getElementById('social-wellbeing-section')?.classList.toggle('hidden', age === null || age < 5);
-                document.getElementById('mental-health-section')?.classList.toggle('hidden', age === null || age < 5);
-                document.getElementById('rhd-section')?.classList.toggle('hidden', age === null || age < 5 || age > 14);
-                document.getElementById('substance-use-section')?.classList.toggle('hidden', age === null || age < 10);
-                document.getElementById('sexual-health-section')?.classList.toggle('hidden', age === null || age < 12);
-                document.getElementById('dental-hygiene-section')?.classList.toggle('hidden', age === null || age < 2);
-                document.getElementById('bmi-container')?.classList.toggle('hidden', age === null || age < 2);
-                document.getElementById('head-circumference-container')?.classList.toggle('hidden', age === null || age > 2);
-            };
-
-            if (dobInput) dobInput.addEventListener('change', handlePatientDetailsChange);
-            if (genderSelect) genderSelect.addEventListener('change', handlePatientDetailsChange);
-            if (assessmentDateInput) assessmentDateInput.addEventListener('change', calculateReminderDate);
-           
-            if(dobInput?.value) handlePatientDetailsChange();
-            if(assessmentDateInput?.value) calculateReminderDate();
-           
-            const setupToggle = (checkboxId, detailsId) => {
-                const checkbox = document.getElementById(checkboxId);
-                const details = document.getElementById(detailsId);
-                if (checkbox && details) {
-                    checkbox.addEventListener('change', e => {
-                        details.classList.toggle('hidden', !e.target.checked);
-                    });
-                }
-            };
-           
-            const setupRadioToggle = (radioName, detailsId, triggerValue) => {
-                const radios = document.querySelectorAll(`input[name="${radioName}"]`);
-                const details = document.getElementById(detailsId);
-                if (radios.length > 0 && details) {
-                    radios.forEach(radio => {
-                        radio.addEventListener('change', e => {
-                            details.classList.toggle('hidden', e.target.value !== triggerValue);
-                        });
-                    });
-                }
-            };
-           
-            handlePatientDetailsChange();
-            document.getElementById('height-cm')?.addEventListener('input', calculateBMI);
-            document.getElementById('weight-kg')?.addEventListener('input', calculateBMI);
-
-            const simpleToggles = ['in-utero', 'birth-history', 'family-relationships', 'living-conditions', 'newborn-check', 'vision-exam', 'ent-exam', 'oral-exam', 'skin-exam', 'resp-exam', 'cardiac-exam', 'dev-assessment', 'parent-interaction', 'usual-gp', 'prev-assessment-available'];
-            simpleToggles.forEach(id => setupToggle(`${id}-checkbox`, `${id}-details-container`));
-           
-            setupRadioToggle('physical-activity-radio', 'physical-activity-details-container', 'inadequate');
-            setupRadioToggle('hospital-admission-radio', 'hospital-admission-details-container', 'yes');
-            setupRadioToggle('family-history-radio', 'family-history-details-container', 'yes');
-            setupRadioToggle('gross-vision-radio', 'gross-vision-details-container', 'abnormal');
-            setupRadioToggle('gross-hearing-radio', 'gross-hearing-details-container', 'abnormal');
-            setupRadioToggle('env-factors-radio', 'env-factors-details-container', 'yes');
-            setupRadioToggle('education-progress-radio', 'education-progress-details-container', 'concerns');
-            setupRadioToggle('stressful-events-radio', 'stressful-events-details-container', 'yes');
-            setupRadioToggle('mental-health-history-radio', 'mental-health-history-details-container', 'yes');
-            setupRadioToggle('self-harm-history-radio', 'self-harm-history-details-container', 'yes');
-            setupRadioToggle('substance-use-radio', 'substance-use-details-container', 'yes');
-            setupRadioToggle('trachoma-concern-radio', 'trachoma-concern-details-container', 'yes');
-            setupRadioToggle('diet-type-radio', 'diet-type-details-container', 'concern');
-            setupRadioToggle('immunisation-status-radio', 'immunisation-status-details-container', 'not-utd');
-           
-            document.querySelectorAll('input[name="feeding-type"]').forEach(cb => {
-                cb.addEventListener('change', () => {
-                    const anyChecked = !!document.querySelector('input[name="feeding-type"]:checked');
-                    document.getElementById('feeding-details-container').classList.toggle('hidden', !anyChecked);
-                });
-            });
-           
-            document.querySelector('input[name="mental-health-history-radio"][value="yes"]')?.addEventListener('change', e => {
-                document.getElementById('self-harm-container').classList.toggle('hidden', !e.target.checked);
-            });
-            document.querySelector('input[name="mental-health-history-radio"][value="no"]')?.addEventListener('change', e => {
-                if (e.target.checked) document.getElementById('self-harm-container').classList.add('hidden');
-            });
-
-            const addReferralCheckbox = (listId, text) => {
-                const listContainer = document.getElementById(listId);
-                if (!listContainer || [...listContainer.querySelectorAll('label span')].some(span => span.textContent === text)) {
-                    return; // Already exists
-                }
-                addCheckboxItem(listId, text, true);
-            };
-
-            const updatePlanDetails = (text, shouldAdd) => {
-                const planTextarea = document.getElementById('plan-details');
-                if (!planTextarea) return;
-
-                const AUTO_PREFIX = '- ';
-                const recommendation = AUTO_PREFIX + text.trim();
-               
-                let lines = planTextarea.value.split('\n').filter(line => line.trim() !== '');
-                const manualNotes = lines.filter(line => !line.startsWith(AUTO_PREFIX));
-                let autoNotes = lines.filter(line => line.startsWith(AUTO_PREFIX));
-
-                if (shouldAdd) {
-                    if (!autoNotes.includes(recommendation)) {
-                        autoNotes.push(recommendation);
-                    }
-                } else {
-                    autoNotes = autoNotes.filter(note => note !== recommendation);
-                }
-               
-                planTextarea.value = [...manualNotes, ...autoNotes].join('\n');
-            };
-           
-            const devConcernListener = () => {
-                const hasConcern = ['dev-physical-details', 'dev-cognitive-details', 'dev-social-details', 'dev-language-details']
-                    .some(id => document.getElementById(id)?.value.trim() !== '');
-                updatePlanDetails('Formal developmental screening (e.g., Ages and Stages Questionnaire).', hasConcern);
-                if (hasConcern) {
-                    addReferralCheckbox('specialist-list', 'Paediatrician (for formal developmental assessment)');
-                    addReferralCheckbox('allied-health-list', 'Child and Family Health Nurse');
-                }
-            };
-            ['dev-physical-details', 'dev-cognitive-details', 'dev-social-details', 'dev-language-details'].forEach(id => {
-                document.getElementById(id)?.addEventListener('input', devConcernListener);
-            });
-           
-            const mentalHealthListener = e => {
-                const isYes = e.target.value === 'yes' && e.target.checked;
-                updatePlanDetails('Consider validated mental health screener (e.g., Strengths and Difficulties Questionnaire - SDQ).', isYes);
-                if(isYes) {
-                    addReferralCheckbox('allied-health-list', 'Child Psychologist');
-                }
-            };
-            document.querySelectorAll('input[name="stressful-events-radio"], input[name="mental-health-history-radio"]').forEach(el => el.addEventListener('change', mentalHealthListener));
-
-            const sewbListener = () => {
-                const isConcern = document.querySelector('input[name="sewb-community-radio"][value="concerns"]:checked') || document.querySelector('input[name="sewb-identity-radio"][value="concerns"]:checked');
-                const isDisconnected = document.querySelector('input[name="sewb-community-radio"][value="disconnected"]:checked') || document.querySelector('input[name="sewb-identity-radio"][value="disconnected"]:checked');
-                const isRacism = document.querySelector('input[name="sewb-racism-radio"][value="yes"]:checked');
-
-                updatePlanDetails('Explore culturally-aware counselling and support services.', isRacism || isConcern);
-                updatePlanDetails('Connect with local Aboriginal Community Controlled Health Organisation (ACCHO) for cultural support programs.', isDisconnected);
-                if (isConcern || isDisconnected || isRacism) addReferralCheckbox('allied-health-list', 'Aboriginal Health Worker');
-            };
-            document.querySelectorAll('input[name^="sewb-"]').forEach(el => el.addEventListener('change', sewbListener));
-           
-            const hearingListener = () => {
-                const isConcern = document.querySelector('input[name="gross-hearing-radio"][value="abnormal"]:checked') || document.getElementById('ent-otitis-signs')?.checked || document.getElementById('ent-discharge-history')?.checked;
-                updatePlanDetails('Arrange formal audiology assessment.', isConcern);
-                if(document.getElementById('ent-otitis-signs')?.checked || document.getElementById('ent-discharge-history')?.checked) {
-                    updatePlanDetails('Consider a course of antibiotics as per local guidelines.', true);
-                } else {
-                    updatePlanDetails('Consider a course of antibiotics as per local guidelines.', false);
-                }
-                if (isConcern) addReferralCheckbox('allied-health-list', 'Audiologist');
-            };
-            document.querySelectorAll('input[name="gross-hearing-radio"], input[id^="ent-"]').forEach(el => el.addEventListener('change', hearingListener));
-           
-            const rhdListener = e => {
-                const isYes = document.querySelector('input[name="rhd-sore-throat-radio"][value="yes"]:checked') || document.querySelector('input[name="rhd-joint-pain-radio"][value="yes"]:checked') || document.querySelector('input[name="rhd-family-history-radio"][value="yes"]:checked');
-                updatePlanDetails('Consider echocardiogram for RHD screening if clinically indicated.', isYes);
-            };
-            document.querySelectorAll('input[name^="rhd-"]').forEach(el => el.addEventListener('change', rhdListener));
-
-            const dentalRiskListener = () => {
-                const isDecay = document.querySelector('input[name="dental-decay-radio"][value="yes"]:checked');
-                const isAtRisk = isDecay || document.querySelector('input[name="dental-hygiene-practice-radio"][value="no"]:checked') || document.querySelector('input[name="dental-checkup-radio"][value="no"]:checked') || document.querySelector('input[name="dental-sugary-drinks-radio"][value="yes"]:checked');
-                if (isAtRisk) {
-                    addReferralCheckbox('allied-health-list', 'Dentist');
-                }
-                updatePlanDetails('Provide advice on dental hygiene, dietary modifications (reduce sugar), and fluoride toothpaste. Urgent dental review recommended.', isDecay);
-            };
-            document.querySelectorAll('input[name^="dental-"]').forEach(el => el.addEventListener('change', dentalRiskListener));
-           
-            const anemiaListener = () => {
-                const isAtRisk = document.querySelector('input[name="anemia-diet-radio"][value="inadequate"]:checked') || document.querySelector('input[name="anemia-symptoms-radio"][value="yes"]:checked');
-                updatePlanDetails('Provide dietary advice on iron-rich foods.', isAtRisk);
-                updatePlanDetails('Follow up blood results to consider iron supplementation if indicated.', isAtRisk);
-                if (isAtRisk) {
-                    addCheckboxItem('investigations-list', 'FBE, Iron Studies', true);
-                }
-            };
-            document.querySelectorAll('input[name^="anemia-"]').forEach(el => el.addEventListener('change', anemiaListener));
-
-            const skinListener = () => {
-                const isConcern = document.getElementById('skin-impetigo-checkbox')?.checked || document.getElementById('skin-scabies-checkbox')?.checked || document.getElementById('skin-fungal-checkbox')?.checked;
-                updatePlanDetails('Provide advice on skin hygiene and appropriate treatments.', isConcern);
-            };
-            document.querySelectorAll('input[id^="skin-"]').forEach(el => el.addEventListener('change', skinListener));
-
-            document.querySelector('input[name="diet-type-radio"][value="concern"]')?.addEventListener('change', e => {
-                updatePlanDetails('Dietary advice and consider dietitian referral.', e.target.checked);
-                if (e.target.checked) addReferralCheckbox('allied-health-list', 'Dietitian');
-            });
-            document.querySelector('input[name="trachoma-concern-radio"][value="yes"]')?.addEventListener('change', e => {
-                updatePlanDetails('Arrange ophthalmology review for trachoma assessment.', e.target.checked);
-                if (e.target.checked) addReferralCheckbox('specialist-list', 'Ophthalmologist');
-            });
-            document.querySelector('input[name="gross-vision-radio"][value="abnormal"]')?.addEventListener('change', e => {
-                updatePlanDetails('Arrange formal optometry assessment.', e.target.checked);
-                if (e.target.checked) addReferralCheckbox('allied-health-list', 'Optometrist');
-            });
-
-            document.querySelector('input[name="immunisation-status-radio"][value="not-utd"]')?.addEventListener('change', e => {
-                updatePlanDetails('Discuss catch-up immunisation schedule with carer and arrange for administration.', e.target.checked);
-            });
-            document.querySelector('input[name="education-progress-radio"][value="concerns"]')?.addEventListener('change', e => {
-                updatePlanDetails('Liaise with school/kindergarten (with carer consent) to understand concerns. Consider referral to educational psychologist or paediatrician if concerns persist.', e.target.checked);
-            });
-            document.querySelector('input[name="substance-use-radio"][value="yes"]')?.addEventListener('change', e => {
-                updatePlanDetails('Provide non-judgmental education on harms. Offer referral to youth AOD (Alcohol and Other Drugs) service for support.', e.target.checked);
-            });
-            document.querySelector('input[name="sexually-active-radio"][value="yes"]')?.addEventListener('change', e => {
-                updatePlanDetails('Provide safe sex and contraceptive advice. Offer STI screening.', e.target.checked);
-            });
-             document.getElementById('dev-abnormality-checkbox')?.addEventListener('change', e => {
-                const isChecked = e.target.checked;
-                updatePlanDetails('Referral to Paediatrician for formal developmental assessment and specialist input.', isChecked);
-                if (isChecked) {
-                    addReferralCheckbox('specialist-list', 'Paediatrician');
-                }
-            });
-
-            document.getElementById('add-investigation-btn')?.addEventListener('click', () => addCheckboxItemFromInput('investigations-list', 'add-investigation-input'));
-            document.getElementById('add-allied-health-btn')?.addEventListener('click', () => addCheckboxItemFromInput('allied-health-list', 'add-allied-health-input'));
-            document.getElementById('add-specialist-btn')?.addEventListener('click', () => addCheckboxItemFromInput('specialist-list', 'add-specialist-input'));
-           
-            // Add listener to the entire form for saving data
-            formContainer.addEventListener('input', saveFormToLocalStorage);
-        }
-       
-        function addCheckboxItem(listId, text, isChecked = false) {
-            const listContainer = document.getElementById(listId);
-            if (!listContainer) return;
-           
-            // Prevent duplicates
-            if ([...listContainer.querySelectorAll('label span')].some(span => span.textContent === text)) {
-                return;
-            }
-
-            const label = document.createElement('label');
-            label.className = 'flex items-center';
-           
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.className = 'h-4 w-4 text-indigo-600 mr-3 rounded border-gray-300';
-            checkbox.value = text;
-            checkbox.checked = isChecked;
-           
-            const span = document.createElement('span');
-            span.textContent = text;
-           
-            label.appendChild(checkbox);
-            label.appendChild(span);
-            listContainer.appendChild(label);
-        }
-
-        function addCheckboxItemFromInput(listId, inputId) {
-            const input = document.getElementById(inputId);
-            if (input && input.value.trim()) {
-                addCheckboxItem(listId, input.value.trim(), true);
-                input.value = '';
-            }
-        }
-
-        function calculateReminderDate() {
-            const assessmentDateInput = document.getElementById('assessment-date');
-            const reminderDateInput = document.getElementById('reminder-date');
-            if (!assessmentDateInput || !reminderDateInput || !assessmentDateInput.value) return;
-
-            const assessmentDate = new Date(assessmentDateInput.value);
-            assessmentDate.setMonth(assessmentDate.getMonth() + 9);
-            const day = assessmentDate.getDay();
-            if (day === 6) { assessmentDate.setDate(assessmentDate.getDate() + 2); } 
-            else if (day === 0) { assessmentDate.setDate(assessmentDate.getDate() + 1); }
-            reminderDateInput.value = assessmentDate.toISOString().slice(0, 10);
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast-notification');
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // --- Local Storage Functions ---
-        function saveFormToLocalStorage() {
-            const formData = {};
-            const inputs = formContainer.querySelectorAll('input, textarea, select');
-            inputs.forEach(input => {
-                if (input.type === 'checkbox' || input.type === 'radio') {
-                    if (input.name) {
-                        if (!formData[input.name]) formData[input.name] = [];
-                        if (input.checked) {
-                            formData[input.name].push(input.value);
-                        }
-                    } else {
-                        formData[input.id] = input.checked;
-                    }
-                } else {
-                    formData[input.id] = input.value;
-                }
-            });
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
-        }
-
-        function loadFormFromLocalStorage() {
-            const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
-            if (!savedData) return;
-
-            const formData = JSON.parse(savedData);
-            const inputs = formContainer.querySelectorAll('input, textarea, select');
-           
-            inputs.forEach(input => {
-                const key = input.id || input.name;
-                if (formData[key] !== undefined) {
-                    if (input.type === 'checkbox') {
-                        if (input.name && Array.isArray(formData[input.name])) {
-                            input.checked = formData[input.name].includes(input.value);
-                        } else {
-                            input.checked = formData[input.id];
-                        }
-                    } else if (input.type === 'radio') {
-                        if (Array.isArray(formData[input.name])) {
-                             input.checked = formData[input.name].includes(input.value);
-                        }
-                    } else {
-                        input.value = formData[key];
-                    }
-                    // Trigger change event to update UI (e.g., show/hide detail fields)
-                    input.dispatchEvent(new Event('change', { bubbles: true }));
-                    input.dispatchEvent(new Event('input', { bubbles: true }));
-                }
-            });
-        }
-
-
-        // --- Report Generation ---
-        const formatDateAU = (isoDate) => {
-            if (!isoDate || typeof isoDate !== 'string' || isoDate.length < 10) return 'N/A';
-            const [year, month, day] = isoDate.substring(0, 10).split('-');
-            if (!day || !month || !year) return 'N/A';
-            return `${day}/${month}/${year}`;
+          document
+            .getElementById("perinatal-section")
+            ?.classList.toggle("hidden", age === null || age >= 3);
+          document
+            .getElementById("newborn-check-section")
+            ?.classList.toggle(
+              "hidden",
+              totalMonths === null || totalMonths > 6
+            );
+          document
+            .getElementById("vision-acuity-container")
+            ?.classList.toggle("hidden", age === null || age < 3);
+          document
+            .getElementById("dev-assessment-single")
+            ?.classList.toggle("hidden", age !== null && age < 5);
+          document
+            .getElementById("dev-assessment-breakdown")
+            ?.classList.toggle("hidden", age === null || age >= 5);
+          document
+            .getElementById("education-section")
+            ?.classList.toggle("hidden", age === null || age < 4);
+          document
+            .getElementById("social-wellbeing-section")
+            ?.classList.toggle("hidden", age === null || age < 5);
+          document
+            .getElementById("mental-health-section")
+            ?.classList.toggle("hidden", age === null || age < 5);
+          document
+            .getElementById("rhd-section")
+            ?.classList.toggle("hidden", age === null || age < 5 || age > 14);
+          document
+            .getElementById("substance-use-section")
+            ?.classList.toggle("hidden", age === null || age < 10);
+          document
+            .getElementById("sexual-health-section")
+            ?.classList.toggle("hidden", age === null || age < 12);
+          document
+            .getElementById("dental-hygiene-section")
+            ?.classList.toggle("hidden", age === null || age < 2);
+          document
+            .getElementById("bmi-container")
+            ?.classList.toggle("hidden", age === null || age < 2);
+          document
+            .getElementById("head-circumference-container")
+            ?.classList.toggle("hidden", age === null || age > 2);
         };
 
-        function generateAndDisplayReport(download = false, format = 'txt') {
-            const dob = document.getElementById('patient-dob')?.value;
-            const gender = document.getElementById('patient-gender')?.value;
-            if (!dob || !gender) {
-                eligibilityMessageContainer.innerHTML = `<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100" role="alert">
+        if (dobInput)
+          dobInput.addEventListener("change", handlePatientDetailsChange);
+        if (genderSelect)
+          genderSelect.addEventListener("change", handlePatientDetailsChange);
+        if (assessmentDateInput)
+          assessmentDateInput.addEventListener("change", calculateReminderDate);
+
+        if (dobInput?.value) handlePatientDetailsChange();
+        if (assessmentDateInput?.value) calculateReminderDate();
+
+        const setupToggle = (checkboxId, detailsId) => {
+          const checkbox = document.getElementById(checkboxId);
+          const details = document.getElementById(detailsId);
+          if (checkbox && details) {
+            checkbox.addEventListener("change", (e) => {
+              details.classList.toggle("hidden", !e.target.checked);
+            });
+          }
+        };
+
+        const setupRadioToggle = (radioName, detailsId, triggerValue) => {
+          const radios = document.querySelectorAll(
+            `input[name="${radioName}"]`
+          );
+          const details = document.getElementById(detailsId);
+          if (radios.length > 0 && details) {
+            radios.forEach((radio) => {
+              radio.addEventListener("change", (e) => {
+                details.classList.toggle(
+                  "hidden",
+                  e.target.value !== triggerValue
+                );
+              });
+            });
+          }
+        };
+
+        handlePatientDetailsChange();
+        document
+          .getElementById("height-cm")
+          ?.addEventListener("input", calculateBMI);
+        document
+          .getElementById("weight-kg")
+          ?.addEventListener("input", calculateBMI);
+
+        const simpleToggles = [
+          "in-utero",
+          "birth-history",
+          "family-relationships",
+          "living-conditions",
+          "newborn-check",
+          "vision-exam",
+          "ent-exam",
+          "oral-exam",
+          "skin-exam",
+          "resp-exam",
+          "cardiac-exam",
+          "dev-assessment",
+          "parent-interaction",
+          "usual-gp",
+          "prev-assessment-available",
+        ];
+        simpleToggles.forEach((id) =>
+          setupToggle(`${id}-checkbox`, `${id}-details-container`)
+        );
+
+        setupRadioToggle(
+          "physical-activity-radio",
+          "physical-activity-details-container",
+          "inadequate"
+        );
+        setupRadioToggle(
+          "hospital-admission-radio",
+          "hospital-admission-details-container",
+          "yes"
+        );
+        setupRadioToggle(
+          "family-history-radio",
+          "family-history-details-container",
+          "yes"
+        );
+        setupRadioToggle(
+          "gross-vision-radio",
+          "gross-vision-details-container",
+          "abnormal"
+        );
+        setupRadioToggle(
+          "gross-hearing-radio",
+          "gross-hearing-details-container",
+          "abnormal"
+        );
+        setupRadioToggle(
+          "env-factors-radio",
+          "env-factors-details-container",
+          "yes"
+        );
+        setupRadioToggle(
+          "education-progress-radio",
+          "education-progress-details-container",
+          "concerns"
+        );
+        setupRadioToggle(
+          "stressful-events-radio",
+          "stressful-events-details-container",
+          "yes"
+        );
+        setupRadioToggle(
+          "mental-health-history-radio",
+          "mental-health-history-details-container",
+          "yes"
+        );
+        setupRadioToggle(
+          "self-harm-history-radio",
+          "self-harm-history-details-container",
+          "yes"
+        );
+        setupRadioToggle(
+          "substance-use-radio",
+          "substance-use-details-container",
+          "yes"
+        );
+        setupRadioToggle(
+          "trachoma-concern-radio",
+          "trachoma-concern-details-container",
+          "yes"
+        );
+        setupRadioToggle(
+          "diet-type-radio",
+          "diet-type-details-container",
+          "concern"
+        );
+        setupRadioToggle(
+          "immunisation-status-radio",
+          "immunisation-status-details-container",
+          "not-utd"
+        );
+
+        document
+          .querySelectorAll('input[name="feeding-type"]')
+          .forEach((cb) => {
+            cb.addEventListener("change", () => {
+              const anyChecked = !!document.querySelector(
+                'input[name="feeding-type"]:checked'
+              );
+              document
+                .getElementById("feeding-details-container")
+                .classList.toggle("hidden", !anyChecked);
+            });
+          });
+
+        document
+          .querySelector(
+            'input[name="mental-health-history-radio"][value="yes"]'
+          )
+          ?.addEventListener("change", (e) => {
+            document
+              .getElementById("self-harm-container")
+              .classList.toggle("hidden", !e.target.checked);
+          });
+        document
+          .querySelector(
+            'input[name="mental-health-history-radio"][value="no"]'
+          )
+          ?.addEventListener("change", (e) => {
+            if (e.target.checked)
+              document
+                .getElementById("self-harm-container")
+                .classList.add("hidden");
+          });
+
+        const addReferralCheckbox = (listId, text) => {
+          const listContainer = document.getElementById(listId);
+          if (
+            !listContainer ||
+            [...listContainer.querySelectorAll("label span")].some(
+              (span) => span.textContent === text
+            )
+          ) {
+            return; // Already exists
+          }
+          addCheckboxItem(listId, text, true);
+        };
+
+        const updatePlanDetails = (text, shouldAdd) => {
+          const planTextarea = document.getElementById("plan-details");
+          if (!planTextarea) return;
+
+          const AUTO_PREFIX = "- ";
+          const recommendation = AUTO_PREFIX + text.trim();
+
+          let lines = planTextarea.value
+            .split("\n")
+            .filter((line) => line.trim() !== "");
+          const manualNotes = lines.filter(
+            (line) => !line.startsWith(AUTO_PREFIX)
+          );
+          let autoNotes = lines.filter((line) => line.startsWith(AUTO_PREFIX));
+
+          if (shouldAdd) {
+            if (!autoNotes.includes(recommendation)) {
+              autoNotes.push(recommendation);
+            }
+          } else {
+            autoNotes = autoNotes.filter((note) => note !== recommendation);
+          }
+
+          planTextarea.value = [...manualNotes, ...autoNotes].join("\n");
+        };
+
+        const devConcernListener = () => {
+          const hasConcern = [
+            "dev-physical-details",
+            "dev-cognitive-details",
+            "dev-social-details",
+            "dev-language-details",
+          ].some((id) => document.getElementById(id)?.value.trim() !== "");
+          updatePlanDetails(
+            "Formal developmental screening (e.g., Ages and Stages Questionnaire).",
+            hasConcern
+          );
+          if (hasConcern) {
+            addReferralCheckbox(
+              "specialist-list",
+              "Paediatrician (for formal developmental assessment)"
+            );
+            addReferralCheckbox(
+              "allied-health-list",
+              "Child and Family Health Nurse"
+            );
+          }
+        };
+        [
+          "dev-physical-details",
+          "dev-cognitive-details",
+          "dev-social-details",
+          "dev-language-details",
+        ].forEach((id) => {
+          document
+            .getElementById(id)
+            ?.addEventListener("input", devConcernListener);
+        });
+
+        const mentalHealthListener = (e) => {
+          const isYes = e.target.value === "yes" && e.target.checked;
+          updatePlanDetails(
+            "Consider validated mental health screener (e.g., Strengths and Difficulties Questionnaire - SDQ).",
+            isYes
+          );
+          if (isYes) {
+            addReferralCheckbox("allied-health-list", "Child Psychologist");
+          }
+        };
+        document
+          .querySelectorAll(
+            'input[name="stressful-events-radio"], input[name="mental-health-history-radio"]'
+          )
+          .forEach((el) => el.addEventListener("change", mentalHealthListener));
+
+        const sewbListener = () => {
+          const isConcern =
+            document.querySelector(
+              'input[name="sewb-community-radio"][value="concerns"]:checked'
+            ) ||
+            document.querySelector(
+              'input[name="sewb-identity-radio"][value="concerns"]:checked'
+            );
+          const isDisconnected =
+            document.querySelector(
+              'input[name="sewb-community-radio"][value="disconnected"]:checked'
+            ) ||
+            document.querySelector(
+              'input[name="sewb-identity-radio"][value="disconnected"]:checked'
+            );
+          const isRacism = document.querySelector(
+            'input[name="sewb-racism-radio"][value="yes"]:checked'
+          );
+
+          updatePlanDetails(
+            "Explore culturally-aware counselling and support services.",
+            isRacism || isConcern
+          );
+          updatePlanDetails(
+            "Connect with local Aboriginal Community Controlled Health Organisation (ACCHO) for cultural support programs.",
+            isDisconnected
+          );
+          if (isConcern || isDisconnected || isRacism)
+            addReferralCheckbox(
+              "allied-health-list",
+              "Aboriginal Health Worker"
+            );
+        };
+        document
+          .querySelectorAll('input[name^="sewb-"]')
+          .forEach((el) => el.addEventListener("change", sewbListener));
+
+        const hearingListener = () => {
+          const isConcern =
+            document.querySelector(
+              'input[name="gross-hearing-radio"][value="abnormal"]:checked'
+            ) ||
+            document.getElementById("ent-otitis-signs")?.checked ||
+            document.getElementById("ent-discharge-history")?.checked;
+          updatePlanDetails("Arrange formal audiology assessment.", isConcern);
+          if (
+            document.getElementById("ent-otitis-signs")?.checked ||
+            document.getElementById("ent-discharge-history")?.checked
+          ) {
+            updatePlanDetails(
+              "Consider a course of antibiotics as per local guidelines.",
+              true
+            );
+          } else {
+            updatePlanDetails(
+              "Consider a course of antibiotics as per local guidelines.",
+              false
+            );
+          }
+          if (isConcern)
+            addReferralCheckbox("allied-health-list", "Audiologist");
+        };
+        document
+          .querySelectorAll(
+            'input[name="gross-hearing-radio"], input[id^="ent-"]'
+          )
+          .forEach((el) => el.addEventListener("change", hearingListener));
+
+        const rhdListener = (e) => {
+          const isYes =
+            document.querySelector(
+              'input[name="rhd-sore-throat-radio"][value="yes"]:checked'
+            ) ||
+            document.querySelector(
+              'input[name="rhd-joint-pain-radio"][value="yes"]:checked'
+            ) ||
+            document.querySelector(
+              'input[name="rhd-family-history-radio"][value="yes"]:checked'
+            );
+          updatePlanDetails(
+            "Consider echocardiogram for RHD screening if clinically indicated.",
+            isYes
+          );
+        };
+        document
+          .querySelectorAll('input[name^="rhd-"]')
+          .forEach((el) => el.addEventListener("change", rhdListener));
+
+        const dentalRiskListener = () => {
+          const isDecay = document.querySelector(
+            'input[name="dental-decay-radio"][value="yes"]:checked'
+          );
+          const isAtRisk =
+            isDecay ||
+            document.querySelector(
+              'input[name="dental-hygiene-practice-radio"][value="no"]:checked'
+            ) ||
+            document.querySelector(
+              'input[name="dental-checkup-radio"][value="no"]:checked'
+            ) ||
+            document.querySelector(
+              'input[name="dental-sugary-drinks-radio"][value="yes"]:checked'
+            );
+          if (isAtRisk) {
+            addReferralCheckbox("allied-health-list", "Dentist");
+          }
+          updatePlanDetails(
+            "Provide advice on dental hygiene, dietary modifications (reduce sugar), and fluoride toothpaste. Urgent dental review recommended.",
+            isDecay
+          );
+        };
+        document
+          .querySelectorAll('input[name^="dental-"]')
+          .forEach((el) => el.addEventListener("change", dentalRiskListener));
+
+        const anemiaListener = () => {
+          const isAtRisk =
+            document.querySelector(
+              'input[name="anemia-diet-radio"][value="inadequate"]:checked'
+            ) ||
+            document.querySelector(
+              'input[name="anemia-symptoms-radio"][value="yes"]:checked'
+            );
+          updatePlanDetails(
+            "Provide dietary advice on iron-rich foods.",
+            isAtRisk
+          );
+          updatePlanDetails(
+            "Follow up blood results to consider iron supplementation if indicated.",
+            isAtRisk
+          );
+          if (isAtRisk) {
+            addCheckboxItem("investigations-list", "FBE, Iron Studies", true);
+          }
+        };
+        document
+          .querySelectorAll('input[name^="anemia-"]')
+          .forEach((el) => el.addEventListener("change", anemiaListener));
+
+        const skinListener = () => {
+          const isConcern =
+            document.getElementById("skin-impetigo-checkbox")?.checked ||
+            document.getElementById("skin-scabies-checkbox")?.checked ||
+            document.getElementById("skin-fungal-checkbox")?.checked;
+          updatePlanDetails(
+            "Provide advice on skin hygiene and appropriate treatments.",
+            isConcern
+          );
+        };
+        document
+          .querySelectorAll('input[id^="skin-"]')
+          .forEach((el) => el.addEventListener("change", skinListener));
+
+        document
+          .querySelector('input[name="diet-type-radio"][value="concern"]')
+          ?.addEventListener("change", (e) => {
+            updatePlanDetails(
+              "Dietary advice and consider dietitian referral.",
+              e.target.checked
+            );
+            if (e.target.checked)
+              addReferralCheckbox("allied-health-list", "Dietitian");
+          });
+        document
+          .querySelector('input[name="trachoma-concern-radio"][value="yes"]')
+          ?.addEventListener("change", (e) => {
+            updatePlanDetails(
+              "Arrange ophthalmology review for trachoma assessment.",
+              e.target.checked
+            );
+            if (e.target.checked)
+              addReferralCheckbox("specialist-list", "Ophthalmologist");
+          });
+        document
+          .querySelector('input[name="gross-vision-radio"][value="abnormal"]')
+          ?.addEventListener("change", (e) => {
+            updatePlanDetails(
+              "Arrange formal optometry assessment.",
+              e.target.checked
+            );
+            if (e.target.checked)
+              addReferralCheckbox("allied-health-list", "Optometrist");
+          });
+
+        document
+          .querySelector(
+            'input[name="immunisation-status-radio"][value="not-utd"]'
+          )
+          ?.addEventListener("change", (e) => {
+            updatePlanDetails(
+              "Discuss catch-up immunisation schedule with carer and arrange for administration.",
+              e.target.checked
+            );
+          });
+        document
+          .querySelector(
+            'input[name="education-progress-radio"][value="concerns"]'
+          )
+          ?.addEventListener("change", (e) => {
+            updatePlanDetails(
+              "Liaise with school/kindergarten (with carer consent) to understand concerns. Consider referral to educational psychologist or paediatrician if concerns persist.",
+              e.target.checked
+            );
+          });
+        document
+          .querySelector('input[name="substance-use-radio"][value="yes"]')
+          ?.addEventListener("change", (e) => {
+            updatePlanDetails(
+              "Provide non-judgmental education on harms. Offer referral to youth AOD (Alcohol and Other Drugs) service for support.",
+              e.target.checked
+            );
+          });
+        document
+          .querySelector('input[name="sexually-active-radio"][value="yes"]')
+          ?.addEventListener("change", (e) => {
+            updatePlanDetails(
+              "Provide safe sex and contraceptive advice. Offer STI screening.",
+              e.target.checked
+            );
+          });
+        document
+          .getElementById("dev-abnormality-checkbox")
+          ?.addEventListener("change", (e) => {
+            const isChecked = e.target.checked;
+            updatePlanDetails(
+              "Referral to Paediatrician for formal developmental assessment and specialist input.",
+              isChecked
+            );
+            if (isChecked) {
+              addReferralCheckbox("specialist-list", "Paediatrician");
+            }
+          });
+
+        document
+          .getElementById("add-investigation-btn")
+          ?.addEventListener("click", () =>
+            addCheckboxItemFromInput(
+              "investigations-list",
+              "add-investigation-input"
+            )
+          );
+        document
+          .getElementById("add-allied-health-btn")
+          ?.addEventListener("click", () =>
+            addCheckboxItemFromInput(
+              "allied-health-list",
+              "add-allied-health-input"
+            )
+          );
+        document
+          .getElementById("add-specialist-btn")
+          ?.addEventListener("click", () =>
+            addCheckboxItemFromInput("specialist-list", "add-specialist-input")
+          );
+
+        // Add listener to the entire form for saving data
+        formContainer.addEventListener("input", saveFormToLocalStorage);
+      }
+
+      function addCheckboxItem(listId, text, isChecked = false) {
+        const listContainer = document.getElementById(listId);
+        if (!listContainer) return;
+
+        // Prevent duplicates
+        if (
+          [...listContainer.querySelectorAll("label span")].some(
+            (span) => span.textContent === text
+          )
+        ) {
+          return;
+        }
+
+        const label = document.createElement("label");
+        label.className = "flex items-center";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className =
+          "h-4 w-4 text-indigo-600 mr-3 rounded border-gray-300";
+        checkbox.value = text;
+        checkbox.checked = isChecked;
+
+        const span = document.createElement("span");
+        span.textContent = text;
+
+        label.appendChild(checkbox);
+        label.appendChild(span);
+        listContainer.appendChild(label);
+      }
+
+      function addCheckboxItemFromInput(listId, inputId) {
+        const input = document.getElementById(inputId);
+        if (input && input.value.trim()) {
+          addCheckboxItem(listId, input.value.trim(), true);
+          input.value = "";
+        }
+      }
+
+      function calculateReminderDate() {
+        const assessmentDateInput = document.getElementById("assessment-date");
+        const reminderDateInput = document.getElementById("reminder-date");
+        if (
+          !assessmentDateInput ||
+          !reminderDateInput ||
+          !assessmentDateInput.value
+        )
+          return;
+
+        const assessmentDate = new Date(assessmentDateInput.value);
+        assessmentDate.setMonth(assessmentDate.getMonth() + 9);
+        const day = assessmentDate.getDay();
+        if (day === 6) {
+          assessmentDate.setDate(assessmentDate.getDate() + 2);
+        } else if (day === 0) {
+          assessmentDate.setDate(assessmentDate.getDate() + 1);
+        }
+        reminderDateInput.value = assessmentDate.toISOString().slice(0, 10);
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("toast-notification");
+        toast.textContent = message;
+        toast.classList.add("show");
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000);
+      }
+
+      // --- Local Storage Functions ---
+      function saveFormToLocalStorage() {
+        const formData = {};
+        const inputs = formContainer.querySelectorAll(
+          "input, textarea, select"
+        );
+        inputs.forEach((input) => {
+          if (input.type === "checkbox" || input.type === "radio") {
+            if (input.name) {
+              if (!formData[input.name]) formData[input.name] = [];
+              if (input.checked) {
+                formData[input.name].push(input.value);
+              }
+            } else {
+              formData[input.id] = input.checked;
+            }
+          } else {
+            formData[input.id] = input.value;
+          }
+        });
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
+      }
+
+      function loadFormFromLocalStorage() {
+        const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (!savedData) return;
+
+        const formData = JSON.parse(savedData);
+        const inputs = formContainer.querySelectorAll(
+          "input, textarea, select"
+        );
+
+        inputs.forEach((input) => {
+          const key = input.id || input.name;
+          if (formData[key] !== undefined) {
+            if (input.type === "checkbox") {
+              if (input.name && Array.isArray(formData[input.name])) {
+                input.checked = formData[input.name].includes(input.value);
+              } else {
+                input.checked = formData[input.id];
+              }
+            } else if (input.type === "radio") {
+              if (Array.isArray(formData[input.name])) {
+                input.checked = formData[input.name].includes(input.value);
+              }
+            } else {
+              input.value = formData[key];
+            }
+            // Trigger change event to update UI (e.g., show/hide detail fields)
+            input.dispatchEvent(new Event("change", { bubbles: true }));
+            input.dispatchEvent(new Event("input", { bubbles: true }));
+          }
+        });
+      }
+
+      // --- Report Generation ---
+      const formatDateAU = (isoDate) => {
+        if (!isoDate || typeof isoDate !== "string" || isoDate.length < 10)
+          return "N/A";
+        const [year, month, day] = isoDate.substring(0, 10).split("-");
+        if (!day || !month || !year) return "N/A";
+        return `${day}/${month}/${year}`;
+      };
+
+      function generateAndDisplayReport(download = false, format = "txt") {
+        const dob = document.getElementById("patient-dob")?.value;
+        const gender = document.getElementById("patient-gender")?.value;
+        if (!dob || !gender) {
+          eligibilityMessageContainer.innerHTML = `<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100" role="alert">
                     <span class="font-medium">Error!</span> Please fill in all required fields (*) before generating a report.
                 </div>`;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                return;
-            }
-            eligibilityMessageContainer.innerHTML = '';
-
-            const reportData = buildRichReport(); // Use the new rich report builder
-            reportOutput.textContent = reportData.text;
-            reportContainer.classList.remove('hidden');
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-
-            if (download) {
-                const fileName = `HealthAssessment_Child_${(document.getElementById('patient-name')?.value || 'report').replace(/ /g, '_')}`;
-                if (format === 'rtf') {
-                    downloadFile(`${fileName}.rtf`, reportData.rtf, 'application/rtf');
-                } else {
-                    downloadFile(`${fileName}.txt`, reportData.text, 'text/plain');
-                }
-            }
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
         }
-        
-        const escapeRtf = (str) => {
-            if (typeof str !== 'string') return '';
-            return str.replace(/\\/g, '\\\\').replace(/{/g, '\\{').replace(/}/g, '\\}').replace(/\n/g, '\\par\n');
+        eligibilityMessageContainer.innerHTML = "";
+
+        const reportData = buildRichReport(); // Use the new rich report builder
+        reportOutput.textContent = reportData.text;
+        reportContainer.classList.remove("hidden");
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+
+        if (download) {
+          const fileName = `HealthAssessment_Child_${(
+            document.getElementById("patient-name")?.value || "report"
+          ).replace(/ /g, "_")}`;
+          if (format === "rtf") {
+            downloadFile(`${fileName}.rtf`, reportData.rtf, "application/rtf");
+          } else {
+            downloadFile(`${fileName}.txt`, reportData.text, "text/plain");
+          }
+        }
+      }
+
+      const escapeRtf = (str) => {
+        if (typeof str !== "string") return "";
+        return str
+          .replace(/\\/g, "\\\\")
+          .replace(/{/g, "\\{")
+          .replace(/}/g, "\\}")
+          .replace(/\n/g, "\\par\n");
+      };
+
+      function buildRichReport() {
+        let textReport = "";
+        let rtfReport =
+          "{\\rtf1\\ansi\\deff0{\\fonttbl{\\f0 Inter;}}\\pard\\sa0\\sl276\\slmult1 ";
+
+        const addSection = (title, content) => {
+          const cleanedContent = content
+            .filter((line) => line && line.trim() !== "")
+            .map((line) => line.trim());
+          if (cleanedContent.length > 0) {
+            textReport += `${title.toUpperCase()}:\n`;
+            rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(
+              title.toUpperCase()
+            )}\\ul0\\b0\\par}`;
+            cleanedContent.forEach((line) => {
+              textReport += `  - ${line}\n`;
+              rtfReport += `{\\pard\\fi360\\sa100\\sl276\\slmult1\\fs22 - ${escapeRtf(
+                line
+              )}\\par}`;
+            });
+            textReport += "\n";
+          }
+        };
+
+        const addFreeTextSection = (title, content) => {
+          if (content && content.trim()) {
+            textReport += `${title.toUpperCase()}:\n${content}\n\n`;
+            rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(
+              title.toUpperCase()
+            )}\\ul0\\b0\\par}`;
+            rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\fs22 ${escapeRtf(
+              content
+            )}\\par}`;
+          }
+        };
+
+        // --- Header ---
+        const headerTitle = "HEALTH ASSESSMENT REPORT - MBS ITEM 715";
+        const subTitle =
+          "Aboriginal and Torres Strait Islander Health Assessment (Child < 15)";
+        textReport += `${headerTitle}\n${subTitle}\n${"=".repeat(
+          subTitle.length
+        )}\n\n`;
+        rtfReport += `{\\pard\\qc\\b\\fs32 ${escapeRtf(headerTitle)}\\par}`;
+        rtfReport += `{\\pard\\qc\\fs24 ${escapeRtf(subTitle)}\\par\\par}`;
+
+        // --- Patient Details ---
+        const getValue = (id) =>
+          document.getElementById(id)?.value.trim() || "";
+        const isChecked = (id) => document.getElementById(id)?.checked;
+        const getRadio = (name) =>
+          document.querySelector(`input[name="${name}"]:checked`)?.value || "";
+        const getCheckedValues = (listId) => {
+          const list = document.getElementById(listId);
+          if (!list) return [];
+          return [
+            ...list.querySelectorAll('input[type="checkbox"]:checked'),
+          ].map((cb) => cb.value);
+        };
+
+        const patientDetails = [
+          `Name: ${getValue("patient-name") || "N/A"}`,
+          `DOB: ${formatDateAU(getValue("patient-dob"))}`,
+          `${
+            document.getElementById("patient-age-display")?.textContent ||
+            "Age: N/A"
+          }`,
+          `Medicare No: ${getValue("patient-medicare") || "N/A"}`,
+          `Date of Assessment: ${formatDateAU(getValue("assessment-date"))}`,
+        ];
+        addSection("Patient Details", patientDetails);
+
+        // --- Introduction ---
+        let intro = [];
+        if (isChecked("prev-assessment-available-checkbox"))
+          intro.push(
+            `Previous health assessment available, dated: ${
+              formatDateAU(getValue("prev-assessment-date")) || "Not specified"
+            }`
+          );
+        if (getValue("usual-gp-details"))
+          intro.push(`Usual GP confirmed: ${getValue("usual-gp-details")}`);
+        if (isChecked("consent-obtained-checkbox"))
+          intro.push(
+            "Consent obtained to perform health assessment with input from other staff including nurses."
+          );
+        addSection("Introduction", intro);
+
+        // --- History ---
+        let history = [];
+        const addDetailIfChecked = (checkboxId, description) => {
+          if (isChecked(`${checkboxId}-checkbox`)) {
+            const details = getValue(`${checkboxId}-details`);
+            return `${description}${details ? `: ${details}` : " - Assessed."}`;
+          }
+          return null;
+        };
+        const addDetailFromRadio = (radioName, description) => {
+          const value = getRadio(radioName);
+          if (value) {
+            const detailsId = `${radioName.replace("-radio", "")}-details`;
+            const details = getValue(detailsId);
+            return `${description}: ${value}${
+              details ? ` - Details: ${details}` : ""
+            }`;
+          }
+          return null;
+        };
+
+        history.push(addDetailIfChecked("in-utero", "In-utero history"));
+        history.push(
+          addDetailIfChecked("birth-history", "Birth/Neonatal History")
+        );
+        const feedingTypes = [
+          ...document.querySelectorAll('input[name="feeding-type"]:checked'),
+        ]
+          .map((cb) => cb.value)
+          .join(", ");
+        if (feedingTypes)
+          history.push(
+            `Feeding History: ${feedingTypes}. Details: ${
+              getValue("feeding-details") || "N/A"
+            }`
+          );
+        history.push(addDetailFromRadio("diet-type-radio", "Diet History"));
+
+        let anemiaHistory = [];
+        anemiaHistory.push(
+          addDetailFromRadio("anemia-diet-radio", "Dietary iron intake")
+        );
+        anemiaHistory.push(
+          addDetailFromRadio("anemia-symptoms-radio", "Symptoms of anemia")
+        );
+        const cleanAnemiaHistory = anemiaHistory.filter(Boolean);
+        if (cleanAnemiaHistory.length > 0) {
+          history.push(
+            `Anemia/Nutrition Screening: ${cleanAnemiaHistory.join(". ")}.`
+          );
         }
 
-        function buildRichReport() {
-            let textReport = '';
-            let rtfReport = '{\\rtf1\\ansi\\deff0{\\fonttbl{\\f0 Inter;}}\\pard\\sa0\\sl276\\slmult1 ';
+        history.push(
+          addDetailFromRadio("physical-activity-radio", "Physical Activity")
+        );
+        if (getValue("past-medical-history"))
+          history.push(
+            `Past Medical History: ${getValue("past-medical-history")}`
+          );
+        history.push(
+          addDetailFromRadio(
+            "hospital-admission-radio",
+            "Hospital Admission History"
+          )
+        );
+        if (getValue("regular-medications"))
+          history.push(
+            `Regular Medications: ${getValue("regular-medications")}`
+          );
+        history.push(
+          addDetailFromRadio(
+            "family-history-radio",
+            "Significant Family History"
+          )
+        );
+        history.push(
+          addDetailFromRadio("immunisation-status-radio", "Immunisation Status")
+        );
+        if (getValue("development-details"))
+          history.push(`Development: ${getValue("development-details")}`);
+        history.push(
+          addDetailIfChecked("family-relationships", "Family Relationships")
+        );
+        history.push(
+          addDetailFromRadio(
+            "env-factors-radio",
+            "Environmental Factor Exposure"
+          )
+        );
 
-            const addSection = (title, content) => {
-                const cleanedContent = content.filter(line => line && line.trim() !== '').map(line => line.trim());
-                if (cleanedContent.length > 0) {
-                    textReport += `${title.toUpperCase()}:\n`;
-                    rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(title.toUpperCase())}\\ul0\\b0\\par}`;
-                    cleanedContent.forEach(line => {
-                        textReport += `  - ${line}\n`;
-                        rtfReport += `{\\pard\\fi360\\sa100\\sl276\\slmult1\\fs22 - ${escapeRtf(line)}\\par}`;
-                    });
-                    textReport += '\n';
-                }
-            };
-            
-            const addFreeTextSection = (title, content) => {
-                if(content && content.trim()) {
-                    textReport += `${title.toUpperCase()}:\n${content}\n\n`;
-                    rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(title.toUpperCase())}\\ul0\\b0\\par}`;
-                    rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\fs22 ${escapeRtf(content)}\\par}`;
-                }
-            };
-
-            // --- Header ---
-            const headerTitle = "HEALTH ASSESSMENT REPORT - MBS ITEM 715";
-            const subTitle = "Aboriginal and Torres Strait Islander Health Assessment (Child < 15)";
-            textReport += `${headerTitle}\n${subTitle}\n${'='.repeat(subTitle.length)}\n\n`;
-            rtfReport += `{\\pard\\qc\\b\\fs32 ${escapeRtf(headerTitle)}\\par}`;
-            rtfReport += `{\\pard\\qc\\fs24 ${escapeRtf(subTitle)}\\par\\par}`;
-
-            // --- Patient Details ---
-            const getValue = id => document.getElementById(id)?.value.trim() || '';
-            const isChecked = id => document.getElementById(id)?.checked;
-            const getRadio = name => document.querySelector(`input[name="${name}"]:checked`)?.value || '';
-            const getCheckedValues = listId => {
-                const list = document.getElementById(listId);
-                if (!list) return [];
-                return [...list.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value);
-            };
-
-            const patientDetails = [
-                `Name: ${getValue('patient-name') || 'N/A'}`,
-                `DOB: ${formatDateAU(getValue('patient-dob'))}`,
-                `${document.getElementById('patient-age-display')?.textContent || 'Age: N/A'}`,
-                `Medicare No: ${getValue('patient-medicare') || 'N/A'}`,
-                `Date of Assessment: ${formatDateAU(getValue('assessment-date'))}`
-            ];
-            addSection('Patient Details', patientDetails);
-
-            // --- Introduction ---
-            let intro = [];
-            if (isChecked('prev-assessment-available-checkbox')) intro.push(`Previous health assessment available, dated: ${formatDateAU(getValue('prev-assessment-date')) || 'Not specified'}`);
-            if(getValue('usual-gp-details')) intro.push(`Usual GP confirmed: ${getValue('usual-gp-details')}`);
-            if (isChecked('consent-obtained-checkbox')) intro.push('Consent obtained to perform health assessment with input from other staff including nurses.');
-            addSection('Introduction', intro);
-           
-            // --- History ---
-            let history = [];
-            const addDetailIfChecked = (checkboxId, description) => {
-                if (isChecked(`${checkboxId}-checkbox`)) {
-                    const details = getValue(`${checkboxId}-details`);
-                    return `${description}${details ? `: ${details}` : ' - Assessed.'}`;
-                }
-                return null;
-            };
-            const addDetailFromRadio = (radioName, description) => {
-                const value = getRadio(radioName);
-                if (value) {
-                    const detailsId = `${radioName.replace('-radio', '')}-details`;
-                    const details = getValue(detailsId);
-                    return `${description}: ${value}${details ? ` - Details: ${details}` : ''}`;
-                }
-                return null;
-            };
-
-            history.push(addDetailIfChecked('in-utero', 'In-utero history'));
-            history.push(addDetailIfChecked('birth-history', 'Birth/Neonatal History'));
-            const feedingTypes = [...document.querySelectorAll('input[name="feeding-type"]:checked')].map(cb => cb.value).join(', ');
-            if (feedingTypes) history.push(`Feeding History: ${feedingTypes}. Details: ${getValue('feeding-details') || 'N/A'}`);
-            history.push(addDetailFromRadio('diet-type-radio', 'Diet History'));
-           
-            let anemiaHistory = [];
-            anemiaHistory.push(addDetailFromRadio('anemia-diet-radio', 'Dietary iron intake'));
-            anemiaHistory.push(addDetailFromRadio('anemia-symptoms-radio', 'Symptoms of anemia'));
-            const cleanAnemiaHistory = anemiaHistory.filter(Boolean);
-            if(cleanAnemiaHistory.length > 0) {
-                history.push(`Anemia/Nutrition Screening: ${cleanAnemiaHistory.join('. ')}.`);
-            }
-
-            history.push(addDetailFromRadio('physical-activity-radio', 'Physical Activity'));
-            if (getValue('past-medical-history')) history.push(`Past Medical History: ${getValue('past-medical-history')}`);
-            history.push(addDetailFromRadio('hospital-admission-radio', 'Hospital Admission History'));
-            if (getValue('regular-medications')) history.push(`Regular Medications: ${getValue('regular-medications')}`);
-            history.push(addDetailFromRadio('family-history-radio', 'Significant Family History'));
-            history.push(addDetailFromRadio('immunisation-status-radio', 'Immunisation Status'));
-            if (getValue('development-details')) history.push(`Development: ${getValue('development-details')}`);
-            history.push(addDetailIfChecked('family-relationships', 'Family Relationships'));
-            history.push(addDetailFromRadio('env-factors-radio', 'Environmental Factor Exposure'));
-           
-            let rhdHistory = [];
-            rhdHistory.push(addDetailFromRadio('rhd-sore-throat-radio', 'Recurrent sore throats/skin sores'));
-            rhdHistory.push(addDetailFromRadio('rhd-joint-pain-radio', 'Joint pain/swelling'));
-            rhdHistory.push(addDetailFromRadio('rhd-family-history-radio', 'Family history of RHD'));
-            const cleanRhdHistory = rhdHistory.filter(Boolean);
-            if (cleanRhdHistory.length > 0) {
-                history.push(`RHD Screening History:\n    ${cleanRhdHistory.join('\n    ')}`);
-            }
-
-            history.push(addDetailIfChecked('living-conditions', 'Living Conditions'));
-            history.push(addDetailFromRadio('education-progress-radio', 'Educational Progress'));
-           
-            let sewbHistory = [];
-            sewbHistory.push(addDetailFromRadio('sewb-community-radio', 'Connection to community/culture'));
-            sewbHistory.push(addDetailFromRadio('sewb-identity-radio', 'Sense of identity/belonging'));
-            sewbHistory.push(addDetailFromRadio('sewb-racism-radio', 'Experiences with racism'));
-            const cleanSewbHistory = sewbHistory.filter(Boolean);
-            if (cleanSewbHistory.length > 0) {
-                history.push(`Social and Emotional Wellbeing:\n    ${cleanSewbHistory.join('\n    ')}`);
-            }
-
-            history.push(addDetailFromRadio('stressful-events-radio', 'Stressful Life Events'));
-            const mentalHealth = addDetailFromRadio('mental-health-history-radio', 'Mental Health History');
-            if (mentalHealth) {
-                let mhText = mentalHealth;
-                if (getRadio('mental-health-history-radio') === 'yes') {
-                    const selfHarm = addDetailFromRadio('self-harm-history-radio', 'Self-harm History');
-                    if (selfHarm) mhText += `\n    ${selfHarm}`;
-                }
-                history.push(mhText);
-            }
-            history.push(addDetailFromRadio('substance-use-radio', 'Substance Use'));
-            const sexualHealth = addDetailFromRadio('sexually-active-radio', 'Sexually Active');
-            if (sexualHealth) history.push(`${sexualHealth}. Comments: ${getValue('sexual-health-comments') || 'N/A'}`);
-           
-            let dentalHistory = [];
-            dentalHistory.push(addDetailFromRadio('dental-hygiene-practice-radio', 'Practices Dental Hygiene'));
-            dentalHistory.push(addDetailFromRadio('dental-checkup-radio', 'Regular Dental Checkups'));
-            dentalHistory.push(addDetailFromRadio('dental-sugary-drinks-radio', 'Regular sugary drinks'));
-            dentalHistory.push(addDetailFromRadio('dental-decay-radio', 'Visible plaque/decay'));
-            const cleanDentalHistory = dentalHistory.filter(Boolean);
-                if (cleanDentalHistory.length > 0) {
-                    history.push(`Dental Health: ${cleanDentalHistory.join('. ')}. Comments: ${getValue('dental-comments') || 'N/A'}`);
-            }
-            addSection('History', history);
-
-            // --- Examination ---
-            let exam = [];
-            exam.push(`Height: ${getValue('height-cm')} cm, Weight: ${getValue('weight-kg')} kg`);
-            if (getValue('bmi')) exam.push(`BMI: ${getValue('bmi')} kg/m²`);
-            if (getValue('head-circumference')) exam.push(`Head Circumference: ${getValue('head-circumference')} cm`);
-            exam.push(addDetailIfChecked('newborn-check', 'Newborn Check'));
-            const visionExam = addDetailIfChecked('vision-exam', 'Eye/Vision Examination');
-            if (visionExam) {
-                let visionText = visionExam;
-                const grossVision = addDetailFromRadio('gross-vision-radio', 'Gross Vision');
-                if(grossVision) visionText += `\n    ${grossVision}`;
-                const vaR = getValue('vision-va-r'), vaL = getValue('vision-va-l'), vaB = getValue('vision-va-b');
-                if (vaR || vaL || vaB) visionText += `\n    (VA R:${vaR || 'N/A'}, L:${vaL || 'N/A'}, Both:${vaB || 'N/A'})`;
-                const trachoma = addDetailFromRadio('trachoma-concern-radio', 'Trachoma Concern');
-                if(trachoma) visionText += `\n    ${trachoma}`;
-                exam.push(visionText);
-            }
-            const entExam = addDetailIfChecked('ent-exam', 'ENT Examination');
-            if (entExam) {
-                let entText = entExam;
-                const hearing = addDetailFromRadio('gross-hearing-radio', 'Gross Hearing');
-                if (hearing) entText += `\n    ${hearing}`;
-                if (isChecked('ent-otitis-signs')) entText += '\n    - Signs of Otitis Media on otoscopy.';
-                if (isChecked('ent-discharge-history')) entText += '\n    - History of ear discharge.';
-                exam.push(entText);
-            }
-            exam.push(addDetailIfChecked('oral-exam', 'Oral Examination'));
-           
-            const skinExam = addDetailIfChecked('skin-exam', 'Skin Examination');
-            if(skinExam) {
-                let skinText = skinExam;
-                if (isChecked('skin-impetigo-checkbox')) skinText += '\n    - Evidence of skin sores/impetigo.';
-                if (isChecked('skin-scabies-checkbox')) skinText += '\n    - Evidence of scabies.';
-                if (isChecked('skin-fungal-checkbox')) skinText += '\n    - Fungal infections present.';
-                exam.push(skinText);
-            }
-
-            exam.push(addDetailIfChecked('resp-exam', 'Respiratory Examination'));
-            exam.push(addDetailIfChecked('cardiac-exam', 'Cardiovascular Examination'));
-            if (isChecked('dev-assessment-checkbox')) {
-                let devText = 'Developmental Assessment: Assessed.';
-                if (getValue('dev-assessment-details')) devText += ` Details: ${getValue('dev-assessment-details')}`;
-                if (getValue('dev-physical-details')) devText += `\n    - Physical: ${getValue('dev-physical-details')}`;
-                if (getValue('dev-cognitive-details')) devText += `\n    - Cognitive: ${getValue('dev-cognitive-details')}`;
-                if (getValue('dev-social-details')) devText += `\n    - Social-emotional: ${getValue('dev-social-details')}`;
-                if (getValue('dev-language-details')) devText += `\n    - Language: ${getValue('dev-language-details')}`;
-                if (isChecked('dev-abnormality-checkbox')) devText += `\n    - Developmental abnormality noted.`;
-                exam.push(devText);
-            }
-            exam.push(addDetailIfChecked('parent-interaction', 'Parent/Child Interaction'));
-            addSection('Physical Examination', exam);
-
-            addSection('Investigations Ordered', getCheckedValues('investigations-list'));
-            addSection('Allied Health Referrals', getCheckedValues('allied-health-list'));
-            addSection('Specialist Referrals', getCheckedValues('specialist-list'));
-           
-            let plan = [];
-            if (isChecked('plan-advice-provided')) plan.push('Carer provided with preventative health care advice and information.');
-            if (isChecked('plan-copy-offered')) plan.push('Carer offered a copy of the health assessment.');
-            if (getValue('plan-details')) {
-                // Split plan details into an array of lines to be formatted as list items
-                const planDetailsLines = getValue('plan-details').split('\n').map(line => line.trim()).filter(line => line);
-                plan.push(...planDetailsLines);
-            }
-            if (getValue('reminder-date')) plan.push(`Reminder for next assessment set for: ${formatDateAU(getValue('reminder-date'))}`);
-            addSection('Plan', plan);
-           
-            rtfReport += '}'; // Close RTF document
-            return { text: textReport.trim(), rtf: rtfReport };
+        let rhdHistory = [];
+        rhdHistory.push(
+          addDetailFromRadio(
+            "rhd-sore-throat-radio",
+            "Recurrent sore throats/skin sores"
+          )
+        );
+        rhdHistory.push(
+          addDetailFromRadio("rhd-joint-pain-radio", "Joint pain/swelling")
+        );
+        rhdHistory.push(
+          addDetailFromRadio(
+            "rhd-family-history-radio",
+            "Family history of RHD"
+          )
+        );
+        const cleanRhdHistory = rhdHistory.filter(Boolean);
+        if (cleanRhdHistory.length > 0) {
+          history.push(
+            `RHD Screening History:\n    ${cleanRhdHistory.join("\n    ")}`
+          );
         }
+
+        history.push(
+          addDetailIfChecked("living-conditions", "Living Conditions")
+        );
+        history.push(
+          addDetailFromRadio("education-progress-radio", "Educational Progress")
+        );
+
+        let sewbHistory = [];
+        sewbHistory.push(
+          addDetailFromRadio(
+            "sewb-community-radio",
+            "Connection to community/culture"
+          )
+        );
+        sewbHistory.push(
+          addDetailFromRadio(
+            "sewb-identity-radio",
+            "Sense of identity/belonging"
+          )
+        );
+        sewbHistory.push(
+          addDetailFromRadio("sewb-racism-radio", "Experiences with racism")
+        );
+        const cleanSewbHistory = sewbHistory.filter(Boolean);
+        if (cleanSewbHistory.length > 0) {
+          history.push(
+            `Social and Emotional Wellbeing:\n    ${cleanSewbHistory.join(
+              "\n    "
+            )}`
+          );
+        }
+
+        history.push(
+          addDetailFromRadio("stressful-events-radio", "Stressful Life Events")
+        );
+        const mentalHealth = addDetailFromRadio(
+          "mental-health-history-radio",
+          "Mental Health History"
+        );
+        if (mentalHealth) {
+          let mhText = mentalHealth;
+          if (getRadio("mental-health-history-radio") === "yes") {
+            const selfHarm = addDetailFromRadio(
+              "self-harm-history-radio",
+              "Self-harm History"
+            );
+            if (selfHarm) mhText += `\n    ${selfHarm}`;
+          }
+          history.push(mhText);
+        }
+        history.push(
+          addDetailFromRadio("substance-use-radio", "Substance Use")
+        );
+        const sexualHealth = addDetailFromRadio(
+          "sexually-active-radio",
+          "Sexually Active"
+        );
+        if (sexualHealth)
+          history.push(
+            `${sexualHealth}. Comments: ${
+              getValue("sexual-health-comments") || "N/A"
+            }`
+          );
+
+        let dentalHistory = [];
+        dentalHistory.push(
+          addDetailFromRadio(
+            "dental-hygiene-practice-radio",
+            "Practices Dental Hygiene"
+          )
+        );
+        dentalHistory.push(
+          addDetailFromRadio("dental-checkup-radio", "Regular Dental Checkups")
+        );
+        dentalHistory.push(
+          addDetailFromRadio(
+            "dental-sugary-drinks-radio",
+            "Regular sugary drinks"
+          )
+        );
+        dentalHistory.push(
+          addDetailFromRadio("dental-decay-radio", "Visible plaque/decay")
+        );
+        const cleanDentalHistory = dentalHistory.filter(Boolean);
+        if (cleanDentalHistory.length > 0) {
+          history.push(
+            `Dental Health: ${cleanDentalHistory.join(". ")}. Comments: ${
+              getValue("dental-comments") || "N/A"
+            }`
+          );
+        }
+        addSection("History", history);
+
+        // --- Examination ---
+        let exam = [];
+        exam.push(
+          `Height: ${getValue("height-cm")} cm, Weight: ${getValue(
+            "weight-kg"
+          )} kg`
+        );
+        if (getValue("bmi")) exam.push(`BMI: ${getValue("bmi")} kg/m²`);
+        if (getValue("head-circumference"))
+          exam.push(`Head Circumference: ${getValue("head-circumference")} cm`);
+        exam.push(addDetailIfChecked("newborn-check", "Newborn Check"));
+        const visionExam = addDetailIfChecked(
+          "vision-exam",
+          "Eye/Vision Examination"
+        );
+        if (visionExam) {
+          let visionText = visionExam;
+          const grossVision = addDetailFromRadio(
+            "gross-vision-radio",
+            "Gross Vision"
+          );
+          if (grossVision) visionText += `\n    ${grossVision}`;
+          const vaR = getValue("vision-va-r"),
+            vaL = getValue("vision-va-l"),
+            vaB = getValue("vision-va-b");
+          if (vaR || vaL || vaB)
+            visionText += `\n    (VA R:${vaR || "N/A"}, L:${
+              vaL || "N/A"
+            }, Both:${vaB || "N/A"})`;
+          const trachoma = addDetailFromRadio(
+            "trachoma-concern-radio",
+            "Trachoma Concern"
+          );
+          if (trachoma) visionText += `\n    ${trachoma}`;
+          exam.push(visionText);
+        }
+        const entExam = addDetailIfChecked("ent-exam", "ENT Examination");
+        if (entExam) {
+          let entText = entExam;
+          const hearing = addDetailFromRadio(
+            "gross-hearing-radio",
+            "Gross Hearing"
+          );
+          if (hearing) entText += `\n    ${hearing}`;
+          if (isChecked("ent-otitis-signs"))
+            entText += "\n    - Signs of Otitis Media on otoscopy.";
+          if (isChecked("ent-discharge-history"))
+            entText += "\n    - History of ear discharge.";
+          exam.push(entText);
+        }
+        exam.push(addDetailIfChecked("oral-exam", "Oral Examination"));
+
+        const skinExam = addDetailIfChecked("skin-exam", "Skin Examination");
+        if (skinExam) {
+          let skinText = skinExam;
+          if (isChecked("skin-impetigo-checkbox"))
+            skinText += "\n    - Evidence of skin sores/impetigo.";
+          if (isChecked("skin-scabies-checkbox"))
+            skinText += "\n    - Evidence of scabies.";
+          if (isChecked("skin-fungal-checkbox"))
+            skinText += "\n    - Fungal infections present.";
+          exam.push(skinText);
+        }
+
+        exam.push(addDetailIfChecked("resp-exam", "Respiratory Examination"));
+        exam.push(
+          addDetailIfChecked("cardiac-exam", "Cardiovascular Examination")
+        );
+        if (isChecked("dev-assessment-checkbox")) {
+          let devText = "Developmental Assessment: Assessed.";
+          if (getValue("dev-assessment-details"))
+            devText += ` Details: ${getValue("dev-assessment-details")}`;
+          if (getValue("dev-physical-details"))
+            devText += `\n    - Physical: ${getValue("dev-physical-details")}`;
+          if (getValue("dev-cognitive-details"))
+            devText += `\n    - Cognitive: ${getValue(
+              "dev-cognitive-details"
+            )}`;
+          if (getValue("dev-social-details"))
+            devText += `\n    - Social-emotional: ${getValue(
+              "dev-social-details"
+            )}`;
+          if (getValue("dev-language-details"))
+            devText += `\n    - Language: ${getValue("dev-language-details")}`;
+          if (isChecked("dev-abnormality-checkbox"))
+            devText += `\n    - Developmental abnormality noted.`;
+          exam.push(devText);
+        }
+        exam.push(
+          addDetailIfChecked("parent-interaction", "Parent/Child Interaction")
+        );
+        addSection("Physical Examination", exam);
+
+        addSection(
+          "Investigations Ordered",
+          getCheckedValues("investigations-list")
+        );
+        addSection(
+          "Allied Health Referrals",
+          getCheckedValues("allied-health-list")
+        );
+        addSection("Specialist Referrals", getCheckedValues("specialist-list"));
+
+        let plan = [];
+        if (isChecked("plan-advice-provided"))
+          plan.push(
+            "Carer provided with preventative health care advice and information."
+          );
+        if (isChecked("plan-copy-offered"))
+          plan.push("Carer offered a copy of the health assessment.");
+        if (getValue("plan-details")) {
+          // Split plan details into an array of lines to be formatted as list items
+          const planDetailsLines = getValue("plan-details")
+            .split("\n")
+            .map((line) => line.trim())
+            .filter((line) => line);
+          plan.push(...planDetailsLines);
+        }
+        if (getValue("reminder-date"))
+          plan.push(
+            `Reminder for next assessment set for: ${formatDateAU(
+              getValue("reminder-date")
+            )}`
+          );
+        addSection("Plan", plan);
+
+        rtfReport += "}"; // Close RTF document
+        return { text: textReport.trim(), rtf: rtfReport };
+      }
     </script>
-</body>
+  </body>
 </html>

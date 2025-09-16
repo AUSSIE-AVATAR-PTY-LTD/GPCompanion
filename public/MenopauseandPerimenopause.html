@@ -1,202 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Menopause & Perimenopause Health Assessment</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        /* Base styles for the page */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* A soft gray background */
-        }
-        /* Styles for the accordion chevron icon */
-        .chevron-icon {
-            transition: transform 0.3s ease-in-out;
-        }
-        .chevron-icon.rotated {
-            transform: rotate(180deg);
-        }
-        /* Styles for collapsing sections */
-        .form-section-content.collapsed {
-            max-height: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out, padding 0.5s ease-in-out;
-        }
-        .form-section-content {
-            transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
-            max-height: 9000px; /* A large value to allow for content expansion */
-            opacity: 1;
-        }
-        /* Common styles for nested detail sections */
-        .details-container {
-            padding-left: 1.85rem;
-            margin-top: 0.5rem;
-            margin-bottom: 0.75rem;
-        }
-        .sub-group {
-            padding-left: 1rem;
-            border-left: 2px solid #e2e8f0;
-            margin-left: 0.3rem;
-            margin-top: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        /* Style for subsection titles within a card */
-        .subsection-title {
-            font-weight: 600;
-            margin-top: 1.5rem;
-            margin-bottom: 1rem;
-            color: #334155;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 0.5rem;
-        }
-        /* Modal styles for popups */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 0.75rem;
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .modal-close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #6b7280;
-        }
-        /* Styles for questions within the assessment modal */
-        .assessment-question {
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        .assessment-question:last-child {
-             border-bottom: none;
-        }
-        .score-display {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #166534;
-            background-color: #f0fdf4;
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-        }
-        /* Alert box for MHT contraindications */
-        .plan-alert-box {
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            background-color: #fef2f2; 
-            border: 1px solid #fecaca;
-            color: #991b1b;
-        }
-        .hidden {
-            display: none;
-        }
-        /* Standard input field styling */
-        .input-field {
-             width: 100%;
-             padding: 0.5rem 0.75rem;
-             background-color: #f8fafc;
-             border: 1px solid #d1d5db;
-             border-radius: 0.375rem;
-             box-shadow: inset 0 1px 2px 0 rgba(0,0,0,0.05);
-        }
-        .radio-label, .checkbox-label {
-            display: flex;
-            align-items: center;
-        }
+      /* Base styles for the page */
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6; /* A soft gray background */
+      }
+      /* Styles for the accordion chevron icon */
+      .chevron-icon {
+        transition: transform 0.3s ease-in-out;
+      }
+      .chevron-icon.rotated {
+        transform: rotate(180deg);
+      }
+      /* Styles for collapsing sections */
+      .form-section-content.collapsed {
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out,
+          padding 0.5s ease-in-out;
+      }
+      .form-section-content {
+        transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+        max-height: 9000px; /* A large value to allow for content expansion */
+        opacity: 1;
+      }
+      /* Common styles for nested detail sections */
+      .details-container {
+        padding-left: 1.85rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0.75rem;
+      }
+      .sub-group {
+        padding-left: 1rem;
+        border-left: 2px solid #e2e8f0;
+        margin-left: 0.3rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      /* Style for subsection titles within a card */
+      .subsection-title {
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        color: #334155;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 0.5rem;
+      }
+      /* Modal styles for popups */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 0.75rem;
+        width: 90%;
+        max-width: 800px;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      .modal-close-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #6b7280;
+      }
+      /* Styles for questions within the assessment modal */
+      .assessment-question {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .assessment-question:last-child {
+        border-bottom: none;
+      }
+      .score-display {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #166534;
+        background-color: #f0fdf4;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+      }
+      /* Alert box for MHT contraindications */
+      .plan-alert-box {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border-radius: 0.5rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        background-color: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+      }
+      .hidden {
+        display: none;
+      }
+      /* Standard input field styling */
+      .input-field {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        background-color: #f8fafc;
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      }
+      .radio-label,
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+      }
     </style>
-</head>
-<body class="text-gray-800">
-    
-<nav
-      class="w-full bg-white border-b border-gray-200 fixed top-0 left-0 z-50"
+  </head>
+  <body class="text-gray-800">
+    <nav
+      class="bg-white border-b border-indigo-100 sticky top-0 z-50 shadow-sm"
     >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
+        <div class="flex justify-between items-center h-20">
+          <!-- logo + title -->
           <a href="/" class="flex items-center space-x-3">
             <img
               src="/images/gp-companion-logo.png"
               alt="GP Companion Logo"
-              width="40"
-              height="40"
-              class="w-10 h-10"
+              width="80"
+              height="80"
+              class="w-20 h-20"
             />
-            <span class="font-bold text-xl text-gray-900">GP Companion</span>
+            <span class="font-bold text-xl text-indigo-800">GP Companion</span>
           </a>
 
-          <div class="hidden md:flex items-center space-x-8">
+          <!-- desktop links -->
+          <div id="desktopMenu" class="hidden md:flex items-center space-x-4">
+            <a
+              href="/"
+              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              >Home</a
+            >
+            <a
+              href="/gpccmp"
+              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              >GPCCMP</a
+            >
+            <a
+              href="/HealthAssessments"
+              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              >Assessments</a
+            >
             <a
               href="/about"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
-              >About Website</a
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              >About</a
             >
             <a
               href="/developer"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
               >Developer</a
             >
             <a
               href="/privacy"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
-              >Privacy Policy</a
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              >Privacy</a
             >
             <a
               href="/contact"
-              class="text-gray-500 hover:text-indigo-600 transition-colors"
-              >Contact Developer</a
-            >
-            <a
-              href="/gpccmp"
-              class="inline-flex items-center px-3 py-2 bg-indigo-600 text-white rounded-md text-sm shadow-sm hover:bg-indigo-700"
-              >Start GPCCMP</a
+              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              >Contact</a
             >
           </div>
 
+          <!-- mobile button -->
           <div class="md:hidden">
             <button
-              type="button"
-              class="inline-flex items-center p-2 rounded-md text-gray-600 hover:bg-gray-100"
+              id="mobileMenuButton"
+              aria-expanded="false"
+              aria-controls="mobileMenu"
+              class="inline-flex items-center justify-center p-2 rounded-md text-indigo-700 hover:text-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               <span class="sr-only">Open menu</span>
+              <!-- bars icon -->
               <svg
+                id="menuOpenIcon"
                 class="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"
@@ -205,78 +225,182 @@
                   d="M4 6h16M4 12h16M4 18h16"
                 />
               </svg>
+              <!-- close icon (hidden by default) -->
+              <svg
+                id="menuCloseIcon"
+                class="h-6 w-6 hidden"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
           </div>
         </div>
       </div>
-    </nav>
 
-    <div class="container mx-auto p-4 sm:p-6 lg:p-8 mt-12">
-        <header class="text-center mb-10">
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Menopause & Perimenopause Health Assessment</h1>
-            <p class="text-md text-gray-600 mt-2">GP Health Assessment Tool</p>
-            <p class="text-sm text-gray-700 mt-4 font-semibold">Developed by Dr Bobby Tork MD, FRACGP-RG</p>
-            <p class="text-xs text-gray-500 mt-1">&copy; 2025 Dr Bobby Tork</p>
-        </header>
-        
-        <div class="max-w-4xl mx-auto">
-            <!-- The form sections will be dynamically injected here -->
-            <div id="form-container"></div>
-
-            <!-- Main action buttons at the bottom of the form -->
-            <div id="action-buttons" class="mt-8 flex justify-end space-x-4 hidden">
-                <button id="clear-form-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Clear Form</button>
-                <button id="save-txt-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Save as .txt</button>
-                <button id="save-rtf-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Save as .rtf</button>
-            </div>
-
-            <!-- Container for the generated report -->
-            <div id="report-container" class="mt-10 hidden">
-                <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
-                    <div class="p-6 bg-white">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Generated Assessment Report</h2>
-                        <pre id="report-output" class="p-4 bg-gray-50 rounded-lg whitespace-pre-wrap font-mono text-sm"></pre>
-                        <div class="mt-6 flex justify-end space-x-4">
-                            <button id="copy-report-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700">Copy to Clipboard</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <!-- mobile menu (hidden by default) -->
+      <div id="mobileMenu" class="md:hidden hidden border-t border-indigo-100">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="/"
+            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            >Home</a
+          >
+          <a
+            href="/gpccmp"
+            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            >GPCCMP</a
+          >
+          <a
+            href="/HealthAssessments"
+            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            >Assessments</a
+          >
+          <a
+            href="/about"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >About</a
+          >
+          <a
+            href="/developer"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >Developer</a
+          >
+          <a
+            href="/privacy"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >Privacy</a
+          >
+          <a
+            href="/contact"
+            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            >Contact</a
+          >
         </div>
+      </div>
+    </nav>
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 mt-12">
+      <header class="text-center mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">
+          Menopause & Perimenopause Health Assessment
+        </h1>
+        <p class="text-md text-gray-600 mt-2">GP Health Assessment Tool</p>
+        <p class="text-sm text-gray-700 mt-4 font-semibold">
+          Developed by Dr Bobby Tork MD, FRACGP-RG
+        </p>
+        <p class="text-xs text-gray-500 mt-1">&copy; 2025 Dr Bobby Tork</p>
+      </header>
+
+      <div class="max-w-4xl mx-auto">
+        <!-- The form sections will be dynamically injected here -->
+        <div id="form-container"></div>
+
+        <!-- Main action buttons at the bottom of the form -->
+        <div id="action-buttons" class="mt-8 flex justify-end space-x-4 hidden">
+          <button
+            id="clear-form-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          >
+            Clear Form
+          </button>
+          <button
+            id="save-txt-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Save as .txt
+          </button>
+          <button
+            id="save-rtf-btn"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Save as .rtf
+          </button>
+        </div>
+
+        <!-- Container for the generated report -->
+        <div id="report-container" class="mt-10 hidden">
+          <div
+            class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+          >
+            <div class="p-6 bg-white">
+              <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                Generated Assessment Report
+              </h2>
+              <pre
+                id="report-output"
+                class="p-4 bg-gray-50 rounded-lg whitespace-pre-wrap font-mono text-sm"
+              ></pre>
+              <div class="mt-6 flex justify-end space-x-4">
+                <button
+                  id="copy-report-btn"
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700"
+                >
+                  Copy to Clipboard
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
+
     <!-- Modals for popups -->
     <div id="easter-egg-modal" class="modal-overlay hidden">
-        <div class="modal-content text-center">
-            <p class="font-semibold">Developed by Dr Bobby Tork MD, FRACGP-RG</p>
-            <p class="text-sm">&copy; 2025 Dr Bobby Tork</p>
-            <button id="close-easter-egg" class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white" style="background-color: #D8A0A0; hover:bg-opacity-90;">Close</button>
-        </div>
+      <div class="modal-content text-center">
+        <p class="font-semibold">Developed by Dr Bobby Tork MD, FRACGP-RG</p>
+        <p class="text-sm">&copy; 2025 Dr Bobby Tork</p>
+        <button
+          id="close-easter-egg"
+          class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white"
+          style="background-color: #d8a0a0; hover: bg-opacity-90"
+        >
+          Close
+        </button>
+      </div>
     </div>
     <div id="assessment-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modal-title" class="text-2xl font-bold">Assessment</h2>
-                <div id="modal-score-display" class="score-display">Score: 0</div>
-                <button id="modal-close-btn" class="modal-close-btn">&times;</button>
-            </div>
-            <div id="modal-body"></div>
-            <div id="modal-footer" class="mt-6 flex justify-end items-center"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modal-title" class="text-2xl font-bold">Assessment</h2>
+          <div id="modal-score-display" class="score-display">Score: 0</div>
+          <button id="modal-close-btn" class="modal-close-btn">&times;</button>
         </div>
+        <div id="modal-body"></div>
+        <div id="modal-footer" class="mt-6 flex justify-end items-center"></div>
+      </div>
     </div>
 
     <!-- Modal for restoring session -->
     <div id="restore-session-modal" class="modal-overlay hidden">
-        <div class="modal-content text-center">
-            <h2 class="text-2xl font-bold mb-4">Saved Session Found</h2>
-            <p class="text-gray-600 mb-6">Would you like to restore your previous assessment data or start a new one?</p>
-            <div class="flex justify-center space-x-4">
-                <button id="restore-btn" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Restore Session</button>
-                <button id="start-fresh-btn" class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Start Fresh</button>
-            </div>
+      <div class="modal-content text-center">
+        <h2 class="text-2xl font-bold mb-4">Saved Session Found</h2>
+        <p class="text-gray-600 mb-6">
+          Would you like to restore your previous assessment data or start a new
+          one?
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            id="restore-btn"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Restore Session
+          </button>
+          <button
+            id="start-fresh-btn"
+            class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Start Fresh
+          </button>
         </div>
+      </div>
     </div>
-
 
     <footer
       class="bg-indigo-950 text-indigo-100 border-t border-indigo-800 mt-auto"
@@ -290,11 +414,8 @@
               >
                 <span class="text-white font-bold text-lg">GP</span>
               </div>
-              <span class="font-bold text-xl text-white">
-                GP Companion
-              </span>
+              <span class="font-bold text-xl text-white">GP Companion</span>
             </div>
-
             <p class="text-indigo-200 text-sm max-w-md">
               Comprehensive medical tools and health assessments designed for
               healthcare professionals. Streamline your workflow with our
@@ -308,7 +429,7 @@
               <li>
                 <a
                   href="/about"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   About Website
                 </a>
@@ -316,7 +437,7 @@
               <li>
                 <a
                   href="/developer"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   Developer
                 </a>
@@ -324,7 +445,7 @@
               <li>
                 <a
                   href="/privacy"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   Privacy Policy
                 </a>
@@ -332,7 +453,7 @@
               <li>
                 <a
                   href="/contact"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
                 >
                   Contact Developer
                 </a>
@@ -344,22 +465,36 @@
             <h3 class="font-semibold text-white mb-4">Tools</h3>
             <ul class="space-y-2">
               <li>
-                <span class="text-indigo-200 text-sm">GPCCMP Tool</span>
+                <a
+                  href="/gpccmp"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
+                  GPCCMP Tool
+                </a>
               </li>
               <li>
-                <span class="text-indigo-200 text-sm">
+                <a
+                  href="/HealthAssessments"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
                   Health Assessments
-                </span>
+                </a>
               </li>
               <li>
-                <span class="text-indigo-200 text-sm">
+                <a
+                  href="/HealthAssessments"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
                   75+ Health Assessment
-                </span>
+                </a>
               </li>
               <li>
-                <span class="text-indigo-200 text-sm">
+                <a
+                  href="/HealthAssessments"
+                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                >
                   ATSI Health Assessment
-                </span>
+                </a>
               </li>
             </ul>
           </div>
@@ -375,32 +510,33 @@
     </footer>
 
     <script>
-    // --- DOM Element References ---
-    const formContainer = document.getElementById('form-container');
-    const saveTxtBtn = document.getElementById('save-txt-btn');
-    const saveRtfBtn = document.getElementById('save-rtf-btn');
-    const clearFormBtn = document.getElementById('clear-form-btn');
-    const actionButtons = document.getElementById('action-buttons');
-    const reportContainer = document.getElementById('report-container');
-    const reportOutput = document.getElementById('report-output');
-    const copyReportBtn = document.getElementById('copy-report-btn');
-    const assessmentModal = document.getElementById('assessment-modal');
-    const modalTitle = document.getElementById('modal-title');
-    const modalBody = document.getElementById('modal-body');
-    const modalFooter = document.getElementById('modal-footer');
-    const modalCloseBtn = document.getElementById('modal-close-btn');
-    const modalScoreDisplay = document.getElementById('modal-score-display');
-    
-    // --- Global State ---
-    let mhtWarning = '';
-    let lastCompletedAssessment = { text: '', title: '' };
-    let lastGeneratedPlan = new Set(); // NEW: For plan reconciliation
+      // --- DOM Element References ---
+      const formContainer = document.getElementById("form-container");
+      const saveTxtBtn = document.getElementById("save-txt-btn");
+      const saveRtfBtn = document.getElementById("save-rtf-btn");
+      const clearFormBtn = document.getElementById("clear-form-btn");
+      const actionButtons = document.getElementById("action-buttons");
+      const reportContainer = document.getElementById("report-container");
+      const reportOutput = document.getElementById("report-output");
+      const copyReportBtn = document.getElementById("copy-report-btn");
+      const assessmentModal = document.getElementById("assessment-modal");
+      const modalTitle = document.getElementById("modal-title");
+      const modalBody = document.getElementById("modal-body");
+      const modalFooter = document.getElementById("modal-footer");
+      const modalCloseBtn = document.getElementById("modal-close-btn");
+      const modalScoreDisplay = document.getElementById("modal-score-display");
 
-    // --- Reusable HTML Templates ---
-    const getChevronIcon = () => `<svg class="chevron-icon w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+      // --- Global State ---
+      let mhtWarning = "";
+      let lastCompletedAssessment = { text: "", title: "" };
+      let lastGeneratedPlan = new Set(); // NEW: For plan reconciliation
 
-    // --- Main Form Structure ---
-    function getMenopauseFormHtml() {
+      // --- Reusable HTML Templates ---
+      const getChevronIcon = () =>
+        `<svg class="chevron-icon w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+
+      // --- Main Form Structure ---
+      function getMenopauseFormHtml() {
         return `
             ${getMbsSectionHtml()}
             ${getPatientDetailsHtml()}
@@ -408,30 +544,30 @@
             ${getExaminationSectionHtml()}
             ${getPlanSectionHtml()}
         `;
-    }
+      }
 
-    // Generates the HTML for the MBS Information section card
-    function getMbsSectionHtml() {
+      // Generates the HTML for the MBS Information section card
+      function getMbsSectionHtml() {
         return `
         <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
-            <div class="form-section-header text-xl font-bold text-white px-6 py-3 flex justify-between items-center cursor-pointer" style="background-color: #D8A0A0;"><h2 class="form-section-title text-white">MBS Information</h2>${getChevronIcon()}</div>
+            <div class="form-section-header text-xl font-bold text-white px-6 py-3 flex justify-between items-center cursor-pointer" style="background-color: #4338CA;"><h2 class="form-section-title text-white">MBS Information</h2>${getChevronIcon()}</div>
             <div class="p-6 bg-white form-section-content">
                 <label class="block text-lg font-medium text-gray-700 mb-3">Select the appropriate MBS item number:</label>
                 <div class="space-y-3">
                     <label class="flex items-center"><input type="radio" name="mbs-item" id="mbs-item-695" value="695" class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded mr-3"> <b>GP Item 695</b></label>
                     <label class="flex items-center"><input type="radio" name="mbs-item" id="mbs-item-19000" value="19000" class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded mr-3"> <b>PMP Item 19000</b></label>
                 </div>
-                <div class="mt-4 p-3 bg-pink-50 rounded-lg text-sm text-pink-800">This health assessment is available every 12 months.</div>
+                <div class="mt-4 p-3 bg-indigo-50 rounded-lg text-sm text-indigo-800">This health assessment is available every 12 months.</div>
             </div>
         </div>`;
-    }
+      }
 
-    // Generates the HTML for the Patient Details section card
-    function getPatientDetailsHtml() {
+      // Generates the HTML for the Patient Details section card
+      function getPatientDetailsHtml() {
         const today = new Date().toISOString().slice(0, 10);
         return `
         <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
-            <div class="form-section-header text-xl font-bold text-white px-6 py-3 flex justify-between items-center cursor-pointer" style="background-color: #D8A0A0;"><h2 class="form-section-title text-white">Patient Details</h2>${getChevronIcon()}</div>
+            <div class="form-section-header text-xl font-bold text-white px-6 py-3 flex justify-between items-center cursor-pointer" style="background-color: #4338CA;"><h2 class="form-section-title text-white">Patient Details</h2>${getChevronIcon()}</div>
             <div class="p-6 bg-white form-section-content">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
                     <div><label for="patient-name" class="block text-sm font-medium text-gray-700 mb-1">Name: <span class="text-gray-400 font-normal">(optional)</span></label><input type="text" id="patient-name" class="input-field"></div>
@@ -442,13 +578,13 @@
                 </div>
             </div>
         </div>`;
-    }
-    
-    // Generates the HTML for the entire History section card
-    function getHistorySectionHtml() {
+      }
+
+      // Generates the HTML for the entire History section card
+      function getHistorySectionHtml() {
         return `
         <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
-            <div class="form-section-header text-xl font-bold text-white px-6 py-3 flex justify-between items-center cursor-pointer" style="background-color: #D8A0A0;"><h2 class="form-section-title text-white">History</h2>${getChevronIcon()}</div>
+            <div class="form-section-header text-xl font-bold text-white px-6 py-3 flex justify-between items-center cursor-pointer" style="background-color: #4338CA;"><h2 class="form-section-title text-white">History</h2>${getChevronIcon()}</div>
             <div class="form-section-content p-6 bg-white">
                 <label for="history-main-concerns" class="block font-medium mb-1">Patient's main concern with menopause/perimenopause:</label>
                 <textarea id="history-main-concerns" class="input-field h-24 mb-4" placeholder="Describe patient's primary concerns..."></textarea>
@@ -679,13 +815,13 @@
             </div>
         </div>
         `;
-    }
+      }
 
-    // Generates the HTML for the Examination section card
-    function getExaminationSectionHtml() {
+      // Generates the HTML for the Examination section card
+      function getExaminationSectionHtml() {
         return `
         <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
-            <div class="form-section-header text-xl font-bold text-white px-6 py-3 flex justify-between items-center cursor-pointer" style="background-color: #D8A0A0;"><h2 class="form-section-title text-white">Examination</h2>${getChevronIcon()}</div>
+            <div class="form-section-header text-xl font-bold text-white px-6 py-3 flex justify-between items-center cursor-pointer" style="background-color: #4338CA;"><h2 class="form-section-title text-white">Examination</h2>${getChevronIcon()}</div>
             <div class="p-6 bg-white form-section-content">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
                     <div><label for="exam-bp" class="block font-medium mb-1">BP (mmHg):</label><input type="text" id="exam-bp" class="input-field auto-plan-trigger" placeholder="120/80"></div>
@@ -702,13 +838,13 @@
                 <textarea id="exam-findings" class="input-field h-20" placeholder="e.g., Thyroid, breast, pelvic exam findings if performed..."></textarea>
             </div>
         </div>`;
-    }
+      }
 
-    // Generates the HTML for the Plan section card
-    function getPlanSectionHtml() {
+      // Generates the HTML for the Plan section card
+      function getPlanSectionHtml() {
         return `
         <div class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden">
-            <div class="form-section-header text-xl font-bold text-white px-6 py-3 flex justify-between items-center cursor-pointer" style="background-color: #D8A0A0;"><h2 class="form-section-title text-white">Plan</h2>${getChevronIcon()}</div>
+            <div class="form-section-header text-xl font-bold text-white px-6 py-3 flex justify-between items-center cursor-pointer" style="background-color: #4338CA;"><h2 class="form-section-title text-white">Plan</h2>${getChevronIcon()}</div>
             <div class="p-6 bg-white form-section-content">
                 <h3 class="subsection-title">Investigations</h3>
                <div class="grid grid-cols-2 md:grid-cols-3 gap-x-8">
@@ -744,141 +880,151 @@
                 <textarea id="plan-details" class="input-field h-48" placeholder="Automated suggestions will appear here. Add clinician's notes and final management plan below."></textarea>
             </div>
         </div>`;
-    }
-    
-    // --- LOCAL STORAGE FUNCTIONS ---
-    const STORAGE_KEY = 'menopauseAssessmentData';
+      }
 
-    /**
-     * Gathers all form data and saves it to localStorage.
-     */
-    function saveToLocalStorage() {
+      // --- LOCAL STORAGE FUNCTIONS ---
+      const STORAGE_KEY = "menopauseAssessmentData";
+
+      /**
+       * Gathers all form data and saves it to localStorage.
+       */
+      function saveToLocalStorage() {
         const formData = {};
         // Save values for inputs, textareas, and selects
-        document.querySelectorAll('input, textarea, select').forEach(el => {
-            if (!el.id) return; // Only save elements with an ID
-            
-            if (el.type === 'checkbox' || el.type === 'radio') {
-                formData[el.id] = el.checked;
-            } else {
-                formData[el.id] = el.value;
-            }
+        document.querySelectorAll("input, textarea, select").forEach((el) => {
+          if (!el.id) return; // Only save elements with an ID
+
+          if (el.type === "checkbox" || el.type === "radio") {
+            formData[el.id] = el.checked;
+          } else {
+            formData[el.id] = el.value;
+          }
         });
-        
+
         // Save dynamically added referrals
         const dynamicReferrals = [];
-        document.querySelectorAll('.referral-item[id^="ref-dynamic-"]').forEach(el => {
-            const labelSpan = el.closest('label').querySelector('span');
+        document
+          .querySelectorAll('.referral-item[id^="ref-dynamic-"]')
+          .forEach((el) => {
+            const labelSpan = el.closest("label").querySelector("span");
             if (labelSpan) {
-                const clone = labelSpan.cloneNode(true);
-                const inputToRemove = clone.querySelector('input');
-                if(inputToRemove) inputToRemove.remove();
-                dynamicReferrals.push(clone.textContent.trim());
+              const clone = labelSpan.cloneNode(true);
+              const inputToRemove = clone.querySelector("input");
+              if (inputToRemove) inputToRemove.remove();
+              dynamicReferrals.push(clone.textContent.trim());
             }
-        });
-        formData['dynamicReferralsList'] = dynamicReferrals;
+          });
+        formData["dynamicReferralsList"] = dynamicReferrals;
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-    }
+      }
 
-    /**
-     * Loads form data from localStorage and populates the form.
-     */
-    function loadFromLocalStorage() {
+      /**
+       * Loads form data from localStorage and populates the form.
+       */
+      function loadFromLocalStorage() {
         const savedData = localStorage.getItem(STORAGE_KEY);
         if (!savedData) {
-            return;
+          return;
         }
 
         const formData = JSON.parse(savedData);
-        const referralsList = document.getElementById('referrals-list');
+        const referralsList = document.getElementById("referrals-list");
 
         // Restore values for all saved elements
         for (const id in formData) {
-            const el = document.getElementById(id);
-            if (el) {
-                if (el.type === 'checkbox' || el.type === 'radio') {
-                    el.checked = formData[id];
-                } else {
-                    el.value = formData[id];
-                }
-                // Trigger change event to ensure conditional UI updates
-                el.dispatchEvent(new Event('change', { bubbles: true }));
+          const el = document.getElementById(id);
+          if (el) {
+            if (el.type === "checkbox" || el.type === "radio") {
+              el.checked = formData[id];
+            } else {
+              el.value = formData[id];
             }
+            // Trigger change event to ensure conditional UI updates
+            el.dispatchEvent(new Event("change", { bubbles: true }));
+          }
         }
-        
+
         // Re-create dynamically added referrals
         if (formData.dynamicReferralsList && referralsList) {
-            formData.dynamicReferralsList.forEach(referralText => {
-                if (!referralText) return;
-                const newId = `ref-dynamic-${referralText.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
-                const newReferralHtml = `
+          formData.dynamicReferralsList.forEach((referralText) => {
+            if (!referralText) return;
+            const newId = `ref-dynamic-${referralText
+              .toLowerCase()
+              .replace(/[^a-z0-9]/g, "-")}`;
+            const newReferralHtml = `
                     <label class="checkbox-label flex justify-between items-center">
                         <span class="flex items-center">
                            <input type="checkbox" id="${newId}" class="referral-item h-4 w-4 mr-2" checked> ${referralText}
                         </span>
                         <button type="button" class="remove-referral-btn text-red-500 hover:text-red-700 font-bold text-lg">&times;</button>
                     </label>`;
-                referralsList.insertAdjacentHTML('beforeend', newReferralHtml);
-            });
+            referralsList.insertAdjacentHTML("beforeend", newReferralHtml);
+          });
         }
 
         // Manually run calculation and plan updates after loading
         calculateAndDisplayAge();
         calculateBMI();
         updateAutoPlanItems();
-    }
+      }
 
-    // --- CORE SCRIPT LOGIC ---
-    // Initializes the form on page load
-    function initializeForm() {
+      // --- CORE SCRIPT LOGIC ---
+      // Initializes the form on page load
+      function initializeForm() {
         formContainer.innerHTML = getMenopauseFormHtml();
-        actionButtons.classList.remove('hidden');
+        actionButtons.classList.remove("hidden");
         addAccordionListeners();
         addDynamicListeners();
         loadFromLocalStorage(); // Checks for saved data and populates the form
         updateAutoPlanItems();
-    }
+      }
 
-    // Event listener for the "Clear Form" button
-    clearFormBtn.addEventListener('click', () => {
+      // Event listener for the "Clear Form" button
+      clearFormBtn.addEventListener("click", () => {
         const scrollPosition = window.scrollY;
         localStorage.removeItem(STORAGE_KEY); // Clear saved data
         initializeForm();
-        reportContainer.classList.add('hidden');
-        reportOutput.textContent = '';
+        reportContainer.classList.add("hidden");
+        reportOutput.textContent = "";
         window.scrollTo(0, scrollPosition);
-    });
-    
-    // Event listeners for saving the report
-    saveTxtBtn.addEventListener('click', () => generateAndDisplayReport(true, 'txt'));
-    saveRtfBtn.addEventListener('click', () => generateAndDisplayReport(true, 'rtf'));
+      });
 
-    // Event listener for copying the report to the clipboard
-    copyReportBtn.addEventListener('click', () => {
-        const textArea = document.createElement('textarea');
+      // Event listeners for saving the report
+      saveTxtBtn.addEventListener("click", () =>
+        generateAndDisplayReport(true, "txt")
+      );
+      saveRtfBtn.addEventListener("click", () =>
+        generateAndDisplayReport(true, "rtf")
+      );
+
+      // Event listener for copying the report to the clipboard
+      copyReportBtn.addEventListener("click", () => {
+        const textArea = document.createElement("textarea");
         textArea.value = reportOutput.textContent;
         document.body.appendChild(textArea);
         textArea.select();
         try {
-            document.execCommand('copy');
-            copyReportBtn.textContent = 'Copied!';
-            setTimeout(() => { copyReportBtn.textContent = 'Copy to Clipboard'; }, 2000);
+          document.execCommand("copy");
+          copyReportBtn.textContent = "Copied!";
+          setTimeout(() => {
+            copyReportBtn.textContent = "Copy to Clipboard";
+          }, 2000);
         } catch (err) {
-            console.error('Fallback: Oops, unable to copy', err);
+          console.error("Fallback: Oops, unable to copy", err);
         }
         document.body.removeChild(textArea);
-    });
+      });
 
-    // Calculates and displays the patient's age based on DOB input
-    function calculateAndDisplayAge() {
-        const dobInput = document.getElementById('patient-dob');
-        const ageDisplay = document.getElementById('patient-age-display');
+      // Calculates and displays the patient's age based on DOB input
+      function calculateAndDisplayAge() {
+        const dobInput = document.getElementById("patient-dob");
+        const ageDisplay = document.getElementById("patient-age-display");
         if (!dobInput || !ageDisplay) return 0;
         const dob = dobInput.value;
         if (!dob) {
-            ageDisplay.innerHTML = 'Age will be calculated';
-            return 0;
+          ageDisplay.innerHTML = "Age will be calculated";
+          return 0;
         }
         const birthDate = new Date(dob);
         const today = new Date();
@@ -887,725 +1033,1094 @@
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
         ageDisplay.innerHTML = `Age: ${age}`;
         return age;
-    }
+      }
 
-    // Attaches click listeners to section headers to toggle visibility (accordion)
-    function addAccordionListeners() {
-        document.querySelectorAll('.form-section-header').forEach(header => {
-            if (header.dataset.listener) return;
-            header.dataset.listener = true;
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const chevron = header.querySelector('.chevron-icon');
-                content.classList.toggle('collapsed');
-                chevron.classList.toggle('rotated');
-            });
+      // Attaches click listeners to section headers to toggle visibility (accordion)
+      function addAccordionListeners() {
+        document.querySelectorAll(".form-section-header").forEach((header) => {
+          if (header.dataset.listener) return;
+          header.dataset.listener = true;
+          header.addEventListener("click", () => {
+            const content = header.nextElementSibling;
+            const chevron = header.querySelector(".chevron-icon");
+            content.classList.toggle("collapsed");
+            chevron.classList.toggle("rotated");
+          });
         });
-    }
+      }
 
-    // Attaches all other dynamic event listeners for form inputs
-    function addDynamicListeners() {
+      // Attaches all other dynamic event listeners for form inputs
+      function addDynamicListeners() {
         // Automatically save form data on any input or change
-        formContainer.addEventListener('input', saveToLocalStorage);
-        formContainer.addEventListener('change', saveToLocalStorage);
+        formContainer.addEventListener("input", saveToLocalStorage);
+        formContainer.addEventListener("change", saveToLocalStorage);
 
         // DOB change listener
-        document.getElementById('patient-dob')?.addEventListener('change', () => {
-             calculateAndDisplayAge();
-             updateAutoPlanItems();
-        });
-        
+        document
+          .getElementById("patient-dob")
+          ?.addEventListener("change", () => {
+            calculateAndDisplayAge();
+            updateAutoPlanItems();
+          });
+
         // Easter Egg Logic
-        document.getElementById('patient-name')?.addEventListener('input', (e) => {
-            if (e.target.value.toLowerCase() === atob('YmlnIGJyb3RoZXIh')) { // "big brother!" in Base64
-                document.getElementById('easter-egg-modal').classList.remove('hidden');
+        document
+          .getElementById("patient-name")
+          ?.addEventListener("input", (e) => {
+            if (e.target.value.toLowerCase() === atob("YmlnIGJyb3RoZXIh")) {
+              // "big brother!" in Base64
+              document
+                .getElementById("easter-egg-modal")
+                .classList.remove("hidden");
             }
-        });
-        document.getElementById('close-easter-egg')?.addEventListener('click', () => {
-            document.getElementById('easter-egg-modal').classList.add('hidden');
-        });
+          });
+        document
+          .getElementById("close-easter-egg")
+          ?.addEventListener("click", () => {
+            document.getElementById("easter-egg-modal").classList.add("hidden");
+          });
 
         // BMI calculation listeners
-        document.getElementById('exam-height-cm')?.addEventListener('input', calculateBMI);
-        document.getElementById('exam-weight-kg')?.addEventListener('input', calculateBMI);
-        
+        document
+          .getElementById("exam-height-cm")
+          ?.addEventListener("input", calculateBMI);
+        document
+          .getElementById("exam-weight-kg")
+          ?.addEventListener("input", calculateBMI);
+
         // BP input listener - ADDED
-        document.getElementById('exam-bp')?.addEventListener('input', updateAutoPlanItems);
+        document
+          .getElementById("exam-bp")
+          ?.addEventListener("input", updateAutoPlanItems);
 
         // Add Referral Logic (with remove functionality restored)
-        const addReferralBtn = document.getElementById('add-referral-btn');
-        const newReferralInput = document.getElementById('new-referral-input');
-        const referralsList = document.getElementById('referrals-list');
+        const addReferralBtn = document.getElementById("add-referral-btn");
+        const newReferralInput = document.getElementById("new-referral-input");
+        const referralsList = document.getElementById("referrals-list");
 
-        addReferralBtn?.addEventListener('click', () => {
-            const referralText = newReferralInput.value.trim();
-            if (referralText && referralsList) {
-                const newId = `ref-dynamic-${referralText.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
-                const newReferralHtml = `
+        addReferralBtn?.addEventListener("click", () => {
+          const referralText = newReferralInput.value.trim();
+          if (referralText && referralsList) {
+            const newId = `ref-dynamic-${referralText
+              .toLowerCase()
+              .replace(/[^a-z0-9]/g, "-")}`;
+            const newReferralHtml = `
                     <label class="checkbox-label flex justify-between items-center">
                         <span class="flex items-center">
                            <input type="checkbox" id="${newId}" class="referral-item h-4 w-4 mr-2" checked> ${referralText}
                         </span>
                         <button type="button" class="remove-referral-btn text-red-500 hover:text-red-700 font-bold text-lg">&times;</button>
                     </label>`;
-                referralsList.insertAdjacentHTML('beforeend', newReferralHtml);
-                newReferralInput.value = '';
-                saveToLocalStorage(); // Save after adding new referral
-            }
-        });
-        
-        // Listener for removing dynamically added referrals
-        referralsList?.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-referral-btn')) {
-                e.preventDefault();
-                e.target.closest('.checkbox-label').remove();
-                saveToLocalStorage(); // Save after removing a referral
-            }
+            referralsList.insertAdjacentHTML("beforeend", newReferralHtml);
+            newReferralInput.value = "";
+            saveToLocalStorage(); // Save after adding new referral
+          }
         });
 
+        // Listener for removing dynamically added referrals
+        referralsList?.addEventListener("click", (e) => {
+          if (e.target.classList.contains("remove-referral-btn")) {
+            e.preventDefault();
+            e.target.closest(".checkbox-label").remove();
+            saveToLocalStorage(); // Save after removing a referral
+          }
+        });
 
         // Listeners for any input that should trigger the auto-plan update
-        document.querySelectorAll('.auto-plan-trigger, .mht-ci').forEach(el => {
-            el.addEventListener('change', updateAutoPlanItems);
-            el.addEventListener('input', updateAutoPlanItems);
-        });
+        document
+          .querySelectorAll(".auto-plan-trigger, .mht-ci")
+          .forEach((el) => {
+            el.addEventListener("change", updateAutoPlanItems);
+            el.addEventListener("input", updateAutoPlanItems);
+          });
 
         // Listeners for checkboxes that toggle a detail section's visibility
-        document.querySelectorAll('.detail-toggle').forEach(checkbox => {
-            checkbox.addEventListener('change', (event) => {
-                const targetId = event.target.dataset.target;
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.classList.toggle('hidden', !event.target.checked);
-                }
-            });
+        document.querySelectorAll(".detail-toggle").forEach((checkbox) => {
+          checkbox.addEventListener("change", (event) => {
+            const targetId = event.target.dataset.target;
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+              targetElement.classList.toggle("hidden", !event.target.checked);
+            }
+          });
         });
-        
+
         // Listeners for radio buttons that toggle a detail section's visibility (for specific values)
-        document.querySelectorAll('.detail-toggle-radio').forEach(radio => {
-            radio.addEventListener('change', (event) => {
-                const targetId = event.target.dataset.target;
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    const shouldShow = event.target.value === 'Abnormality found' || event.target.value === 'Yes';
-                    targetElement.classList.toggle('hidden', !shouldShow);
-                }
-            });
+        document.querySelectorAll(".detail-toggle-radio").forEach((radio) => {
+          radio.addEventListener("change", (event) => {
+            const targetId = event.target.dataset.target;
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+              const shouldShow =
+                event.target.value === "Abnormality found" ||
+                event.target.value === "Yes";
+              targetElement.classList.toggle("hidden", !shouldShow);
+            }
+          });
         });
 
         // Listener for radio button groups that toggle a detail section's visibility (for any value)
-        document.querySelectorAll('.detail-toggle-radio-group').forEach(radio => {
-            radio.addEventListener('change', (event) => {
-                const targetId = event.target.dataset.target;
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.classList.remove('hidden');
-                }
+        document
+          .querySelectorAll(".detail-toggle-radio-group")
+          .forEach((radio) => {
+            radio.addEventListener("change", (event) => {
+              const targetId = event.target.dataset.target;
+              const targetElement = document.getElementById(targetId);
+              if (targetElement) {
+                targetElement.classList.remove("hidden");
+              }
             });
-        });
-        
-        // Listeners for select dropdowns that toggle a detail section's visibility
-        document.querySelectorAll('.detail-toggle-select').forEach(select => {
-            select.addEventListener('change', (event) => {
-                const targetId = event.target.dataset.target;
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    const shouldShow = event.target.value === 'Ex-smoker' || event.target.value === 'Current smoker';
-                    targetElement.classList.toggle('hidden', !shouldShow);
-                }
-            });
-        });
-        
-        // Listeners for the mood assessment tool dropdown
-        const moodTool = document.getElementById('mood-tool');
-        const moodLink = document.getElementById('mood-link');
-        moodTool?.addEventListener('change', (e) => {
-            moodLink.classList.toggle('hidden', !e.target.value);
-        });
-        moodLink?.addEventListener('click', (e) => {
-            e.preventDefault();
-            const tool = moodTool.value;
-            if(tool) openAssessmentModal(tool, 'mood-score');
-        });
-    }
+          });
 
-    // Calculates and displays BMI and its category
-    function calculateBMI() {
-        const heightInput = document.getElementById('exam-height-cm');
-        const weightInput = document.getElementById('exam-weight-kg');
-        const bmiInput = document.getElementById('exam-bmi');
-        const bmiCategorySpan = document.getElementById('bmi-category');
-        if (!heightInput || !weightInput || !bmiInput || !bmiCategorySpan) return;
+        // Listeners for select dropdowns that toggle a detail section's visibility
+        document.querySelectorAll(".detail-toggle-select").forEach((select) => {
+          select.addEventListener("change", (event) => {
+            const targetId = event.target.dataset.target;
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+              const shouldShow =
+                event.target.value === "Ex-smoker" ||
+                event.target.value === "Current smoker";
+              targetElement.classList.toggle("hidden", !shouldShow);
+            }
+          });
+        });
+
+        // Listeners for the mood assessment tool dropdown
+        const moodTool = document.getElementById("mood-tool");
+        const moodLink = document.getElementById("mood-link");
+        moodTool?.addEventListener("change", (e) => {
+          moodLink.classList.toggle("hidden", !e.target.value);
+        });
+        moodLink?.addEventListener("click", (e) => {
+          e.preventDefault();
+          const tool = moodTool.value;
+          if (tool) openAssessmentModal(tool, "mood-score");
+        });
+      }
+
+      // Calculates and displays BMI and its category
+      function calculateBMI() {
+        const heightInput = document.getElementById("exam-height-cm");
+        const weightInput = document.getElementById("exam-weight-kg");
+        const bmiInput = document.getElementById("exam-bmi");
+        const bmiCategorySpan = document.getElementById("bmi-category");
+        if (!heightInput || !weightInput || !bmiInput || !bmiCategorySpan)
+          return;
 
         const height = parseFloat(heightInput.value);
         const weight = parseFloat(weightInput.value);
-        
-        bmiCategorySpan.textContent = '';
-        bmiCategorySpan.className = 'font-semibold ml-2';
+
+        bmiCategorySpan.textContent = "";
+        bmiCategorySpan.className = "font-semibold ml-2";
 
         if (height > 0 && weight > 0) {
-            const heightInMeters = height / 100;
-            const bmi = weight / (heightInMeters * heightInMeters);
-            bmiInput.value = bmi.toFixed(2);
+          const heightInMeters = height / 100;
+          const bmi = weight / (heightInMeters * heightInMeters);
+          bmiInput.value = bmi.toFixed(2);
 
-            if (bmi < 18.5) {
-                bmiCategorySpan.textContent = 'Underweight';
-                bmiCategorySpan.classList.add('text-blue-600');
-            } else if (bmi >= 18.5 && bmi <= 24.9) {
-                bmiCategorySpan.textContent = 'Normal';
-                bmiCategorySpan.classList.add('text-green-600');
-            } else if (bmi >= 25 && bmi <= 29.9) {
-                bmiCategorySpan.textContent = 'Overweight';
-                bmiCategorySpan.classList.add('text-yellow-600');
-            } else {
-                bmiCategorySpan.textContent = 'Obese';
-                bmiCategorySpan.classList.add('text-red-600');
-            }
+          if (bmi < 18.5) {
+            bmiCategorySpan.textContent = "Underweight";
+            bmiCategorySpan.classList.add("text-blue-600");
+          } else if (bmi >= 18.5 && bmi <= 24.9) {
+            bmiCategorySpan.textContent = "Normal";
+            bmiCategorySpan.classList.add("text-green-600");
+          } else if (bmi >= 25 && bmi <= 29.9) {
+            bmiCategorySpan.textContent = "Overweight";
+            bmiCategorySpan.classList.add("text-yellow-600");
+          } else {
+            bmiCategorySpan.textContent = "Obese";
+            bmiCategorySpan.classList.add("text-red-600");
+          }
         } else {
-            bmiInput.value = '';
+          bmiInput.value = "";
         }
         updateAutoPlanItems();
-    }
-    
-    // NEW: Function to reconcile textarea content without losing manual edits
-    const reconcileTextarea = (textareaEl, newContentSet, lastContentSet, placeholder) => {
-        const linesToAdd = new Set([...newContentSet].filter(line => !lastContentSet.has(line)));
-        const linesToRemove = new Set([...lastContentSet].filter(line => !newContentSet.has(line)));
+      }
+
+      // NEW: Function to reconcile textarea content without losing manual edits
+      const reconcileTextarea = (
+        textareaEl,
+        newContentSet,
+        lastContentSet,
+        placeholder
+      ) => {
+        const linesToAdd = new Set(
+          [...newContentSet].filter((line) => !lastContentSet.has(line))
+        );
+        const linesToRemove = new Set(
+          [...lastContentSet].filter((line) => !newContentSet.has(line))
+        );
 
         if (linesToAdd.size > 0 || linesToRemove.size > 0) {
-            const currentLines = textareaEl.value.split('\n');
-            const filteredLines = currentLines.filter(line => !linesToRemove.has(line) && line.trim() !== '' && line !== placeholder);
-            
-            linesToAdd.forEach(line => {
-                if (!filteredLines.includes(line)) {
-                    filteredLines.push(line);
-                }
-            });
+          const currentLines = textareaEl.value.split("\n");
+          const filteredLines = currentLines.filter(
+            (line) =>
+              !linesToRemove.has(line) &&
+              line.trim() !== "" &&
+              line !== placeholder
+          );
 
-            const finalText = filteredLines.map(line => line.startsWith('- ') ? line : `- ${line}`).join('\n');
-            textareaEl.value = finalText.trim().length > 0 ? finalText : (placeholder || '');
+          linesToAdd.forEach((line) => {
+            if (!filteredLines.includes(line)) {
+              filteredLines.push(line);
+            }
+          });
+
+          const finalText = filteredLines
+            .map((line) => (line.startsWith("- ") ? line : `- ${line}`))
+            .join("\n");
+          textareaEl.value =
+            finalText.trim().length > 0 ? finalText : placeholder || "";
         }
-    };
+      };
 
-    // Updates the "Management Plan" textarea with automated suggestions based on form inputs
-    function updateAutoPlanItems() {
+      // Updates the "Management Plan" textarea with automated suggestions based on form inputs
+      function updateAutoPlanItems() {
         const newGeneratedPlan = new Set(); // Use a Set to avoid duplicates
-        mhtWarning = '';
-        const getValue = id => document.getElementById(id)?.value.trim() || '';
-        const getRadioValue = name => document.querySelector(`input[name="${name}"]:checked`)?.value || '';
-        
+        mhtWarning = "";
+        const getValue = (id) =>
+          document.getElementById(id)?.value.trim() || "";
+        const getRadioValue = (name) =>
+          document.querySelector(`input[name="${name}"]:checked`)?.value || "";
+
         // Check for MHT Contraindications
         let absoluteCI = [];
         let relativeCI = [];
-        document.querySelectorAll('.mht-ci:checked').forEach(el => {
-            const label = el.closest('label').textContent.trim();
-            if (el.dataset.ciType === 'absolute') absoluteCI.push(label);
-            if (el.dataset.ciType === 'relative') relativeCI.push(label);
+        document.querySelectorAll(".mht-ci:checked").forEach((el) => {
+          const label = el.closest("label").textContent.trim();
+          if (el.dataset.ciType === "absolute") absoluteCI.push(label);
+          if (el.dataset.ciType === "relative") relativeCI.push(label);
         });
-        
-        const alertBox = document.getElementById('plan-alert-box');
+
+        const alertBox = document.getElementById("plan-alert-box");
         if (absoluteCI.length > 0) {
-            mhtWarning = `MHT is contraindicated due to: ${absoluteCI.join(', ')}.`;
-            alertBox.textContent = `WARNING: Absolute contraindication to MHT identified.`;
-            alertBox.classList.remove('hidden');
+          mhtWarning = `MHT is contraindicated due to: ${absoluteCI.join(
+            ", "
+          )}.`;
+          alertBox.textContent = `WARNING: Absolute contraindication to MHT identified.`;
+          alertBox.classList.remove("hidden");
         } else if (relativeCI.length > 0) {
-            mhtWarning = `Note relative contraindication(s) to MHT: ${relativeCI.join(', ')}. Consider transdermal route.`;
-            alertBox.textContent = `CAUTION: Relative contraindication to MHT identified.`;
-            alertBox.classList.remove('hidden');
+          mhtWarning = `Note relative contraindication(s) to MHT: ${relativeCI.join(
+            ", "
+          )}. Consider transdermal route.`;
+          alertBox.textContent = `CAUTION: Relative contraindication to MHT identified.`;
+          alertBox.classList.remove("hidden");
         } else {
-            alertBox.classList.add('hidden');
+          alertBox.classList.add("hidden");
         }
 
         // Generate plan items based on symptom groups
-        if (document.querySelector('.symptom-group-vasomotor:checked')) {
-            newGeneratedPlan.add('- Advise on lifestyle modifications for vasomotor symptoms (e.g., layered clothing, avoiding triggers like spicy food/alcohol).');
-            newGeneratedPlan.add('- Discuss benefits of maintaining a healthy weight and regular exercise for symptom control.');
-            if (absoluteCI.length === 0) {
-                newGeneratedPlan.add('- Consider Menopausal Hormone Therapy (MHT).');
-            }
+        if (document.querySelector(".symptom-group-vasomotor:checked")) {
+          newGeneratedPlan.add(
+            "- Advise on lifestyle modifications for vasomotor symptoms (e.g., layered clothing, avoiding triggers like spicy food/alcohol)."
+          );
+          newGeneratedPlan.add(
+            "- Discuss benefits of maintaining a healthy weight and regular exercise for symptom control."
+          );
+          if (absoluteCI.length === 0) {
+            newGeneratedPlan.add(
+              "- Consider Menopausal Hormone Therapy (MHT)."
+            );
+          }
         }
-        if (document.querySelector('.symptom-group-psych:checked')) {
-            newGeneratedPlan.add('- Recommend stress management techniques (e.g., mindfulness, relaxation exercises).');
-            newGeneratedPlan.add('- Encourage regular physical activity, which can improve mood and cognitive function.');
-            newGeneratedPlan.add('- Consider SSRI/SNRI antidepressants for mood/anxiety symptoms.');
+        if (document.querySelector(".symptom-group-psych:checked")) {
+          newGeneratedPlan.add(
+            "- Recommend stress management techniques (e.g., mindfulness, relaxation exercises)."
+          );
+          newGeneratedPlan.add(
+            "- Encourage regular physical activity, which can improve mood and cognitive function."
+          );
+          newGeneratedPlan.add(
+            "- Consider SSRI/SNRI antidepressants for mood/anxiety symptoms."
+          );
         }
-        if (document.querySelector('.symptom-group-gsm:checked')) {
-            newGeneratedPlan.add('- Advise on use of vaginal moisturisers and lubricants for genitourinary symptoms.');
-            newGeneratedPlan.add('- Discuss pelvic floor exercises for urinary symptoms.');
-            newGeneratedPlan.add('- Consider low-dose vaginal estrogen for Genitourinary Syndrome of Menopause (GSM).');
+        if (document.querySelector(".symptom-group-gsm:checked")) {
+          newGeneratedPlan.add(
+            "- Advise on use of vaginal moisturisers and lubricants for genitourinary symptoms."
+          );
+          newGeneratedPlan.add(
+            "- Discuss pelvic floor exercises for urinary symptoms."
+          );
+          newGeneratedPlan.add(
+            "- Consider low-dose vaginal estrogen for Genitourinary Syndrome of Menopause (GSM)."
+          );
         }
-        if (document.querySelector('.symptom-group-msk:checked')) {
-            newGeneratedPlan.add('- Encourage gentle, regular exercise like stretching or yoga for joint pain.');
-            newGeneratedPlan.add('- Advise on sleep hygiene principles (e.g., consistent sleep schedule, cool/dark room).');
-            newGeneratedPlan.add('- Consider simple analgesia for musculoskeletal pain if required.');
+        if (document.querySelector(".symptom-group-msk:checked")) {
+          newGeneratedPlan.add(
+            "- Encourage gentle, regular exercise like stretching or yoga for joint pain."
+          );
+          newGeneratedPlan.add(
+            "- Advise on sleep hygiene principles (e.g., consistent sleep schedule, cool/dark room)."
+          );
+          newGeneratedPlan.add(
+            "- Consider simple analgesia for musculoskeletal pain if required."
+          );
         }
 
         // Generate plan items based on BMI
-        const bmi = parseFloat(getValue('exam-bmi'));
+        const bmi = parseFloat(getValue("exam-bmi"));
         if (bmi) {
-            if (bmi < 18.5) {
-                newGeneratedPlan.add('- Address potential causes of underweight status and discuss strategies for healthy weight gain. Emphasise importance of adequate nutrition for bone health.');
-            } else if (bmi >= 25 && bmi < 30) {
-                newGeneratedPlan.add('- Discuss lifestyle modifications for weight management (diet and exercise) due to overweight status. Explain that weight management can help alleviate some menopausal symptoms (e.g., vasomotor symptoms) and reduce cardiovascular risk.');
-            } else if (bmi >= 30) {
-                newGeneratedPlan.add('- Develop a comprehensive weight management plan, considering referral to a dietitian and/or exercise physiologist, due to obesity. Highlight the increased risks of CVD, diabetes, and certain cancers associated with obesity, particularly post-menopause.');
-            }
+          if (bmi < 18.5) {
+            newGeneratedPlan.add(
+              "- Address potential causes of underweight status and discuss strategies for healthy weight gain. Emphasise importance of adequate nutrition for bone health."
+            );
+          } else if (bmi >= 25 && bmi < 30) {
+            newGeneratedPlan.add(
+              "- Discuss lifestyle modifications for weight management (diet and exercise) due to overweight status. Explain that weight management can help alleviate some menopausal symptoms (e.g., vasomotor symptoms) and reduce cardiovascular risk."
+            );
+          } else if (bmi >= 30) {
+            newGeneratedPlan.add(
+              "- Develop a comprehensive weight management plan, considering referral to a dietitian and/or exercise physiologist, due to obesity. Highlight the increased risks of CVD, diabetes, and certain cancers associated with obesity, particularly post-menopause."
+            );
+          }
         }
 
         // Generate plan items based on Blood Pressure
-        const bpValue = getValue('exam-bp');
-        if (bpValue && bpValue.includes('/')) {
-            const parts = bpValue.split('/');
-            const systolic = parseInt(parts[0], 10);
-            const diastolic = parseInt(parts[1], 10);
-            if (!isNaN(systolic) && !isNaN(diastolic) && (systolic >= 140 || diastolic >= 90)) {
-                newGeneratedPlan.add('- High blood pressure noted. Advise on regular monitoring and further assessment for hypertension management.');
-            }
+        const bpValue = getValue("exam-bp");
+        if (bpValue && bpValue.includes("/")) {
+          const parts = bpValue.split("/");
+          const systolic = parseInt(parts[0], 10);
+          const diastolic = parseInt(parts[1], 10);
+          if (
+            !isNaN(systolic) &&
+            !isNaN(diastolic) &&
+            (systolic >= 140 || diastolic >= 90)
+          ) {
+            newGeneratedPlan.add(
+              "- High blood pressure noted. Advise on regular monitoring and further assessment for hypertension management."
+            );
+          }
         }
 
         // Generate plan items based on screening status
-        if (getRadioValue('screen-mammogram-status') === 'Not up to date') newGeneratedPlan.add('- Arrange for patient to complete Mammogram.');
-        if (getRadioValue('screen-mammogram-ab') === 'Abnormality found') newGeneratedPlan.add('- Follow up on abnormal Mammogram result as discussed.');
-        if (getRadioValue('screen-cst-status') === 'Not up to date') newGeneratedPlan.add('- Arrange for patient to complete Cervical Screening Test.');
-        if (getRadioValue('screen-cst-ab') === 'Abnormality found') newGeneratedPlan.add('- Follow up on abnormal Cervical Screening result as discussed.');
-        if (getRadioValue('screen-bowel-status') === 'Not up to date') newGeneratedPlan.add('- Arrange for patient to complete Bowel Screening.');
-        if (getRadioValue('screen-bowel-ab') === 'Abnormality found') newGeneratedPlan.add('- Follow up on abnormal Bowel Screening result as discussed.');
+        if (getRadioValue("screen-mammogram-status") === "Not up to date")
+          newGeneratedPlan.add("- Arrange for patient to complete Mammogram.");
+        if (getRadioValue("screen-mammogram-ab") === "Abnormality found")
+          newGeneratedPlan.add(
+            "- Follow up on abnormal Mammogram result as discussed."
+          );
+        if (getRadioValue("screen-cst-status") === "Not up to date")
+          newGeneratedPlan.add(
+            "- Arrange for patient to complete Cervical Screening Test."
+          );
+        if (getRadioValue("screen-cst-ab") === "Abnormality found")
+          newGeneratedPlan.add(
+            "- Follow up on abnormal Cervical Screening result as discussed."
+          );
+        if (getRadioValue("screen-bowel-status") === "Not up to date")
+          newGeneratedPlan.add(
+            "- Arrange for patient to complete Bowel Screening."
+          );
+        if (getRadioValue("screen-bowel-ab") === "Abnormality found")
+          newGeneratedPlan.add(
+            "- Follow up on abnormal Bowel Screening result as discussed."
+          );
 
         // Generate plan items based on lifestyle factors
-        if (getValue('smoking-status') === 'Current smoker') newGeneratedPlan.add('- Discuss smoking cessation options (e.g., Quitline, nicotine replacement therapy).');
-        const alcoholDrinks = parseFloat(getValue('alcohol-drinks'));
+        if (getValue("smoking-status") === "Current smoker")
+          newGeneratedPlan.add(
+            "- Discuss smoking cessation options (e.g., Quitline, nicotine replacement therapy)."
+          );
+        const alcoholDrinks = parseFloat(getValue("alcohol-drinks"));
         if (alcoholDrinks) {
-            const freq = getValue('alcohol-frequency');
-            const weeklyDrinks = freq === 'per day' ? alcoholDrinks * 7 : alcoholDrinks;
-            if (weeklyDrinks > 10 || (freq === 'per day' && alcoholDrinks > 4)) newGeneratedPlan.add('- Advise reducing alcohol intake to within national guidelines (≤10 std drinks/week).');
+          const freq = getValue("alcohol-frequency");
+          const weeklyDrinks =
+            freq === "per day" ? alcoholDrinks * 7 : alcoholDrinks;
+          if (weeklyDrinks > 10 || (freq === "per day" && alcoholDrinks > 4))
+            newGeneratedPlan.add(
+              "- Advise reducing alcohol intake to within national guidelines (≤10 std drinks/week)."
+            );
         }
-        const exerciseMins = parseFloat(getValue('exercise-minutes'));
-        if (exerciseMins !== null && !isNaN(exerciseMins) && exerciseMins < 150) newGeneratedPlan.add('- Recommend increasing physical activity to at least 150 minutes of moderate-intensity exercise per week.');
-        if (getRadioValue('diet-status') === 'Unbalanced') {
-            newGeneratedPlan.add('- Consider further assessment of diet and involvement of a dietitian.');
+        const exerciseMins = parseFloat(getValue("exercise-minutes"));
+        if (exerciseMins !== null && !isNaN(exerciseMins) && exerciseMins < 150)
+          newGeneratedPlan.add(
+            "- Recommend increasing physical activity to at least 150 minutes of moderate-intensity exercise per week."
+          );
+        if (getRadioValue("diet-status") === "Unbalanced") {
+          newGeneratedPlan.add(
+            "- Consider further assessment of diet and involvement of a dietitian."
+          );
         }
-        if (getRadioValue('drug-use') === 'Yes') newGeneratedPlan.add('- Discuss risks of recreational drug use and offer support.');
+        if (getRadioValue("drug-use") === "Yes")
+          newGeneratedPlan.add(
+            "- Discuss risks of recreational drug use and offer support."
+          );
 
         // Generate plan items based on contraception needs
         const age = calculateAndDisplayAge();
-        const cycle = getValue('history-lmp-cycle');
+        const cycle = getValue("history-lmp-cycle");
         if (age > 0 && cycle) {
-            if (age < 50 && cycle !== 'Amenorrhoeic (>12 months)') newGeneratedPlan.add('- Contraception recommended for 2 years after final menstrual period.');
-            if (age >= 50 && cycle !== 'Amenorrhoeic (>12 months)') newGeneratedPlan.add('- Contraception recommended for 1 year after final menstrual period.');
+          if (age < 50 && cycle !== "Amenorrhoeic (>12 months)")
+            newGeneratedPlan.add(
+              "- Contraception recommended for 2 years after final menstrual period."
+            );
+          if (age >= 50 && cycle !== "Amenorrhoeic (>12 months)")
+            newGeneratedPlan.add(
+              "- Contraception recommended for 1 year after final menstrual period."
+            );
         }
 
         // Generate plan items for bone and cardiovascular health
-        if (age >= 50 || bmi < 20) newGeneratedPlan.add('- Consider Bone Mineral Density (BMD) scan to assess osteoporosis risk.');
-        if (getValue('smoking-status') === 'Current smoker' || getRadioValue('htn-control') === 'Poorly controlled' || bmi >= 25) newGeneratedPlan.add('- Discuss cardiovascular risk reduction strategies.');
-        
+        if (age >= 50 || bmi < 20)
+          newGeneratedPlan.add(
+            "- Consider Bone Mineral Density (BMD) scan to assess osteoporosis risk."
+          );
+        if (
+          getValue("smoking-status") === "Current smoker" ||
+          getRadioValue("htn-control") === "Poorly controlled" ||
+          bmi >= 25
+        )
+          newGeneratedPlan.add(
+            "- Discuss cardiovascular risk reduction strategies."
+          );
+
         // NEW: Update the plan textarea using the reconciliation logic
-        const planDetails = document.getElementById('plan-details');
+        const planDetails = document.getElementById("plan-details");
         if (planDetails) {
-            reconcileTextarea(planDetails, newGeneratedPlan, lastGeneratedPlan, 'No specific management plan generated. Please add notes manually.');
+          reconcileTextarea(
+            planDetails,
+            newGeneratedPlan,
+            lastGeneratedPlan,
+            "No specific management plan generated. Please add notes manually."
+          );
         }
         lastGeneratedPlan = newGeneratedPlan;
-    }
+      }
 
-    // Generates the final report and displays it on the page
-    function generateAndDisplayReport(download = false, format = 'txt') {
+      // Generates the final report and displays it on the page
+      function generateAndDisplayReport(download = false, format = "txt") {
         const reportData = buildReportFromForm();
         reportOutput.textContent = reportData.text;
-        reportContainer.classList.remove('hidden');
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        reportContainer.classList.remove("hidden");
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
 
         if (download) {
-            const fileName = `MenopauseAssessment_${reportData.patientName.replace(/ /g, '_') || 'report'}`;
-            if (format === 'rtf') {
-                downloadFile(`${fileName}.rtf`, reportData.rtf, 'application/rtf');
-            } else {
-                downloadFile(`${fileName}.txt`, reportData.text, 'text/plain');
-            }
+          const fileName = `MenopauseAssessment_${
+            reportData.patientName.replace(/ /g, "_") || "report"
+          }`;
+          if (format === "rtf") {
+            downloadFile(`${fileName}.rtf`, reportData.rtf, "application/rtf");
+          } else {
+            downloadFile(`${fileName}.txt`, reportData.text, "text/plain");
+          }
         }
-    }
+      }
 
-    // Helper function to trigger file download
-    function downloadFile(filename, content, mimeType) {
-        const element = document.createElement('a');
+      // Helper function to trigger file download
+      function downloadFile(filename, content, mimeType) {
+        const element = document.createElement("a");
         const blob = new Blob([content], { type: mimeType });
         element.href = URL.createObjectURL(blob);
         element.download = filename;
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
-    }
-    
-    // Formats a date string to Australian format (dd/mm/yyyy)
-    function formatAusDate(dateStr) {
-        if (!dateStr) return 'N/A';
-        try {
-            const date = new Date(dateStr);
-            const userTimezoneOffset = date.getTimezoneOffset() * 60000;
-            return new Date(date.getTime() + userTimezoneOffset).toLocaleDateString('en-AU', {
-                day: '2-digit', month: '2-digit', year: 'numeric'
-            });
-        } catch (e) {
-            return dateStr; // Fallback for invalid dates
-        }
-    }
+      }
 
-    // Builds the final report string from all form data
-    function buildReportFromForm() {
-        let textReport = '';
-        // UPDATED: RTF header now matches Heart Health assessment style
-        let rtfReport = '{\\rtf1\\ansi\\deff0{\\fonttbl{\\f0 Inter;}}\\pard\\sa0\\sl276\\slmult1 ';
-        const getValue = id => document.getElementById(id)?.value.trim() || '';
-        const isChecked = id => document.getElementById(id)?.checked;
-        const getRadioValue = name => document.querySelector(`input[name="${name}"]:checked`)?.value || 'N/A';
-        const escapeRtf = (str) => str.replace(/\\/g, '\\\\').replace(/{/g, '\\{').replace(/}/g, '\\}').replace(/\n/g, '\\par\n');
-        const isDetailToggleChecked = targetId => {
-             const el = document.querySelector(`.detail-toggle[data-target="${targetId}"]`);
-             return el ? el.checked : false;
+      // Formats a date string to Australian format (dd/mm/yyyy)
+      function formatAusDate(dateStr) {
+        if (!dateStr) return "N/A";
+        try {
+          const date = new Date(dateStr);
+          const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+          return new Date(
+            date.getTime() + userTimezoneOffset
+          ).toLocaleDateString("en-AU", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          });
+        } catch (e) {
+          return dateStr; // Fallback for invalid dates
         }
+      }
+
+      // Builds the final report string from all form data
+      function buildReportFromForm() {
+        let textReport = "";
+        // UPDATED: RTF header now matches Heart Health assessment style
+        let rtfReport =
+          "{\\rtf1\\ansi\\deff0{\\fonttbl{\\f0 Inter;}}\\pard\\sa0\\sl276\\slmult1 ";
+        const getValue = (id) =>
+          document.getElementById(id)?.value.trim() || "";
+        const isChecked = (id) => document.getElementById(id)?.checked;
+        const getRadioValue = (name) =>
+          document.querySelector(`input[name="${name}"]:checked`)?.value ||
+          "N/A";
+        const escapeRtf = (str) =>
+          str
+            .replace(/\\/g, "\\\\")
+            .replace(/{/g, "\\{")
+            .replace(/}/g, "\\}")
+            .replace(/\n/g, "\\par\n");
+        const isDetailToggleChecked = (targetId) => {
+          const el = document.querySelector(
+            `.detail-toggle[data-target="${targetId}"]`
+          );
+          return el ? el.checked : false;
+        };
 
         const addSection = (title, contentLines) => {
-            const cleanedContent = contentLines.filter(line => line && line.trim() !== '' && !line.endsWith(': N/A') && !line.endsWith(': ') && !line.endsWith(':'));
-            if (cleanedContent.length === 0) return;
+          const cleanedContent = contentLines.filter(
+            (line) =>
+              line &&
+              line.trim() !== "" &&
+              !line.endsWith(": N/A") &&
+              !line.endsWith(": ") &&
+              !line.endsWith(":")
+          );
+          if (cleanedContent.length === 0) return;
 
-            textReport += `${title.toUpperCase()}\n${cleanedContent.map(line => `  - ${line}`).join('\n')}\n\n`;
-            rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(title.toUpperCase())}\\ul0\\b0\\par}`;
-            cleanedContent.forEach(line => {
-                // UPDATED: RTF list item styling
-                rtfReport += `{\\pard\\fi360\\sa100\\sl276\\slmult1\\fs22  - ${escapeRtf(line)}\\par}`;
-            });
+          textReport += `${title.toUpperCase()}\n${cleanedContent
+            .map((line) => `  - ${line}`)
+            .join("\n")}\n\n`;
+          rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(
+            title.toUpperCase()
+          )}\\ul0\\b0\\par}`;
+          cleanedContent.forEach((line) => {
+            // UPDATED: RTF list item styling
+            rtfReport += `{\\pard\\fi360\\sa100\\sl276\\slmult1\\fs22  - ${escapeRtf(
+              line
+            )}\\par}`;
+          });
         };
-        
+
         // UPDATED: This function now takes an element ID and handles multiline content for RTF
         const addFreeTextSection = (title, elementId) => {
-            const content = getValue(elementId);
-            if (!content || content === 'N/A') return;
+          const content = getValue(elementId);
+          if (!content || content === "N/A") return;
 
-            textReport += `${title.toUpperCase()}:\n${content}\n\n`;
-            rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(title.toUpperCase())}\\ul0\\b0\\par}`;
-            const lines = content.split('\n');
-            lines.forEach(line => {
-                if (line.startsWith('- ')) {
-                    rtfReport += `{\\pard\\fi360\\sa100\\sl276\\slmult1\\fs22  - ${escapeRtf(line.substring(2))}\\par}`;
-                } else if (line.trim() !== '') {
-                    rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\fs22 ${escapeRtf(line)}\\par}`;
-                } else {
-                    rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\fs22\\par}`;
-                }
-            });
+          textReport += `${title.toUpperCase()}:\n${content}\n\n`;
+          rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\b\\ul ${escapeRtf(
+            title.toUpperCase()
+          )}\\ul0\\b0\\par}`;
+          const lines = content.split("\n");
+          lines.forEach((line) => {
+            if (line.startsWith("- ")) {
+              rtfReport += `{\\pard\\fi360\\sa100\\sl276\\slmult1\\fs22  - ${escapeRtf(
+                line.substring(2)
+              )}\\par}`;
+            } else if (line.trim() !== "") {
+              rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\fs22 ${escapeRtf(
+                line
+              )}\\par}`;
+            } else {
+              rtfReport += `{\\pard\\sa100\\sl276\\slmult1\\fs22\\par}`;
+            }
+          });
         };
 
         // --- Report Header (UPDATED to match Heart Health style) ---
-        const headerTitle = "Assessment: Menopause & Perimenopause Health Assessment";
-        const mbsItem = `MBS Item Claimed: ${getRadioValue('mbs-item')}`;
-        textReport += `${headerTitle}\n${mbsItem}\nDate: ${formatAusDate(getValue('assessment-date'))}\n\n`;
+        const headerTitle =
+          "Assessment: Menopause & Perimenopause Health Assessment";
+        const mbsItem = `MBS Item Claimed: ${getRadioValue("mbs-item")}`;
+        textReport += `${headerTitle}\n${mbsItem}\nDate: ${formatAusDate(
+          getValue("assessment-date")
+        )}\n\n`;
         rtfReport += `{\\pard\\qc\\b\\fs32 ${escapeRtf(headerTitle)}\\par}`;
-        rtfReport += `{\\pard\\qc\\fs24 ${escapeRtf(mbsItem)} - ${escapeRtf(formatAusDate(getValue('assessment-date')))}\\par\\par}`;
+        rtfReport += `{\\pard\\qc\\fs24 ${escapeRtf(mbsItem)} - ${escapeRtf(
+          formatAusDate(getValue("assessment-date"))
+        )}\\par\\par}`;
 
         // --- Patient Details ---
         let patientDetails = [
-            `Name: ${getValue('patient-name') || 'N/A'}`,
-            `DOB: ${formatAusDate(getValue('patient-dob'))}`,
-            document.getElementById('patient-age-display')?.textContent || 'Age: N/A',
-            `Medicare No: ${getValue('patient-medicare') || 'N/A'}`
+          `Name: ${getValue("patient-name") || "N/A"}`,
+          `DOB: ${formatAusDate(getValue("patient-dob"))}`,
+          document.getElementById("patient-age-display")?.textContent ||
+            "Age: N/A",
+          `Medicare No: ${getValue("patient-medicare") || "N/A"}`,
         ];
-        addSection('PATIENT DETAILS', patientDetails);
-        
+        addSection("PATIENT DETAILS", patientDetails);
+
         // --- History (UPDATED to use new addFreeTextSection) ---
-        addFreeTextSection("Patient's main concern", 'history-main-concerns');
-        
+        addFreeTextSection("Patient's main concern", "history-main-concerns");
+
         let menstrualHistory = [
-            `LMP: ${getValue('history-lmp-date')}`,
-            `Cycle: ${getValue('history-lmp-cycle')}`,
-            `Flow: ${getValue('history-lmp-flow')}`,
-            `Other: ${getValue('history-lmp-other')}`
+          `LMP: ${getValue("history-lmp-date")}`,
+          `Cycle: ${getValue("history-lmp-cycle")}`,
+          `Flow: ${getValue("history-lmp-flow")}`,
+          `Other: ${getValue("history-lmp-other")}`,
         ];
-        addSection('Menstrual History', menstrualHistory);
-        
+        addSection("Menstrual History", menstrualHistory);
+
         let symptoms = [];
-        document.querySelectorAll('input[id^="symptom-"]:checked').forEach(el => {
-            symptoms.push(el.closest('label').textContent.trim());
-        });
-        if (getValue('symptom-details')) symptoms.push(`Other/Details: ${getValue('symptom-details')}`);
-        addSection('Symptoms Reported', symptoms);
-        
+        document
+          .querySelectorAll('input[id^="symptom-"]:checked')
+          .forEach((el) => {
+            symptoms.push(el.closest("label").textContent.trim());
+          });
+        if (getValue("symptom-details"))
+          symptoms.push(`Other/Details: ${getValue("symptom-details")}`);
+        addSection("Symptoms Reported", symptoms);
+
         let pmh = [];
-        if (getValue('pmh-other')) pmh.push(getValue('pmh-other'));
-         const contraindications = [
-              { id: 'ci-cancer-details', text: 'Current or previous hormone-dependent cancer' },
-              { id: 'ci-bleeding-details', text: 'Undiagnosed vaginal bleeding' },
-              { id: 'ci-cvd-details', text: 'Established cardiovascular disease' },
-              { id: 'ci-vte-details', text: 'Venous thromboembolic disease (VTE)' },
-              { id: 'ci-liver-details', text: 'Active liver disease' },
-              { id: 'ci-migraine-details', text: 'Migraine with aura' },
-         ];
-         contraindications.forEach(ci => {
-             if (isDetailToggleChecked(ci.id)) {
-                 let line = `Hx: ${ci.text}`;
-                 const details = getValue(ci.id + '-textarea');
-                 if (details) line += ` (Details: ${details})`;
-                 pmh.push(line);
-             }
-         });
-         if (isDetailToggleChecked('ci-htn-details')) {
-             let htnLine = `Hx: Hypertension`;
-             const control = document.querySelector('input[name="htn-control"]:checked')?.value;
-             if(control) htnLine += ` (${control})`;
-             pmh.push(htnLine);
-         }
-        addSection('Relevant Past Medical History', pmh);
+        if (getValue("pmh-other")) pmh.push(getValue("pmh-other"));
+        const contraindications = [
+          {
+            id: "ci-cancer-details",
+            text: "Current or previous hormone-dependent cancer",
+          },
+          { id: "ci-bleeding-details", text: "Undiagnosed vaginal bleeding" },
+          { id: "ci-cvd-details", text: "Established cardiovascular disease" },
+          { id: "ci-vte-details", text: "Venous thromboembolic disease (VTE)" },
+          { id: "ci-liver-details", text: "Active liver disease" },
+          { id: "ci-migraine-details", text: "Migraine with aura" },
+        ];
+        contraindications.forEach((ci) => {
+          if (isDetailToggleChecked(ci.id)) {
+            let line = `Hx: ${ci.text}`;
+            const details = getValue(ci.id + "-textarea");
+            if (details) line += ` (Details: ${details})`;
+            pmh.push(line);
+          }
+        });
+        if (isDetailToggleChecked("ci-htn-details")) {
+          let htnLine = `Hx: Hypertension`;
+          const control = document.querySelector(
+            'input[name="htn-control"]:checked'
+          )?.value;
+          if (control) htnLine += ` (${control})`;
+          pmh.push(htnLine);
+        }
+        addSection("Relevant Past Medical History", pmh);
 
         let fh = [];
         const fhItems = [
-            { id: 'fh-cancer-details', text: 'Cancer (breast, ovarian)' },
-            { id: 'fh-vte-details', text: 'VTE (DVT/PE)' },
-            { id: 'fh-cvd-details', text: 'Premature CVD' },
-            { id: 'fh-osteoporosis-details', text: 'Osteoporosis / Hip Fracture' },
+          { id: "fh-cancer-details", text: "Cancer (breast, ovarian)" },
+          { id: "fh-vte-details", text: "VTE (DVT/PE)" },
+          { id: "fh-cvd-details", text: "Premature CVD" },
+          {
+            id: "fh-osteoporosis-details",
+            text: "Osteoporosis / Hip Fracture",
+          },
         ];
-        fhItems.forEach(item => {
-            if (isDetailToggleChecked(item.id)) {
-                let line = `Family Hx of ${item.text}`;
-                const details = getValue(item.id + '-textarea');
-                if (details) line += ` (Details: ${details})`;
-                fh.push(line);
-            }
+        fhItems.forEach((item) => {
+          if (isDetailToggleChecked(item.id)) {
+            let line = `Family Hx of ${item.text}`;
+            const details = getValue(item.id + "-textarea");
+            if (details) line += ` (Details: ${details})`;
+            fh.push(line);
+          }
         });
-        if (getValue('fh-other')) fh.push(`Other: ${getValue('fh-other')}`);
-        addSection('Family History', fh);
+        if (getValue("fh-other")) fh.push(`Other: ${getValue("fh-other")}`);
+        addSection("Family History", fh);
 
         let screenings = [];
         const screeningItems = [
-            { name: 'Mammogram', id: 'mammogram' },
-            { name: 'Cervical Screening', id: 'cst' },
-            { name: 'Bowel Screening', id: 'bowel' },
+          { name: "Mammogram", id: "mammogram" },
+          { name: "Cervical Screening", id: "cst" },
+          { name: "Bowel Screening", id: "bowel" },
         ];
-        screeningItems.forEach(item => {
-            if (isDetailToggleChecked(`screen-${item.id}-details`)) {
-                const status = document.querySelector(`input[name="screen-${item.id}-status"]:checked`)?.value;
-                const date = getValue(`screen-${item.id}-date`);
-                const ab = document.querySelector(`input[name="screen-${item.id}-ab"]:checked`)?.value;
-                let line = `${item.name}:`;
-                if (status) line += ` Status: ${status}.`;
-                if (date) line += ` Last: ${date}.`;
-                if (ab) line += ` Result: ${ab}.`;
-                if (ab === 'Abnormality found') {
-                    const details = getValue(`screen-${item.id}-ab-details-textarea`);
-                    if (details) line += ` (Details: ${details})`;
-                }
-                screenings.push(line);
+        screeningItems.forEach((item) => {
+          if (isDetailToggleChecked(`screen-${item.id}-details`)) {
+            const status = document.querySelector(
+              `input[name="screen-${item.id}-status"]:checked`
+            )?.value;
+            const date = getValue(`screen-${item.id}-date`);
+            const ab = document.querySelector(
+              `input[name="screen-${item.id}-ab"]:checked`
+            )?.value;
+            let line = `${item.name}:`;
+            if (status) line += ` Status: ${status}.`;
+            if (date) line += ` Last: ${date}.`;
+            if (ab) line += ` Result: ${ab}.`;
+            if (ab === "Abnormality found") {
+              const details = getValue(`screen-${item.id}-ab-details-textarea`);
+              if (details) line += ` (Details: ${details})`;
             }
+            screenings.push(line);
+          }
         });
-        if (isDetailToggleChecked('mood-screening-details')) {
-            const tool = getValue('mood-tool');
-            const score = getValue('mood-score');
-            if (tool) {
-                screenings.push(`Depression/Anxiety Screening using ${tool}. Score: ${score || 'N/A'}`);
-            }
+        if (isDetailToggleChecked("mood-screening-details")) {
+          const tool = getValue("mood-tool");
+          const score = getValue("mood-score");
+          if (tool) {
+            screenings.push(
+              `Depression/Anxiety Screening using ${tool}. Score: ${
+                score || "N/A"
+              }`
+            );
+          }
         }
-        addSection('Health Screenings', screenings);
+        addSection("Health Screenings", screenings);
 
         let social = [];
-        const smokingStatus = getValue('smoking-status');
+        const smokingStatus = getValue("smoking-status");
         if (smokingStatus) {
-            let line = `Smoking: ${smokingStatus}`;
-            if (smokingStatus === 'Ex-smoker' || smokingStatus === 'Current smoker') {
-                const packYears = getValue('smoking-pack-years');
-                if (packYears) line += ` (${packYears} pack years)`;
-            }
-            social.push(line);
+          let line = `Smoking: ${smokingStatus}`;
+          if (
+            smokingStatus === "Ex-smoker" ||
+            smokingStatus === "Current smoker"
+          ) {
+            const packYears = getValue("smoking-pack-years");
+            if (packYears) line += ` (${packYears} pack years)`;
+          }
+          social.push(line);
         }
-        const alcoholDrinks = getValue('alcohol-drinks');
+        const alcoholDrinks = getValue("alcohol-drinks");
         if (alcoholDrinks) {
-            const freq = getValue('alcohol-frequency');
-            social.push(`Alcohol: ${alcoholDrinks} standard drinks ${freq}.`);
+          const freq = getValue("alcohol-frequency");
+          social.push(`Alcohol: ${alcoholDrinks} standard drinks ${freq}.`);
         }
-        const exerciseMins = getValue('exercise-minutes');
+        const exerciseMins = getValue("exercise-minutes");
         if (exerciseMins) {
-            social.push(`Exercise: ${exerciseMins} minutes per week.`);
+          social.push(`Exercise: ${exerciseMins} minutes per week.`);
         }
-        const dietStatus = getRadioValue('diet-status');
-        if (dietStatus !== 'N/A') {
-            let line = `Diet: ${dietStatus}`;
-            const details = getValue('diet-details-textarea');
-            if (details) line += ` (Details: ${details})`;
-            social.push(line);
+        const dietStatus = getRadioValue("diet-status");
+        if (dietStatus !== "N/A") {
+          let line = `Diet: ${dietStatus}`;
+          const details = getValue("diet-details-textarea");
+          if (details) line += ` (Details: ${details})`;
+          social.push(line);
         }
-        const drugUse = document.querySelector('input[name="drug-use"]:checked')?.value;
+        const drugUse = document.querySelector(
+          'input[name="drug-use"]:checked'
+        )?.value;
         if (drugUse) {
-            let line = `Recreational Drugs: ${drugUse}`;
-            if (drugUse === 'Yes') {
-                const details = getValue('drug-use-details-textarea');
-                if (details) line += ` (Details: ${details})`;
-            }
-            social.push(line);
+          let line = `Recreational Drugs: ${drugUse}`;
+          if (drugUse === "Yes") {
+            const details = getValue("drug-use-details-textarea");
+            if (details) line += ` (Details: ${details})`;
+          }
+          social.push(line);
         }
-        if (isDetailToggleChecked('comp-therapy-details-container')) {
-            const details = getValue('comp-therapy-details');
-            if (details) social.push(`Complementary Therapies: ${details}`);
+        if (isDetailToggleChecked("comp-therapy-details-container")) {
+          const details = getValue("comp-therapy-details");
+          if (details) social.push(`Complementary Therapies: ${details}`);
         }
-        if (getValue('social-other')) social.push(`Other: ${getValue('social-other')}`);
-        addSection('Lifestyle Factors', social);
-        
-        addFreeTextSection('Contraception', 'history-contraception');
+        if (getValue("social-other"))
+          social.push(`Other: ${getValue("social-other")}`);
+        addSection("Lifestyle Factors", social);
+
+        addFreeTextSection("Contraception", "history-contraception");
 
         // --- Examination ---
         let exam = [
-            `Blood Pressure: ${getValue('exam-bp') || 'N/A'} mmHg`,
-            `Height: ${getValue('exam-height-cm') || 'N/A'} cm`,
-            `Weight: ${getValue('exam-weight-kg') || 'N/A'} kg`,
-            `BMI: ${getValue('exam-bmi') || 'N/A'} kg/m² (${document.getElementById('bmi-category').textContent || ''})`
+          `Blood Pressure: ${getValue("exam-bp") || "N/A"} mmHg`,
+          `Height: ${getValue("exam-height-cm") || "N/A"} cm`,
+          `Weight: ${getValue("exam-weight-kg") || "N/A"} kg`,
+          `BMI: ${getValue("exam-bmi") || "N/A"} kg/m² (${
+            document.getElementById("bmi-category").textContent || ""
+          })`,
         ];
-        addSection('EXAMINATION', exam);
-        addFreeTextSection('Other Examination Findings', 'exam-findings');
-        
+        addSection("EXAMINATION", exam);
+        addFreeTextSection("Other Examination Findings", "exam-findings");
+
         // --- Plan ---
         let investigations = [];
-        document.querySelectorAll('input[id^="inv-"]:checked').forEach(el => {
-            investigations.push(el.closest('label').textContent.trim());
+        document.querySelectorAll('input[id^="inv-"]:checked').forEach((el) => {
+          investigations.push(el.closest("label").textContent.trim());
         });
-        if (getValue('inv-other')) investigations.push(`Other: ${getValue('inv-other')}`);
-        addSection('INVESTIGATIONS', investigations);
+        if (getValue("inv-other"))
+          investigations.push(`Other: ${getValue("inv-other")}`);
+        addSection("INVESTIGATIONS", investigations);
 
         let referrals = [];
-        document.querySelectorAll('.referral-item:checked').forEach(el => {
-            referrals.push(el.closest('label').textContent.trim().replace(/\s+×$/, ''));
+        document.querySelectorAll(".referral-item:checked").forEach((el) => {
+          referrals.push(
+            el.closest("label").textContent.trim().replace(/\s+×$/, "")
+          );
         });
-        addSection('REFERRALS', referrals);
+        addSection("REFERRALS", referrals);
 
-        addFreeTextSection('MANAGEMENT PLAN & PREVENTATIVE ADVICE', 'plan-details');
+        addFreeTextSection(
+          "MANAGEMENT PLAN & PREVENTATIVE ADVICE",
+          "plan-details"
+        );
 
-        rtfReport += '}'; // Close RTF document
-        return { text: textReport.trim(), rtf: rtfReport, patientName: getValue('patient-name') };
-    }
+        rtfReport += "}"; // Close RTF document
+        return {
+          text: textReport.trim(),
+          rtf: rtfReport,
+          patientName: getValue("patient-name"),
+        };
+      }
 
-    // --- ASSESSMENT MODAL LOGIC ---
-    const assessmentTemplates = {
-        'K10': {
-            title: 'Kessler Psychological Distress Scale (K10)',
-            type: 'radio-sum',
-            maxScore: 50,
-            html: () => `<p class="text-gray-600 mb-4">Over the last 4 weeks, about how often did the patient feel...</p><div id="assessment-form-content" class="grid grid-cols-1 md:grid-cols-2 gap-x-8">${['Tired out for no good reason?', 'Nervous?', 'So nervous that nothing could calm them down?', 'Hopeless?', 'Restless or fidgety?', 'So restless they could not sit still?', 'Depressed?', 'That everything was an effort?', 'So sad that nothing could cheer them up?', 'Worthless?'].map((q, i) => `<div class="assessment-question"><p class="font-medium mb-2">${i + 1}. ${q}</p><div class="assessment-options text-sm space-y-2"><label class="radio-label mb-0"><input type="radio" name="k10-q${i}" value="1"> None of the time</label><label class="radio-label mb-0"><input type="radio" name="k10-q${i}" value="2"> A little of the time</label><label class="radio-label mb-0"><input type="radio" name="k10-q${i}" value="3"> Some of the time</label><label class="radio-label mb-0"><input type="radio" name="k10-q${i}" value="4"> Most of the time</label><label class="radio-label mb-0"><input type="radio" name="k10-q${i}" value="5"> All of the time</label></div></div>`).join('')}</div>`
+      // --- ASSESSMENT MODAL LOGIC ---
+      const assessmentTemplates = {
+        K10: {
+          title: "Kessler Psychological Distress Scale (K10)",
+          type: "radio-sum",
+          maxScore: 50,
+          html: () =>
+            `<p class="text-gray-600 mb-4">Over the last 4 weeks, about how often did the patient feel...</p><div id="assessment-form-content" class="grid grid-cols-1 md:grid-cols-2 gap-x-8">${[
+              "Tired out for no good reason?",
+              "Nervous?",
+              "So nervous that nothing could calm them down?",
+              "Hopeless?",
+              "Restless or fidgety?",
+              "So restless they could not sit still?",
+              "Depressed?",
+              "That everything was an effort?",
+              "So sad that nothing could cheer them up?",
+              "Worthless?",
+            ]
+              .map(
+                (q, i) =>
+                  `<div class="assessment-question"><p class="font-medium mb-2">${
+                    i + 1
+                  }. ${q}</p><div class="assessment-options text-sm space-y-2"><label class="radio-label mb-0"><input type="radio" name="k10-q${i}" value="1"> None of the time</label><label class="radio-label mb-0"><input type="radio" name="k10-q${i}" value="2"> A little of the time</label><label class="radio-label mb-0"><input type="radio" name="k10-q${i}" value="3"> Some of the time</label><label class="radio-label mb-0"><input type="radio" name="k10-q${i}" value="4"> Most of the time</label><label class="radio-label mb-0"><input type="radio" name="k10-q${i}" value="5"> All of the time</label></div></div>`
+              )
+              .join("")}</div>`,
         },
-        'GDS': {
-            title: 'Geriatric Depression Scale (GDS-15)',
-            type: 'gds-score',
-            maxScore: 15,
-            html: () => `<p class="text-gray-600 mb-4">Choose the best answer for how you have felt over the past week.</p><div id="assessment-form-content" class="grid grid-cols-1 md:grid-cols-2 gap-x-8">${[{q: 'Are you basically satisfied with your life?', depressive: 'no'},{q: 'Have you dropped many of your activities and interests?', depressive: 'yes'},{q: 'Do you feel that your life is empty?', depressive: 'yes'},{q: 'Do you often get bored?', depressive: 'yes'},{q: 'Are you in good spirits most of the time?', depressive: 'no'},{q: 'Are you afraid that something bad is going to happen to you?', depressive: 'yes'},{q: 'Do you feel happy most of the time?', depressive: 'no'},{q: 'Do you often feel helpless?', depressive: 'yes'},{q: 'Do you prefer to stay at home, rather than going out and doing new things?', depressive: 'yes'},{q: 'Do you feel you have more problems with memory than most?', depressive: 'yes'},{q: 'Do you think it is wonderful to be alive now?', depressive: 'no'},{q: 'Do you feel pretty worthless the way you are now?', depressive: 'yes'},{q: 'Do you feel full of energy?', depressive: 'no'},{q: 'Do you feel that your situation is hopeless?', depressive: 'yes'},{q: 'Do you think that most people are better off than you are?', depressive: 'yes'}].map((item, i) => `<div class="assessment-question"><p class="font-medium mb-2">${i + 1}. ${item.q}</p><div class="assessment-options text-sm" data-depressive-answer="${item.depressive}"><label class="radio-label mb-0"><input type="radio" name="gds-q${i}" value="yes"> Yes</label><label class="radio-label mb-0"><input type="radio" name="gds-q${i}" value="no"> No</label></div></div>`).join('')}</div>`
+        GDS: {
+          title: "Geriatric Depression Scale (GDS-15)",
+          type: "gds-score",
+          maxScore: 15,
+          html: () =>
+            `<p class="text-gray-600 mb-4">Choose the best answer for how you have felt over the past week.</p><div id="assessment-form-content" class="grid grid-cols-1 md:grid-cols-2 gap-x-8">${[
+              {
+                q: "Are you basically satisfied with your life?",
+                depressive: "no",
+              },
+              {
+                q: "Have you dropped many of your activities and interests?",
+                depressive: "yes",
+              },
+              { q: "Do you feel that your life is empty?", depressive: "yes" },
+              { q: "Do you often get bored?", depressive: "yes" },
+              {
+                q: "Are you in good spirits most of the time?",
+                depressive: "no",
+              },
+              {
+                q: "Are you afraid that something bad is going to happen to you?",
+                depressive: "yes",
+              },
+              { q: "Do you feel happy most of the time?", depressive: "no" },
+              { q: "Do you often feel helpless?", depressive: "yes" },
+              {
+                q: "Do you prefer to stay at home, rather than going out and doing new things?",
+                depressive: "yes",
+              },
+              {
+                q: "Do you feel you have more problems with memory than most?",
+                depressive: "yes",
+              },
+              {
+                q: "Do you think it is wonderful to be alive now?",
+                depressive: "no",
+              },
+              {
+                q: "Do you feel pretty worthless the way you are now?",
+                depressive: "yes",
+              },
+              { q: "Do you feel full of energy?", depressive: "no" },
+              {
+                q: "Do you feel that your situation is hopeless?",
+                depressive: "yes",
+              },
+              {
+                q: "Do you think that most people are better off than you are?",
+                depressive: "yes",
+              },
+            ]
+              .map(
+                (item, i) =>
+                  `<div class="assessment-question"><p class="font-medium mb-2">${
+                    i + 1
+                  }. ${
+                    item.q
+                  }</p><div class="assessment-options text-sm" data-depressive-answer="${
+                    item.depressive
+                  }"><label class="radio-label mb-0"><input type="radio" name="gds-q${i}" value="yes"> Yes</label><label class="radio-label mb-0"><input type="radio" name="gds-q${i}" value="no"> No</label></div></div>`
+              )
+              .join("")}</div>`,
         },
-        'DASS21': {
-            title: 'Depression Anxiety Stress Scales (DASS-21)',
-            type: 'dass-score',
-            maxScore: 42, // Per scale
-            html: () => `<p class="text-gray-600 mb-4">Please read each statement and indicate how much the statement applied to you <b>over the past week</b>.</p><div id="assessment-form-content" class="grid grid-cols-1 md:grid-cols-2 gap-x-8">${[{q: 'I found it hard to wind down', scale: 'stress'}, {q: 'I was aware of dryness of my mouth', scale: 'anxiety'}, {q: 'I couldn’t seem to experience any positive feeling at all', scale: 'depression'},{q: 'I experienced breathing difficulty', scale: 'anxiety'}, {q: 'I found it difficult to work up the initiative to do things', scale: 'depression'}, {q: 'I tended to over-react to situations', scale: 'stress'},{q: 'I experienced trembling (e.g. in the hands)', scale: 'anxiety'}, {q: 'I felt that I was using a lot of nervous energy', scale: 'stress'},{q: 'I was worried about situations in which I might panic', scale: 'anxiety'}, {q: 'I felt that I had nothing to look forward to', scale: 'depression'},{q: 'I found myself getting agitated', scale: 'stress'}, {q: 'I found it difficult to relax', scale: 'stress'}, {q: 'I felt down-hearted and blue', scale: 'depression'},{q: 'I was intolerant of anything that kept me from getting on', scale: 'stress'}, {q: 'I felt I was close to panic', scale: 'anxiety'},{q: 'I was unable to become enthusiastic about anything', scale: 'depression'}, {q: 'I felt I was not worth much as a person', scale: 'depression'},{q: 'I felt that I was rather touchy', scale: 'stress'}, {q: 'I was aware of the action of my heart in the absence of physical exertion', scale: 'anxiety'},{q: 'I felt scared without any good reason', scale: 'anxiety'}, {q: 'I felt that life was meaningless', scale: 'depression'}].map((item, i) => `<div class="assessment-question" data-scale="${item.scale}"><p class="font-medium mb-2">${i + 1}. ${item.q}</p><div class="assessment-options text-sm space-y-2"><label class="radio-label mb-0"><input type="radio" name="dass-q${i}" value="0"> Did not apply to me at all</label><label class="radio-label mb-0"><input type="radio" name="dass-q${i}" value="1"> Applied to me to some degree</label><label class="radio-label mb-0"><input type="radio" name="dass-q${i}" value="2"> Applied to me to a considerable degree</label><label class="radio-label mb-0"><input type="radio" name="dass-q${i}" value="3"> Applied to me very much</label></div></div>`).join('')}</div>`
-        }
-    };
+        DASS21: {
+          title: "Depression Anxiety Stress Scales (DASS-21)",
+          type: "dass-score",
+          maxScore: 42, // Per scale
+          html: () =>
+            `<p class="text-gray-600 mb-4">Please read each statement and indicate how much the statement applied to you <b>over the past week</b>.</p><div id="assessment-form-content" class="grid grid-cols-1 md:grid-cols-2 gap-x-8">${[
+              { q: "I found it hard to wind down", scale: "stress" },
+              { q: "I was aware of dryness of my mouth", scale: "anxiety" },
+              {
+                q: "I couldn’t seem to experience any positive feeling at all",
+                scale: "depression",
+              },
+              { q: "I experienced breathing difficulty", scale: "anxiety" },
+              {
+                q: "I found it difficult to work up the initiative to do things",
+                scale: "depression",
+              },
+              { q: "I tended to over-react to situations", scale: "stress" },
+              {
+                q: "I experienced trembling (e.g. in the hands)",
+                scale: "anxiety",
+              },
+              {
+                q: "I felt that I was using a lot of nervous energy",
+                scale: "stress",
+              },
+              {
+                q: "I was worried about situations in which I might panic",
+                scale: "anxiety",
+              },
+              {
+                q: "I felt that I had nothing to look forward to",
+                scale: "depression",
+              },
+              { q: "I found myself getting agitated", scale: "stress" },
+              { q: "I found it difficult to relax", scale: "stress" },
+              { q: "I felt down-hearted and blue", scale: "depression" },
+              {
+                q: "I was intolerant of anything that kept me from getting on",
+                scale: "stress",
+              },
+              { q: "I felt I was close to panic", scale: "anxiety" },
+              {
+                q: "I was unable to become enthusiastic about anything",
+                scale: "depression",
+              },
+              {
+                q: "I felt I was not worth much as a person",
+                scale: "depression",
+              },
+              { q: "I felt that I was rather touchy", scale: "stress" },
+              {
+                q: "I was aware of the action of my heart in the absence of physical exertion",
+                scale: "anxiety",
+              },
+              { q: "I felt scared without any good reason", scale: "anxiety" },
+              { q: "I felt that life was meaningless", scale: "depression" },
+            ]
+              .map(
+                (item, i) =>
+                  `<div class="assessment-question" data-scale="${
+                    item.scale
+                  }"><p class="font-medium mb-2">${i + 1}. ${
+                    item.q
+                  }</p><div class="assessment-options text-sm space-y-2"><label class="radio-label mb-0"><input type="radio" name="dass-q${i}" value="0"> Did not apply to me at all</label><label class="radio-label mb-0"><input type="radio" name="dass-q${i}" value="1"> Applied to me to some degree</label><label class="radio-label mb-0"><input type="radio" name="dass-q${i}" value="2"> Applied to me to a considerable degree</label><label class="radio-label mb-0"><input type="radio" name="dass-q${i}" value="3"> Applied to me very much</label></div></div>`
+              )
+              .join("")}</div>`,
+        },
+      };
 
-    function calculateCurrentScore(template) {
+      function calculateCurrentScore(template) {
         let score = 0;
         if (!modalBody) return 0;
 
-        if (template.type === 'radio-sum' || template.type === 'dass-score') {
-            modalBody.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
-                score += parseInt(radio.value) || 0;
+        if (template.type === "radio-sum" || template.type === "dass-score") {
+          modalBody
+            .querySelectorAll('input[type="radio"]:checked')
+            .forEach((radio) => {
+              score += parseInt(radio.value) || 0;
             });
-        } else if (template.type === 'gds-score') {
-            modalBody.querySelectorAll('.assessment-options').forEach(optionSet => {
-                const depressiveAnswer = optionSet.dataset.depressiveAnswer;
-                const selectedRadio = optionSet.querySelector('input[type="radio"]:checked');
-                if (selectedRadio && selectedRadio.value === depressiveAnswer) {
-                    score++;
-                }
+        } else if (template.type === "gds-score") {
+          modalBody
+            .querySelectorAll(".assessment-options")
+            .forEach((optionSet) => {
+              const depressiveAnswer = optionSet.dataset.depressiveAnswer;
+              const selectedRadio = optionSet.querySelector(
+                'input[type="radio"]:checked'
+              );
+              if (selectedRadio && selectedRadio.value === depressiveAnswer) {
+                score++;
+              }
             });
         }
         return score;
-    }
+      }
 
-    function handleFinalise(template, targetInputId) {
+      function handleFinalise(template, targetInputId) {
         const targetInput = document.getElementById(targetInputId);
         if (!targetInput) return;
-        
-        lastCompletedAssessment.text = ''; // Resetting as we are not appending full assessment text
+
+        lastCompletedAssessment.text = ""; // Resetting as we are not appending full assessment text
         lastCompletedAssessment.title = template.title;
 
-        if (template.type === 'dass-score') {
-            let depressionScore = 0, anxietyScore = 0, stressScore = 0;
-            modalBody.querySelectorAll('.assessment-question').forEach(q => {
-                const scale = q.dataset.scale;
-                const checkedRadio = q.querySelector('input[type="radio"]:checked');
-                if (checkedRadio) {
-                    const value = parseInt(checkedRadio.value) || 0;
-                    if (scale === 'depression') depressionScore += value;
-                    else if (scale === 'anxiety') anxietyScore += value;
-                    else if (scale === 'stress') stressScore += value;
-                }
-            });
-            const finalDepression = depressionScore * 2;
-            const finalAnxiety = anxietyScore * 2;
-            const finalStress = stressScore * 2;
-            targetInput.value = `D:${finalDepression} / A:${finalAnxiety} / S:${finalStress}`;
+        if (template.type === "dass-score") {
+          let depressionScore = 0,
+            anxietyScore = 0,
+            stressScore = 0;
+          modalBody.querySelectorAll(".assessment-question").forEach((q) => {
+            const scale = q.dataset.scale;
+            const checkedRadio = q.querySelector('input[type="radio"]:checked');
+            if (checkedRadio) {
+              const value = parseInt(checkedRadio.value) || 0;
+              if (scale === "depression") depressionScore += value;
+              else if (scale === "anxiety") anxietyScore += value;
+              else if (scale === "stress") stressScore += value;
+            }
+          });
+          const finalDepression = depressionScore * 2;
+          const finalAnxiety = anxietyScore * 2;
+          const finalStress = stressScore * 2;
+          targetInput.value = `D:${finalDepression} / A:${finalAnxiety} / S:${finalStress}`;
         } else {
-             const finalScore = calculateCurrentScore(template);
-             targetInput.value = `${finalScore} / ${template.maxScore}`;
+          const finalScore = calculateCurrentScore(template);
+          targetInput.value = `${finalScore} / ${template.maxScore}`;
         }
         closeAssessmentModal();
-    }
+      }
 
-    function openAssessmentModal(toolKey, targetInputId) {
+      function openAssessmentModal(toolKey, targetInputId) {
         const template = assessmentTemplates[toolKey];
         if (!template) return;
 
         modalTitle.textContent = template.title;
         modalBody.innerHTML = template.html();
         modalFooter.innerHTML = `<button id="modal-action-btn" class="bg-blue-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-blue-700 ml-auto">Finalise & Close</button>`;
-        assessmentModal.classList.remove('hidden');
-        
+        assessmentModal.classList.remove("hidden");
+
         const updateScore = () => {
-            const currentScore = calculateCurrentScore(template);
-            modalScoreDisplay.textContent = `Score: ${currentScore}`;
+          const currentScore = calculateCurrentScore(template);
+          modalScoreDisplay.textContent = `Score: ${currentScore}`;
         };
 
-        modalBody.addEventListener('change', updateScore);
+        modalBody.addEventListener("change", updateScore);
         updateScore();
 
-        document.getElementById('modal-action-btn').addEventListener('click', () => handleFinalise(template, targetInputId));
-    }
+        document
+          .getElementById("modal-action-btn")
+          .addEventListener("click", () =>
+            handleFinalise(template, targetInputId)
+          );
+      }
 
-    function closeAssessmentModal() {
-        assessmentModal.classList.add('hidden');
-        modalBody.innerHTML = '';
-        modalFooter.innerHTML = '';
-    }
+      function closeAssessmentModal() {
+        assessmentModal.classList.add("hidden");
+        modalBody.innerHTML = "";
+        modalFooter.innerHTML = "";
+      }
 
-    modalCloseBtn.addEventListener('click', closeAssessmentModal);
-    assessmentModal.addEventListener('click', (e) => {
+      modalCloseBtn.addEventListener("click", closeAssessmentModal);
+      assessmentModal.addEventListener("click", (e) => {
         if (e.target === assessmentModal) closeAssessmentModal();
-    });
+      });
 
-    // --- Initial Load ---
-    document.addEventListener('DOMContentLoaded', () => {
-        const restoreModal = document.getElementById('restore-session-modal');
-        const restoreBtn = document.getElementById('restore-btn');
-        const startFreshBtn = document.getElementById('start-fresh-btn');
-        
+      // --- Initial Load ---
+      document.addEventListener("DOMContentLoaded", () => {
+        const restoreModal = document.getElementById("restore-session-modal");
+        const restoreBtn = document.getElementById("restore-btn");
+        const startFreshBtn = document.getElementById("start-fresh-btn");
+
         const savedData = localStorage.getItem(STORAGE_KEY);
 
         if (savedData) {
-            // If saved data exists, show the restore/start fresh modal
-            restoreModal.classList.remove('hidden');
+          // If saved data exists, show the restore/start fresh modal
+          restoreModal.classList.remove("hidden");
 
-            restoreBtn.addEventListener('click', () => {
-                restoreModal.classList.add('hidden');
-                initializeForm(); // This will load the saved data
-            });
+          restoreBtn.addEventListener("click", () => {
+            restoreModal.classList.add("hidden");
+            initializeForm(); // This will load the saved data
+          });
 
-            startFreshBtn.addEventListener('click', () => {
-                restoreModal.classList.add('hidden');
-                localStorage.removeItem(STORAGE_KEY);
-                initializeForm(); // This will now load a fresh form
-            });
+          startFreshBtn.addEventListener("click", () => {
+            restoreModal.classList.add("hidden");
+            localStorage.removeItem(STORAGE_KEY);
+            initializeForm(); // This will now load a fresh form
+          });
         } else {
-            // No saved data, just initialize a blank form
-            initializeForm();
+          // No saved data, just initialize a blank form
+          initializeForm();
         }
-    });
+      });
     </script>
-</body>
+  </body>
 </html>
