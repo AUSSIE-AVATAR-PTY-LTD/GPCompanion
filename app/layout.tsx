@@ -1,19 +1,24 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
-import { Analytics } from "@vercel/analytics/next"
-import { Suspense } from "react"
-import "./globals.css"
-import Script from "next/script"
-import { AnalyticsProvider } from "./AnalyticsProvider"
+import type React from "react";
+import type { Metadata } from "next";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { Analytics } from "@vercel/analytics/next";
+import { Suspense } from "react";
+import "./globals.css";
+import Script from "next/script";
+import { AnalyticsProvider } from "./AnalyticsProvider";
 
 export const metadata: Metadata = {
   title: "GP Companion - Medical Tools for Healthcare Professionals",
-  description: "Comprehensive GP Chronic Care Management Plans and Health Assessment tools for clinics",
+  description:
+    "Comprehensive GP Chronic Care Management Plans and Health Assessment tools for clinics",
   generator: "v0.app",
-}
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+};
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
@@ -24,14 +29,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Google Analytics */}
         <Script
           strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID ?? "G-MKKD030FVM"}`}
+          src={`https://www.googletagmanager.com/gtag/js?id=${
+            process.env.NEXT_PUBLIC_GA_ID ?? "G-MKKD030FVM"
+          }`}
         />
         <Script id="gtag-init" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID ?? "G-MKKD030FVM"}', {
+            gtag('config', '${
+              process.env.NEXT_PUBLIC_GA_ID ?? "G-MKKD030FVM"
+            }', {
               page_path: window.location.pathname,
             });
           `}

@@ -1,32 +1,39 @@
 // app/AnalyticsProvider.tsx
 "use client";
+
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import * as gtag from "@/lib/gtag";
 
 export function AnalyticsProvider() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  // تابعی که pageview می‌فرسته
+  const sendPageview = useCallback((url: string) => {
+    gtag.pageview(url);
+  }, []);
+
   useEffect(() => {
     const url = pathname + (searchParams ? `?${searchParams.toString()}` : "");
-    let attempts = 0;
-    const maxAttempts = 10;
-    const wait = 500; // ms
 
-    const trySend = () => {
-      attempts++;
-      if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        gtag.pageview(url);
-      } else if (attempts < maxAttempts) {
-        setTimeout(trySend, wait);
-      } else {
-        console.warn("GA: gtag did not become available after retries");
-      }
+    // اگر gtag همین الان موجوده، بفرست
+    if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
+      sendPageview(url);
+      return;
+    }
+
+    // اگر آماده نیست، به رویداد gtag-loaded گوش میدیم و وقتی دیسپاچ شد pageview میفرستیم
+    const handler = () => {
+      sendPageview(url);
     };
+    window.addEventListener("gtag-loaded", handler);
 
-    trySend();
-  }, [pathname, searchParams]);
+    // تمیزکاری
+    return () => {
+      window.removeEventListener("gtag-loaded", handler);
+    };
+  }, [pathname, searchParams, sendPageview]);
 
   return null;
 }
