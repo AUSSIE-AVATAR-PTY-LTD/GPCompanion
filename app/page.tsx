@@ -1,20 +1,9 @@
-"use client";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import * as gtag from "@/lib/gtag";
+"use client"
+import { Navbar } from "@/components/navbar"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import Image from "next/image"
+import Link from "next/link"
 
 export default function HomePage() {
   return (
@@ -35,13 +24,10 @@ export default function HomePage() {
                 priority
               />
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6 text-balance">
-              GP Companion
-            </h1>
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6 text-balance">GP Companion</h1>
             <p className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto text-pretty">
-              Comprehensive medical tools and health assessments designed
-              specifically for healthcare professionals. Streamline your
-              workflow with our secure, privacy-focused platform.
+              Comprehensive medical tools and health assessments designed specifically for healthcare professionals.
+              Streamline your workflow with our secure, privacy-focused platform.
             </p>
           </div>
         </section>
@@ -50,12 +36,9 @@ export default function HomePage() {
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                Essential Medical Tools
-              </h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Essential Medical Tools</h2>
               <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                Access comprehensive tools designed to enhance your clinical
-                practice and improve patient care.
+                Access comprehensive tools designed to enhance your clinical practice and improve patient care.
               </p>
             </div>
 
@@ -64,12 +47,7 @@ export default function HomePage() {
               <Card className="bg-white border-indigo-100 hover:shadow-lg transition-shadow">
                 <CardHeader className="text-center pb-4">
                   <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg
-                      className="w-8 h-8 text-indigo-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -78,12 +56,9 @@ export default function HomePage() {
                       />
                     </svg>
                   </div>
-                  <CardTitle className="text-2xl text-slate-900">
-                    GPCCMP Tool
-                  </CardTitle>
+                  <CardTitle className="text-2xl text-slate-900">GPCCMP Tool</CardTitle>
                   <CardDescription className="text-slate-600">
-                    Create comprehensive GP Chronic Care Management Plans with
-                    our streamlined workflow
+                    Create comprehensive GP Chronic Care Management Plans with our streamlined workflow
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="text-center">
@@ -99,12 +74,7 @@ export default function HomePage() {
               <Card className="bg-white border-indigo-100 hover:shadow-lg transition-shadow">
                 <CardHeader className="text-center pb-4">
                   <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg
-                      className="w-8 h-8 text-indigo-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -113,19 +83,13 @@ export default function HomePage() {
                       />
                     </svg>
                   </div>
-                  <CardTitle className="text-2xl text-slate-900">
-                    Health Assessments
-                  </CardTitle>
+                  <CardTitle className="text-2xl text-slate-900">Health Assessments</CardTitle>
                   <CardDescription className="text-slate-600 mb-4">
-                    Access comprehensive health assessment tools for various
-                    patient populations
+                    Access comprehensive health assessment tools for various patient populations
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button
-                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
-                    asChild
-                  >
+                  <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" asChild>
                     <Link href="/HealthAssessments">View All Assessments</Link>
                   </Button>
                 </CardContent>
@@ -138,24 +102,16 @@ export default function HomePage() {
         <section className="bg-indigo-50/40 py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                Why Choose GP Companion?
-              </h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Why Choose GP Companion?</h2>
               <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                Built specifically for healthcare professionals with privacy and
-                efficiency in mind.
+                Built specifically for healthcare professionals with privacy and efficiency in mind.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    className="w-6 h-6 text-indigo-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -164,48 +120,30 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">
-                  Privacy First
-                </h3>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">Privacy First</h3>
                 <p className="text-slate-600">
-                  All patient data stays in your browser. No external servers.
-                  Complete confidentiality.
+                  All patient data stays in your browser. No external servers. Complete confidentiality.
                 </p>
               </div>
 
               <div className="text-center">
                 <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    className="w-6 h-6 text-indigo-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">
-                  Fast & Efficient
-                </h3>
-                <p className="text-slate-600">
-                  Streamlined workflows that save time and reduce administrative
-                  burden.
-                </p>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">Fast & Efficient</h3>
+                <p className="text-slate-600">Streamlined workflows that save time and reduce administrative burden.</p>
               </div>
 
               <div className="text-center">
                 <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    className="w-6 h-6 text-indigo-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -214,12 +152,9 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">
-                  Free to Use
-                </h3>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">Free to Use</h3>
                 <p className="text-slate-600">
-                  Completely free for all healthcare professionals. No hidden
-                  costs or subscriptions.
+                  Completely free for all healthcare professionals. No hidden costs or subscriptions.
                 </p>
               </div>
             </div>
@@ -229,5 +164,5 @@ export default function HomePage() {
 
       {/* <Footer /> */}
     </div>
-  );
+  )
 }
