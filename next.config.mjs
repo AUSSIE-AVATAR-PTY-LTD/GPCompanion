@@ -12,13 +12,10 @@ const nextConfig = {
 
   async rewrites() {
     return [
-      // gpccmp — فایل با فاصله در اسم؛ فاصله باید URL-encoded باشه (%20)
       {
         source: '/gpccmp',
         destination: '/gpccmp/GPCCMP%20and%20Review%20generator.html',
       },
-
-      // مثال‌های دیگر — اگر اسم فایل‌ها در public دقیقاً همین باشن:
       {
         source: '/type-2-diabetes',
         destination: '/40-49DiabetesRiskAssessment.html',
@@ -27,7 +24,6 @@ const nextConfig = {
         source: '/45-49-health',
         destination: '/45-49YearHealthCheck.html',
       },
-      // دقت: اگر اسم فایل شامل "+" است، باید "+" را encode کنی به %2B
       {
         source: '/75-plus',
         destination: '/75%2BHealthAssessment.html',
@@ -70,6 +66,9 @@ const nextConfig = {
       }
     ]
   },
+  
+  // این خط مهمه - اگه نداری اضافه کن
+  trailingSlash: false,
 }
 
 export default nextConfig

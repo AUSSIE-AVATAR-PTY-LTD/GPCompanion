@@ -15,11 +15,17 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-      // هر دو property را مقداردهی میکنیم
-      gtag("config", "G-61RLS51ZH5");
-      gtag("config", "G-XMPYXRQRH0");
-    </script>
 
+      // Config برای هر دو property
+      gtag("config", "G-61RLS51ZH5", {
+        page_location: window.location.href,
+        page_path: window.location.pathname,
+      });
+      gtag("config", "G-XMPYXRQRH0", {
+        page_location: window.location.href,
+        page_path: window.location.pathname,
+      });
+    </script>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
