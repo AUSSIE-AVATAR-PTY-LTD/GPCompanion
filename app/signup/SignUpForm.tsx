@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { createClient } from "@/lib/supabase/client"
 
 const signUpSchema = z
   .object({
@@ -47,57 +46,28 @@ export function SignUpForm() {
   const onSubmit = async (data: SignUpFormData) => {
     setLoading(true)
     setError(null)
-    const supabase = createClient()
 
-    const { data: existing } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("phone_number", data.phone_number)
-      .single()
-
-    if (existing) {
-      setError("An account with this phone number already exists.")
-      setLoading(false)
-      return
-    }
-
-    const { data: authData, error: authError } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/api/auth/callback`,
-        data: {
-          first_name: data.first_name,
-          last_name: data.last_name,
-        },
-      },
-    })
-
-    if (authError) {
-      setError(authError.message)
-      setLoading(false)
-      return
-    }
-
-    if (authData.user) {
-      const { error: profileError } = await supabase.from("profiles").insert({
-        id: authData.user.id,
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password,
         first_name: data.first_name,
         last_name: data.last_name,
         clinic_name: data.clinic_name,
         clinic_address: data.clinic_address,
         position: data.position,
         phone_number: data.phone_number,
-        email: data.email,
-      })
+      }),
+    })
 
-      if (profileError) {
-        setError(profileError.message)
-        setLoading(false)
-        return
-      }
+    const result = await res.json()
 
-      await supabase.from("subscriptions").insert({ user_id: authData.user.id })
+    if (!res.ok) {
+      setError(result.error ?? "Something went wrong. Please try again.")
+      setLoading(false)
+      return
     }
 
     setSuccess(true)

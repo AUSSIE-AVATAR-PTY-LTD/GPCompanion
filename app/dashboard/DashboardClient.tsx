@@ -180,18 +180,18 @@ function DashboardInner({ profile, subscription }: { profile: Profile; subscript
             <CardTitle className="text-lg text-slate-900">Your Tools</CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Link href="/gpccmp">
+            <a href="/api/tools?tool=gpccmp">
               <div className="border border-indigo-100 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
                 <h3 className="font-semibold text-slate-900">GPCCMP Tool</h3>
                 <p className="text-sm text-slate-600 mt-1">Create GP Chronic Care Management Plans</p>
               </div>
-            </Link>
-            <Link href="/HealthAssessments">
+            </a>
+            <a href="/HealthAssessments">
               <div className="border border-indigo-100 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
                 <h3 className="font-semibold text-slate-900">Health Assessments</h3>
                 <p className="text-sm text-slate-600 mt-1">Access health assessment tools</p>
               </div>
-            </Link>
+            </a>
           </CardContent>
         </Card>
       )}

@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr"
+import { createClient as createAdmin } from "@supabase/supabase-js"
 import { NextResponse, type NextRequest } from "next/server"
 
 const PROTECTED_PATHS = ["/gpccmp", "/HealthAssessments", "/dashboard"]
@@ -43,15 +44,23 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(loginUrl)
     }
 
-    // Check subscription status
-    const { data: subscription } = await supabase
+    // Use admin client to bypass RLS for subscription check
+    const admin = createAdmin(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
+
+    const { data: subscription } = await admin
       .from("subscriptions")
-      .select("status, trial_end, plan")
+      .select("status, trial_end")
       .eq("user_id", user.id)
       .single()
 
     if (!subscription) {
-      return NextResponse.redirect(new URL("/login", request.url))
+      if (!pathname.startsWith("/dashboard")) {
+        return NextResponse.redirect(new URL("/dashboard", request.url))
+      }
+      return supabaseResponse
     }
 
     const now = new Date()
@@ -74,7 +83,12 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url))
     }
 
-    const { data: profile } = await supabase
+    const admin = createAdmin(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
+
+    const { data: profile } = await admin
       .from("profiles")
       .select("is_admin")
       .eq("id", user.id)
@@ -90,6 +104,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|images|api/stripe/webhook).*)",
+    "/((?!_next/static|_next/image|favicon.ico|images|api/stripe/webhook|api/tools).*)",
   ],
 }

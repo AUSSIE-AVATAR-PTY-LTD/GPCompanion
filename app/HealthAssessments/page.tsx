@@ -1,6 +1,5 @@
 // pages/index.tsx  (یا app/page.tsx اگر از app-router استفاده می‌کنی)
 import React from "react";
-import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import {
@@ -154,75 +153,73 @@ const cards = [
   {
     title: "Type 2 Diabetes Risk Evaluation",
     desc: "GP Health Assessment Tool for people aged 40-49 years",
-    href: "/type-2-diabetes",
+    href: "/api/tools?tool=diabetes-risk",
     Icon: IconShield,
   },
   {
     title: "45-49 Year Old Health Assessment",
     desc: "GP Health Assessment Tool for people at risk of developing chronic disease",
-    href: "/45-49-health",
+    href: "/api/tools?tool=health-check-45",
     Icon: IconDocument,
   },
   {
     title: "75+ Health Assessment",
     desc: "GP Health Assessment Tool",
-    href: "/75-plus",
+    href: "/api/tools?tool=health-assessment-75",
     Icon: IconPeople,
   },
   {
     title: "Aboriginal & Torres Strait Islander Adult Health Assessment",
     desc: "MBS Item 715 — For person aged 15 to 54 years",
-    href: "/atsi-adult-15-54",
+    href: "/api/tools?tool=1554",
     Icon: IconStar,
   },
   {
     title: "Aboriginal & Torres Strait Islander Child Health Assessment",
     desc: "MBS Item 715 — For child under 15 years",
-    href: "/atsi-child-under-15",
+    href: "/api/tools?tool=atsi-child",
     Icon: IconClipboard,
   },
   {
     title: "Aboriginal & Torres Strait Islander Older Person Health Assessment",
     desc: "GP Health Assessment Tool for older persons aged 55 years and over",
-    href: "/atsi-older-55-plus",
+    href: "/api/tools?tool=atsi-senior",
     Icon: IconPeople,
   },
   {
     title: "Heart Health Check",
     desc: "GP Health Assessment Tool (MBS Items 699/177)",
-    href: "/heart-health-check",
+    href: "/api/tools?tool=heart-health",
     Icon: IconHeart,
   },
   {
     title: "Health Assessment for People with an Intellectual Disability",
     desc: "GP Health Assessment Tool",
-    href: "/intellectual-disability",
+    href: "/api/tools?tool=id",
     Icon: IconDocument,
   },
   {
     title: "Menopause & Perimenopause Health Assessment",
     desc: "GP Health Assessment Tool",
-    href: "/menopause-perimenopause",
+    href: "/api/tools?tool=menopause",
     Icon: IconShield,
   },
   {
-    title:
-      "Health assessment for permanent residents of residential aged care facilities",
+    title: "Health assessment for permanent residents of residential aged care facilities",
     desc: "GP Health Assessment Tool",
-    href: "/racf-aged-care",
+    href: "/api/tools?tool=aged-care",
     Icon: IconPulse,
   },
   {
     title: "Refugee Health Assessment",
     desc: "Comprehensive Post-Arrival Health Assessment Tool",
-    href: "/refugee",
+    href: "/api/tools?tool=refugee",
     Icon: IconPeople,
   },
   {
-    title:
-      "Health Assessment for Former Serving Members of the Australian Defence Force",
+    title: "Health Assessment for Former Serving Members of the Australian Defence Force",
     desc: "GP Health Assessment Tool",
-    href: "/former-serving-adf",
+    href: "/api/tools?tool=adf-veteran",
     Icon: IconStar,
   },
 ];
@@ -237,7 +234,7 @@ export default function HomePage() {
           {/* Grid کارت‌ها */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {cards.map(({ title, desc, href, Icon }) => (
-              <Link
+              <a
                 key={href}
                 href={href}
                 className="group block rounded-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-200"
@@ -266,7 +263,7 @@ export default function HomePage() {
                     </div>
                   </CardContent>
                 </Card>
-              </Link>
+              </a>
             ))}
           </div>
         </div>
