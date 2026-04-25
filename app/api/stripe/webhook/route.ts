@@ -50,9 +50,10 @@ export async function POST(request: Request) {
 
     case "invoice.payment_succeeded": {
       const invoice = event.data.object as Stripe.Invoice
-      const stripeSubId = invoice.subscription as string
-      const sub = await stripe.subscriptions.retrieve(stripeSubId)
+      const stripeSubId = (invoice.subscription ?? (invoice as any).parent?.subscription_details?.subscription) as string | undefined
+      if (!stripeSubId) break
 
+      const sub = await stripe.subscriptions.retrieve(stripeSubId)
       await supabaseAdmin
         .from("subscriptions")
         .update({
@@ -66,10 +67,13 @@ export async function POST(request: Request) {
 
     case "invoice.payment_failed": {
       const invoice = event.data.object as Stripe.Invoice
+      const stripeSubId = (invoice.subscription ?? (invoice as any).parent?.subscription_details?.subscription) as string | undefined
+      if (!stripeSubId) break
+
       await supabaseAdmin
         .from("subscriptions")
         .update({ status: "past_due" })
-        .eq("stripe_subscription_id", invoice.subscription as string)
+        .eq("stripe_subscription_id", stripeSubId)
       break
     }
 
