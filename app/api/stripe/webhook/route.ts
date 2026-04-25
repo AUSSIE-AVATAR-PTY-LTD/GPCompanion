@@ -33,15 +33,18 @@ export async function POST(request: Request) {
       const session = event.data.object as Stripe.Checkout.Session
       const userId = session.metadata?.user_id
       const plan = session.metadata?.plan
+      const stripeSubId = session.subscription as string
 
-      if (userId && plan) {
+      if (userId && plan && stripeSubId) {
+        const sub = await stripe.subscriptions.retrieve(stripeSubId)
         await supabaseAdmin
           .from("subscriptions")
           .update({
-            stripe_subscription_id: session.subscription as string,
+            stripe_subscription_id: stripeSubId,
             plan,
             status: "active",
-            current_period_start: new Date().toISOString(),
+            current_period_start: new Date(sub.current_period_start * 1000).toISOString(),
+            current_period_end: new Date(sub.current_period_end * 1000).toISOString(),
           })
           .eq("user_id", userId)
       }

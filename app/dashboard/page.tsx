@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { createClient as createAdmin } from "@supabase/supabase-js"
+import Stripe from "stripe"
 import { Navbar } from "@/components/navbar"
 import { DashboardClient } from "./DashboardClient"
 
@@ -10,6 +11,8 @@ function getSupabaseAdmin() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
 }
+
+function getStripe() { return new Stripe(process.env.STRIPE_SECRET_KEY!) }
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -63,12 +66,35 @@ export default async function DashboardPage() {
     subscription = newSub
   }
 
+  // Fetch invoices from Stripe if customer exists
+  type Invoice = { id: string; date: string; amount: string; status: string; description: string }
+  let invoices: Invoice[] = []
+
+  if (subscription?.stripe_customer_id) {
+    try {
+      const stripe = getStripe()
+      const { data } = await stripe.invoices.list({
+        customer: subscription.stripe_customer_id,
+        limit: 10,
+      })
+      invoices = data.map((inv) => ({
+        id: inv.id,
+        date: new Date(inv.created * 1000).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }),
+        amount: `$${(inv.amount_paid / 100).toFixed(2)}`,
+        status: inv.status ?? "unknown",
+        description: inv.lines.data[0]?.description ?? "Subscription",
+      }))
+    } catch {
+      // silently skip if Stripe call fails
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
       <main className="flex-1 py-12 px-4">
         <div className="max-w-4xl mx-auto">
-          <DashboardClient profile={profile} subscription={subscription} />
+          <DashboardClient profile={profile} subscription={subscription} invoices={invoices} />
         </div>
       </main>
     </div>

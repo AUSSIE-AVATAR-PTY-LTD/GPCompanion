@@ -33,7 +33,7 @@ export async function POST(request: Request) {
   // Re-use existing Stripe customer or create new
   const { data: sub } = await supabase
     .from("subscriptions")
-    .select("stripe_customer_id")
+    .select("stripe_customer_id, status, trial_end")
     .eq("user_id", user.id)
     .single()
 
@@ -55,6 +55,10 @@ export async function POST(request: Request) {
       .eq("user_id", user.id)
   }
 
+  // If user is mid-trial, carry the remaining trial days over to the paid subscription
+  const trialEnd = sub?.trial_end ? new Date(sub.trial_end) : null
+  const hasRemainingTrial = sub?.status === "trialing" && trialEnd && trialEnd > new Date()
+
   const session = await stripe.checkout.sessions.create({
     customer: customerId,
     payment_method_types: ["card"],
@@ -63,6 +67,9 @@ export async function POST(request: Request) {
     success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?payment=success`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?payment=canceled`,
     metadata: { user_id: user.id, plan },
+    ...(hasRemainingTrial && {
+      subscription_data: { trial_end: Math.floor(trialEnd!.getTime() / 1000) },
+    }),
   })
 
   return NextResponse.json({ url: session.url })

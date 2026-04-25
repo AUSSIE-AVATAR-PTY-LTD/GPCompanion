@@ -50,11 +50,14 @@ function StatusBadge({ status }: { status: string }) {
   return <Badge className={className}>{label}</Badge>
 }
 
-function DashboardInner({ profile, subscription }: { profile: Profile; subscription: Subscription }) {
+type Invoice = { id: string; date: string; amount: string; status: string; description: string }
+
+function DashboardInner({ profile, subscription, invoices }: { profile: Profile; subscription: Subscription; invoices: Invoice[] }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null)
   const [cancelLoading, setCancelLoading] = useState(false)
+  const [portalLoading, setPortalLoading] = useState(false)
 
   const paymentStatus = searchParams.get("payment")
   const upgradePrompt = searchParams.get("upgrade") === "true"
@@ -65,6 +68,14 @@ function DashboardInner({ profile, subscription }: { profile: Profile; subscript
   const isTrialing = subscription.status === "trialing" && trialEnd > now
   const isActive = subscription.status === "active"
   const needsUpgrade = !isTrialing && !isActive
+
+  const periodStart = subscription.current_period_start ? new Date(subscription.current_period_start) : null
+  const periodEnd = subscription.current_period_end ? new Date(subscription.current_period_end) : null
+  const periodDaysLeft = periodEnd ? Math.max(0, differenceInDays(periodEnd, now)) : null
+  const periodTotal = periodStart && periodEnd ? differenceInDays(periodEnd, periodStart) : null
+  const periodProgress = periodTotal && periodDaysLeft !== null
+    ? Math.max(5, ((periodTotal - periodDaysLeft) / periodTotal) * 100)
+    : 0
 
   const handleCheckout = async (plan: string) => {
     setCheckoutLoading(plan)
@@ -78,6 +89,14 @@ function DashboardInner({ profile, subscription }: { profile: Profile; subscript
       setCheckoutLoading(null)
       return
     }
+    window.location.href = url
+  }
+
+  const handlePortal = async () => {
+    setPortalLoading(true)
+    const res = await fetch("/api/stripe/portal", { method: "POST" })
+    const { url, error } = await res.json()
+    if (error) { setPortalLoading(false); return }
     window.location.href = url
   }
 
@@ -155,20 +174,42 @@ function DashboardInner({ profile, subscription }: { profile: Profile; subscript
               Your free trial ends on <strong>{format(trialEnd, "d MMMM yyyy")}</strong>.
             </p>
           )}
-          {isActive && subscription.current_period_end && (
-            <p className="text-sm text-slate-600">
-              Current plan: <strong className="capitalize">{subscription.plan}</strong> — renews on{" "}
-              <strong>{format(new Date(subscription.current_period_end), "d MMMM yyyy")}</strong>.
-            </p>
+          {isActive && periodEnd && periodDaysLeft !== null && (
+            <>
+              <div className="flex items-center gap-3">
+                <div className="flex-1 bg-gray-200 rounded-full h-2">
+                  <div
+                    className="bg-indigo-600 h-2 rounded-full transition-all"
+                    style={{ width: `${periodProgress}%` }}
+                  />
+                </div>
+                <span className="text-sm font-medium text-slate-700 whitespace-nowrap">
+                  {periodDaysLeft} days left
+                </span>
+              </div>
+              <p className="text-sm text-slate-600">
+                Current plan: <strong className="capitalize">{subscription.plan}</strong> — renews on{" "}
+                <strong>{format(periodEnd, "d MMMM yyyy")}</strong>.
+              </p>
+            </>
           )}
           {isActive && (
-            <button
-              onClick={handleCancel}
-              disabled={cancelLoading}
-              className="text-xs text-red-500 hover:underline mt-1"
-            >
-              {cancelLoading ? "Canceling..." : "Cancel subscription"}
-            </button>
+            <div className="flex items-center gap-4 mt-1">
+              <button
+                onClick={handlePortal}
+                disabled={portalLoading}
+                className="text-xs text-indigo-600 hover:underline"
+              >
+                {portalLoading ? "Loading..." : "Payment history"}
+              </button>
+              <button
+                onClick={handleCancel}
+                disabled={cancelLoading}
+                className="text-xs text-red-500 hover:underline"
+              >
+                {cancelLoading ? "Canceling..." : "Cancel subscription"}
+              </button>
+            </div>
           )}
         </CardContent>
       </Card>
@@ -257,20 +298,67 @@ function DashboardInner({ profile, subscription }: { profile: Profile; subscript
           <div><span className="text-slate-500">Email: </span>{profile.email}</div>
         </CardContent>
       </Card>
+
+      {/* Payment History */}
+      <Card className="border-gray-200">
+        <CardHeader>
+          <CardTitle className="text-lg text-slate-900">Payment History</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {invoices.length === 0 ? (
+            <p className="text-sm text-slate-500">No payments yet.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-slate-700">
+                <thead>
+                  <tr className="border-b border-gray-100 text-left text-slate-500">
+                    <th className="pb-2 font-medium">Date</th>
+                    <th className="pb-2 font-medium">Description</th>
+                    <th className="pb-2 font-medium">Amount</th>
+                    <th className="pb-2 font-medium">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {invoices.map((inv) => (
+                    <tr key={inv.id} className="border-b border-gray-50 last:border-0">
+                      <td className="py-2">{inv.date}</td>
+                      <td className="py-2">{inv.description}</td>
+                      <td className="py-2 font-medium">{inv.amount}</td>
+                      <td className="py-2">
+                        <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
+                          inv.status === "paid" ? "bg-green-100 text-green-700" :
+                          inv.status === "open" ? "bg-yellow-100 text-yellow-700" :
+                          "bg-gray-100 text-gray-600"
+                        }`}>
+                          {inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }
 
+type Invoice = { id: string; date: string; amount: string; status: string; description: string }
+
 export function DashboardClient({
   profile,
   subscription,
+  invoices,
 }: {
   profile: Profile
   subscription: Subscription
+  invoices: Invoice[]
 }) {
   return (
     <Suspense fallback={null}>
-      <DashboardInner profile={profile} subscription={subscription} />
+      <DashboardInner profile={profile} subscription={subscription} invoices={invoices} />
     </Suspense>
   )
 }
