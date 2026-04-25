@@ -1,0 +1,276 @@
+"use client"
+
+import { useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import Link from "next/link"
+import { Suspense } from "react"
+import { differenceInDays, format } from "date-fns"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { createClient } from "@/lib/supabase/client"
+import type { Profile, Subscription } from "@/lib/supabase/types"
+
+const PLANS = [
+  {
+    id: "weekly",
+    label: "Weekly",
+    price: "$20",
+    period: "/ week",
+    description: "Billed every week",
+    saving: null,
+  },
+  {
+    id: "monthly",
+    label: "Monthly",
+    price: "$81",
+    period: "/ month",
+    description: "Billed every month",
+    saving: "Save 5%",
+  },
+  {
+    id: "yearly",
+    label: "Yearly",
+    price: "$936",
+    period: "/ year",
+    description: "Billed annually",
+    saving: "Save 10%",
+  },
+]
+
+function StatusBadge({ status }: { status: string }) {
+  const map: Record<string, { label: string; className: string }> = {
+    trialing: { label: "Free Trial", className: "bg-green-100 text-green-800" },
+    active: { label: "Active", className: "bg-indigo-100 text-indigo-800" },
+    past_due: { label: "Payment Due", className: "bg-yellow-100 text-yellow-800" },
+    canceled: { label: "Canceled", className: "bg-red-100 text-red-800" },
+    expired: { label: "Expired", className: "bg-gray-100 text-gray-800" },
+  }
+  const { label, className } = map[status] ?? { label: status, className: "bg-gray-100 text-gray-800" }
+  return <Badge className={className}>{label}</Badge>
+}
+
+function DashboardInner({ profile, subscription }: { profile: Profile; subscription: Subscription }) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null)
+  const [cancelLoading, setCancelLoading] = useState(false)
+
+  const paymentStatus = searchParams.get("payment")
+  const upgradePrompt = searchParams.get("upgrade") === "true"
+
+  const now = new Date()
+  const trialEnd = new Date(subscription.trial_end)
+  const trialDaysLeft = Math.max(0, differenceInDays(trialEnd, now))
+  const isTrialing = subscription.status === "trialing" && trialEnd > now
+  const isActive = subscription.status === "active"
+  const needsUpgrade = !isTrialing && !isActive
+
+  const handleCheckout = async (plan: string) => {
+    setCheckoutLoading(plan)
+    const res = await fetch("/api/stripe/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ plan }),
+    })
+    const { url, error } = await res.json()
+    if (error) {
+      setCheckoutLoading(null)
+      return
+    }
+    window.location.href = url
+  }
+
+  const handleCancel = async () => {
+    if (!confirm("Are you sure you want to cancel your subscription? You will lose access at the end of the current billing period.")) return
+    setCancelLoading(true)
+    await fetch("/api/stripe/cancel", { method: "POST" })
+    router.refresh()
+    setCancelLoading(false)
+  }
+
+  const handleLogout = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push("/")
+    router.refresh()
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900">
+            Welcome back, {profile.first_name}
+          </h1>
+          <p className="text-slate-600 mt-1">{profile.clinic_name}</p>
+        </div>
+        <Button variant="outline" onClick={handleLogout} className="text-slate-600">
+          Sign Out
+        </Button>
+      </div>
+
+      {/* Payment status alerts */}
+      {paymentStatus === "success" && (
+        <div className="bg-green-50 border border-green-200 text-green-800 rounded-lg px-4 py-3 text-sm">
+          Payment successful — your subscription is now active.
+        </div>
+      )}
+      {paymentStatus === "canceled" && (
+        <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg px-4 py-3 text-sm">
+          Checkout was canceled. You can subscribe below when you&apos;re ready.
+        </div>
+      )}
+      {upgradePrompt && (
+        <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg px-4 py-3 text-sm">
+          Your trial has expired. Please choose a plan below to continue using GP Companion.
+        </div>
+      )}
+
+      {/* Subscription Status Card */}
+      <Card className="border-gray-200">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-lg text-slate-900">Subscription Status</CardTitle>
+            <StatusBadge status={subscription.status} />
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {isTrialing && (
+            <div className="flex items-center gap-3">
+              <div className="flex-1 bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-indigo-600 h-2 rounded-full transition-all"
+                  style={{ width: `${Math.max(5, (trialDaysLeft / 60) * 100)}%` }}
+                />
+              </div>
+              <span className="text-sm font-medium text-slate-700 whitespace-nowrap">
+                {trialDaysLeft} days left
+              </span>
+            </div>
+          )}
+          {isTrialing && (
+            <p className="text-sm text-slate-600">
+              Your free trial ends on <strong>{format(trialEnd, "d MMMM yyyy")}</strong>.
+            </p>
+          )}
+          {isActive && subscription.current_period_end && (
+            <p className="text-sm text-slate-600">
+              Current plan: <strong className="capitalize">{subscription.plan}</strong> — renews on{" "}
+              <strong>{format(new Date(subscription.current_period_end), "d MMMM yyyy")}</strong>.
+            </p>
+          )}
+          {isActive && (
+            <button
+              onClick={handleCancel}
+              disabled={cancelLoading}
+              className="text-xs text-red-500 hover:underline mt-1"
+            >
+              {cancelLoading ? "Canceling..." : "Cancel subscription"}
+            </button>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Tools — only shown during valid access */}
+      {(isTrialing || isActive) && (
+        <Card className="border-gray-200">
+          <CardHeader>
+            <CardTitle className="text-lg text-slate-900">Your Tools</CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Link href="/gpccmp">
+              <div className="border border-indigo-100 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                <h3 className="font-semibold text-slate-900">GPCCMP Tool</h3>
+                <p className="text-sm text-slate-600 mt-1">Create GP Chronic Care Management Plans</p>
+              </div>
+            </Link>
+            <Link href="/HealthAssessments">
+              <div className="border border-indigo-100 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                <h3 className="font-semibold text-slate-900">Health Assessments</h3>
+                <p className="text-sm text-slate-600 mt-1">Access health assessment tools</p>
+              </div>
+            </Link>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Pricing — shown when no active sub */}
+      {(needsUpgrade || isTrialing) && (
+        <div>
+          <h2 className="text-xl font-bold text-slate-900 mb-4">
+            {needsUpgrade ? "Choose a plan to continue" : "Upgrade before your trial ends"}
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {PLANS.map((plan) => (
+              <Card
+                key={plan.id}
+                className={`border-2 transition-all ${
+                  plan.id === "monthly"
+                    ? "border-indigo-500 shadow-md"
+                    : "border-gray-200 hover:border-indigo-200"
+                }`}
+              >
+                <CardHeader className="text-center pb-2">
+                  {plan.id === "monthly" && (
+                    <div className="text-xs font-semibold text-indigo-600 uppercase tracking-wide mb-1">
+                      Most Popular
+                    </div>
+                  )}
+                  <CardTitle className="text-slate-900">{plan.label}</CardTitle>
+                  <div className="text-3xl font-bold text-slate-900 mt-2">
+                    {plan.price}
+                    <span className="text-base font-normal text-slate-500">{plan.period}</span>
+                  </div>
+                  {plan.saving && (
+                    <Badge className="bg-green-100 text-green-700 mx-auto mt-1">{plan.saving}</Badge>
+                  )}
+                  <CardDescription className="text-slate-500 mt-1">{plan.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+                    onClick={() => handleCheckout(plan.id)}
+                    disabled={checkoutLoading === plan.id}
+                  >
+                    {checkoutLoading === plan.id ? "Redirecting..." : "Subscribe"}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Profile Info */}
+      <Card className="border-gray-200">
+        <CardHeader>
+          <CardTitle className="text-lg text-slate-900">Account Details</CardTitle>
+        </CardHeader>
+        <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-700">
+          <div><span className="text-slate-500">Name: </span>{profile.first_name} {profile.last_name}</div>
+          <div><span className="text-slate-500">Position: </span>{profile.position}</div>
+          <div><span className="text-slate-500">Clinic: </span>{profile.clinic_name}</div>
+          <div><span className="text-slate-500">Address: </span>{profile.clinic_address}</div>
+          <div><span className="text-slate-500">Phone: </span>{profile.phone_number}</div>
+          <div><span className="text-slate-500">Email: </span>{profile.email}</div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+export function DashboardClient({
+  profile,
+  subscription,
+}: {
+  profile: Profile
+  subscription: Subscription
+}) {
+  return (
+    <Suspense fallback={null}>
+      <DashboardInner profile={profile} subscription={subscription} />
+    </Suspense>
+  )
+}

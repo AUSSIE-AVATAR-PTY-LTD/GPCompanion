@@ -1,4 +1,3 @@
-"use client"
 import { Navbar } from "@/components/navbar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -29,6 +28,14 @@ export default function HomePage() {
               Comprehensive medical tools and health assessments designed specifically for healthcare professionals.
               Streamline your workflow with our secure, privacy-focused platform.
             </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white px-8">
+                <Link href="/signup">Start 2-Month Free Trial</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="border-indigo-300 text-indigo-700 hover:bg-indigo-50 px-8">
+                <Link href="/pricing">View Pricing</Link>
+              </Button>
+            </div>
           </div>
         </section>
 
@@ -152,9 +159,9 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Free to Use</h3>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">2-Month Free Trial</h3>
                 <p className="text-slate-600">
-                  Completely free for all healthcare professionals. No hidden costs or subscriptions.
+                  Start with a full-featured 2-month free trial. No credit card required to get started.
                 </p>
               </div>
             </div>

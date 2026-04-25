@@ -1,9 +1,12 @@
-// components/navbar.tsx
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { createClient } from "@/lib/supabase/server"
 
-export function Navbar() {
+export async function Navbar() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
   return (
     <nav className="bg-white border-b border-indigo-100 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,13 +26,9 @@ export function Navbar() {
             <Link href="/" className="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium">
               Home
             </Link>
-            <Link href="/gpccmp" className="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium">
-              GPCCMP
+            <Link href="/pricing" className="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium">
+              Pricing
             </Link>
-            <Link href="/HealthAssessments" className="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium">
-              Assessments
-            </Link>
-            
             <Link href="/about" className="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm">
               About
             </Link>
@@ -42,6 +41,21 @@ export function Navbar() {
             <Link href="/contact" className="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm">
               Contact
             </Link>
+
+            {user ? (
+              <Button asChild size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white ml-2">
+                <Link href="/dashboard">My Account</Link>
+              </Button>
+            ) : (
+              <div className="flex items-center gap-2 ml-2">
+                <Button asChild variant="ghost" size="sm" className="text-indigo-700">
+                  <Link href="/login">Sign In</Link>
+                </Button>
+                <Button asChild size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                  <Link href="/signup">Start Free Trial</Link>
+                </Button>
+              </div>
+            )}
           </div>
 
           <div className="md:hidden">
@@ -49,7 +63,7 @@ export function Navbar() {
               <span className="sr-only">Open menu</span>
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>  
+              </svg>
             </Button>
           </div>
         </div>
