@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -39,7 +39,7 @@
       /* Using Inter font as the base, loaded from Google Fonts */
       body {
         font-family: "Inter", sans-serif;
-        background-color: #f3f4f6; /* bg-gray-100 */
+        background-color: #f0fdfa; /* bg-gray-100 */
       }
       /* Styles for the modals */
       .modal-overlay {
@@ -77,7 +77,7 @@
   </head>
   <body>
     <nav
-      class="bg-white border-b border-indigo-100 sticky top-0 z-50 shadow-sm"
+      class="bg-white border-b border-teal-100 sticky top-0 z-50 shadow-sm"
     >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-20">
@@ -90,44 +90,44 @@
               height="80"
               class="w-20 h-20"
             />
-            <span class="font-bold text-xl text-indigo-800">GP Companion</span>
+            <span class="font-bold text-xl text-teal-800">GP Companion</span>
           </a>
 
           <!-- desktop links -->
           <div id="desktopMenu" class="hidden md:flex items-center space-x-4">
             <a
               href="/"
-              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              class="text-slate-600 hover:text-teal-700 hover:bg-teal-50 transition-colors px-3 py-2 text-sm font-medium rounded-md"
               >Home</a
             >
             <a
               href="/gpccmp"
-              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              class="text-slate-600 hover:text-teal-700 hover:bg-teal-50 transition-colors px-3 py-2 text-sm font-medium rounded-md"
               >GPCCMP</a
             >
             <a
               href="/HealthAssessments"
-              class="text-indigo-700 hover:text-indigo-900 transition-colors px-3 py-2 text-sm font-medium"
+              class="text-slate-600 hover:text-teal-700 hover:bg-teal-50 transition-colors px-3 py-2 text-sm font-medium rounded-md"
               >Assessments</a
             >
             <a
               href="/about"
-              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              class="text-slate-600 hover:text-teal-700 hover:bg-teal-50 transition-colors px-3 py-2 text-sm rounded-md"
               >About</a
             >
             <a
               href="/developer"
-              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              class="text-slate-600 hover:text-teal-700 hover:bg-teal-50 transition-colors px-3 py-2 text-sm rounded-md"
               >Developer</a
             >
             <a
               href="/privacy"
-              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              class="text-slate-600 hover:text-teal-700 hover:bg-teal-50 transition-colors px-3 py-2 text-sm rounded-md"
               >Privacy</a
             >
             <a
               href="/contact"
-              class="text-indigo-600 hover:text-indigo-800 transition-colors px-3 py-2 text-sm"
+              class="text-slate-600 hover:text-teal-700 hover:bg-teal-50 transition-colors px-3 py-2 text-sm rounded-md"
               >Contact</a
             >
           </div>
@@ -138,7 +138,7 @@
               id="mobileMenuButton"
               aria-expanded="false"
               aria-controls="mobileMenu"
-              class="inline-flex items-center justify-center p-2 rounded-md text-indigo-700 hover:text-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              class="inline-flex items-center justify-center p-2 rounded-md text-slate-600 hover:text-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
             >
               <span class="sr-only">Open menu</span>
               <!-- bars icon -->
@@ -177,41 +177,41 @@
       </div>
 
       <!-- mobile menu (hidden by default) -->
-      <div id="mobileMenu" class="md:hidden hidden border-t border-indigo-100">
+      <div id="mobileMenu" class="md:hidden hidden border-t border-teal-100">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <a
             href="/"
-            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            class="block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-teal-700 hover:bg-teal-50"
             >Home</a
           >
           <a
             href="/gpccmp"
-            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            class="block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-teal-700 hover:bg-teal-50"
             >GPCCMP</a
           >
           <a
             href="/HealthAssessments"
-            class="block px-3 py-2 rounded-md text-base font-medium text-indigo-700 hover:text-indigo-900"
+            class="block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-teal-700 hover:bg-teal-50"
             >Assessments</a
           >
           <a
             href="/about"
-            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            class="block px-3 py-2 rounded-md text-base text-slate-600 hover:text-teal-700 hover:bg-teal-50"
             >About</a
           >
           <a
             href="/developer"
-            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            class="block px-3 py-2 rounded-md text-base text-slate-600 hover:text-teal-700 hover:bg-teal-50"
             >Developer</a
           >
           <a
             href="/privacy"
-            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            class="block px-3 py-2 rounded-md text-base text-slate-600 hover:text-teal-700 hover:bg-teal-50"
             >Privacy</a
           >
           <a
             href="/contact"
-            class="block px-3 py-2 rounded-md text-base text-indigo-600 hover:text-indigo-800"
+            class="block px-3 py-2 rounded-md text-base text-slate-600 hover:text-teal-700 hover:bg-teal-50"
             >Contact</a
           >
         </div>
@@ -234,9 +234,9 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
             <div
               id="selectNewGpccmp"
-              class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all cursor-pointer border-4 border-transparent hover:border-indigo-500"
+              class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all cursor-pointer border-4 border-transparent hover:border-teal-500"
             >
-              <h2 class="text-2xl font-bold text-indigo-700">
+              <h2 class="text-2xl font-bold text-teal-700">
                 Create New GPCCMP
               </h2>
               <p class="text-gray-600 mt-2">
@@ -246,9 +246,9 @@
             </div>
             <div
               id="selectReviewGpccmp"
-              class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all cursor-pointer border-4 border-transparent hover:border-indigo-500"
+              class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all cursor-pointer border-4 border-transparent hover:border-teal-500"
             >
-              <h2 class="text-2xl font-bold text-indigo-700">
+              <h2 class="text-2xl font-bold text-teal-700">
                 Review Existing GPCCMP
               </h2>
               <p class="text-gray-600 mt-2">
@@ -263,7 +263,7 @@
         <div id="gpccmpContainer" class="hidden">
           <button
             id="backToSelectionFromGpccmp"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-800 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mb-6"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-800 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 mb-6"
           >
             &larr; Back to Selection
           </button>
@@ -273,7 +273,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Patient Details</h2>
                 <svg
@@ -371,7 +371,7 @@
                       ><input
                         type="checkbox"
                         id="atsiStatus"
-                        class="h-4 w-4 text-indigo-600 mr-2"
+                        class="h-4 w-4 text-teal-600 mr-2"
                       />
                       Aboriginal and/or Torres Strait Islander origin</label
                     >
@@ -384,7 +384,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>MyMedicare Registration</h2>
                 <svg
@@ -411,7 +411,7 @@
                   <input
                     type="text"
                     id="regularGp"
-                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                     placeholder="Enter GP name..."
                   />
                 </div>
@@ -426,7 +426,7 @@
                         type="radio"
                         name="myMedicare"
                         value="yes"
-                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                         required
                       />
                       <span class="ml-2">Yes</span>
@@ -436,7 +436,7 @@
                         type="radio"
                         name="myMedicare"
                         value="no"
-                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                         required
                       />
                       <span class="ml-2">No</span>
@@ -461,7 +461,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Patient Consent</h2>
                 <svg
@@ -485,7 +485,7 @@
                       id="consentPlan"
                       name="consentPlan"
                       type="checkbox"
-                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                       required
                     />
                   </div>
@@ -502,7 +502,7 @@
                       id="consentShare"
                       name="consentShare"
                       type="checkbox"
-                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                       required
                     />
                   </div>
@@ -522,7 +522,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Chronic Health Conditions and Risk Factors</h2>
                 <svg
@@ -565,7 +565,7 @@
                   <textarea
                     id="clinicalComments"
                     rows="4"
-                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                     placeholder="Enter any additional clinical notes, summary, or comments here..."
                   ></textarea>
                 </div>
@@ -585,7 +585,7 @@
                       >
                       <select
                         id="smokingStatus"
-                        class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                       >
                         <option value="never">Never smoked</option>
                         <option value="current">Current smoker</option>
@@ -601,7 +601,7 @@
                       <input
                         type="number"
                         id="packYears"
-                        class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                         placeholder="e.g., 20"
                       />
                     </div>
@@ -618,7 +618,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Current Medication List</h2>
                 <svg
@@ -639,7 +639,7 @@
                 <textarea
                   id="medicationList"
                   rows="6"
-                  class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[6rem]"
+                  class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm min-h-[6rem]"
                   placeholder="Enter current medications, including dose and frequency..."
                 ></textarea>
               </div>
@@ -649,7 +649,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Health and lifestyle goals</h2>
                 <svg
@@ -673,7 +673,7 @@
                 </p>
                 <div
                   id="goalsContainer"
-                  class="p-4 bg-indigo-50 rounded-lg min-h-[150px] space-y-2"
+                  class="p-4 bg-teal-50 rounded-lg min-h-[150px] space-y-2"
                 >
                   <p class="text-gray-500 italic">
                     Goals will appear here as conditions are selected.
@@ -683,13 +683,13 @@
                   <input
                     type="text"
                     id="manualGoalInput"
-                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                     placeholder="Add a custom goal..."
                   />
                   <button
                     type="button"
                     id="addManualGoalBtn"
-                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
                   >
                     Add
                   </button>
@@ -701,7 +701,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Actions to be taken by the patient</h2>
                 <svg
@@ -721,7 +721,7 @@
               <div class="p-6 bg-white form-section-content">
                 <div
                   id="actionsContainer"
-                  class="p-4 bg-indigo-50 rounded-lg min-h-[150px] space-y-2"
+                  class="p-4 bg-teal-50 rounded-lg min-h-[150px] space-y-2"
                 >
                   <p class="text-gray-500 italic">
                     Patient actions will appear here.
@@ -731,13 +731,13 @@
                   <input
                     type="text"
                     id="manualActionInput"
-                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                     placeholder="Add a custom action..."
                   />
                   <button
                     type="button"
                     id="addManualActionBtn"
-                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
                   >
                     Add
                   </button>
@@ -749,7 +749,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Treatment and services the patient is likely to need</h2>
                 <svg
@@ -769,7 +769,7 @@
               <div class="p-6 bg-white form-section-content">
                 <div
                   id="servicesContainer"
-                  class="p-4 bg-indigo-50 rounded-lg min-h-[150px] space-y-2"
+                  class="p-4 bg-teal-50 rounded-lg min-h-[150px] space-y-2"
                 >
                   <p class="text-gray-500 italic">
                     Treatments and services will appear here.
@@ -779,13 +779,13 @@
                   <input
                     type="text"
                     id="manualServiceInput"
-                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                     placeholder="Add a custom service..."
                   />
                   <button
                     type="button"
                     id="addManualServiceBtn"
-                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
                   >
                     Add
                   </button>
@@ -798,7 +798,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Relevant Health Assessments and Screening</h2>
                 <svg
@@ -823,14 +823,14 @@
                 <div class="flex gap-4 items-center">
                   <select
                     id="assessmentSelect"
-                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                   >
                     <option value="">-- Select an assessment to add --</option>
                   </select>
                   <button
                     type="button"
                     id="addAssessmentBtn"
-                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
                   >
                     Add
                   </button>
@@ -846,7 +846,7 @@
                     <input
                       type="checkbox"
                       id="cervicalScreen"
-                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                       disabled
                     />
                     <label
@@ -860,7 +860,7 @@
                     <input
                       type="checkbox"
                       id="prostateScreen"
-                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                       disabled
                     />
                     <label
@@ -874,7 +874,7 @@
                     <input
                       type="checkbox"
                       id="breastScreen"
-                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                       disabled
                     />
                     <label
@@ -888,7 +888,7 @@
                     <input
                       type="checkbox"
                       id="bowelScreen"
-                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                       disabled
                     />
                     <label
@@ -902,7 +902,7 @@
                     <input
                       type="checkbox"
                       id="lungCancerScreen"
-                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                       disabled
                     />
                     <label
@@ -923,7 +923,7 @@
                       <input
                         type="checkbox"
                         id="diabeticEye"
-                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                       />
                       <label
                         for="diabeticEye"
@@ -936,7 +936,7 @@
                       <input
                         type="checkbox"
                         id="diabeticFoot"
-                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                       />
                       <label
                         for="diabeticFoot"
@@ -954,7 +954,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Care Team Members</h2>
                 <svg
@@ -993,7 +993,7 @@
                     <input
                       type="checkbox"
                       id="pharmacistDMMR"
-                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                     />
                     <label
                       for="pharmacistDMMR"
@@ -1020,13 +1020,13 @@
                   <input
                     type="text"
                     id="specialistInput"
-                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                     placeholder="Enter specialist name and practice..."
                   />
                   <button
                     type="button"
                     id="addSpecialistBtn"
-                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
                   >
                     Add Specialist
                   </button>
@@ -1038,7 +1038,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Plan Distribution</h2>
                 <svg
@@ -1062,7 +1062,7 @@
                       id="copyOffered"
                       name="copyOffered"
                       type="checkbox"
-                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                     />
                   </div>
                   <div class="ml-3 text-sm">
@@ -1079,7 +1079,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Plan Review</h2>
                 <svg
@@ -1105,12 +1105,12 @@
                   <input
                     type="date"
                     id="reviewDateInput"
-                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                   />
                   <button
                     type="button"
                     id="addReviewDateBtn"
-                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
                   >
                     Add Review Date
                   </button>
@@ -1122,14 +1122,14 @@
               <button
                 type="button"
                 id="clearGpccmpFormBtn"
-                class="inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                class="inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
               >
                 Clear Form
               </button>
               <button
                 type="button"
                 id="generatePatientSummaryBtn"
-                class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
               >
                 Patient Summary
               </button>
@@ -1143,7 +1143,7 @@
               <button
                 type="button"
                 id="saveGpccmpRtfBtn"
-                class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
               >
                 Save as .rtf
               </button>
@@ -1155,7 +1155,7 @@
         <div id="reviewContainer" class="hidden">
           <button
             id="backToSelectionFromReview"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-800 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mb-6"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-800 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 mb-6"
           >
             &larr; Back to Selection
           </button>
@@ -1164,7 +1164,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Patient & Review Details</h2>
                 <svg
@@ -1266,7 +1266,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Review of Patient Goals</h2>
                 <svg
@@ -1294,7 +1294,7 @@
                   </p>
                   <div
                     id="review_achievedGoalsContainer"
-                    class="p-4 bg-indigo-50 rounded-lg min-h-[150px] space-y-2"
+                    class="p-4 bg-teal-50 rounded-lg min-h-[150px] space-y-2"
                   >
                     <p class="text-gray-500 italic">No achieved goals added.</p>
                   </div>
@@ -1302,13 +1302,13 @@
                     <input
                       type="text"
                       id="review_achievedGoalInput"
-                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                       placeholder="Enter achieved goal..."
                     />
                     <button
                       type="button"
                       id="review_addAchievedGoalBtn"
-                      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
                     >
                       Add
                     </button>
@@ -1317,7 +1317,7 @@
                     <input
                       type="checkbox"
                       id="review_noAchievedGoals"
-                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                     />
                     <label
                       for="review_noAchievedGoals"
@@ -1335,7 +1335,7 @@
                   </p>
                   <div
                     id="review_newGoalsContainer"
-                    class="p-4 bg-indigo-50 rounded-lg min-h-[150px] space-y-2"
+                    class="p-4 bg-teal-50 rounded-lg min-h-[150px] space-y-2"
                   >
                     <p class="text-gray-500 italic">
                       No new or revised goals added.
@@ -1345,13 +1345,13 @@
                     <input
                       type="text"
                       id="review_newGoalInput"
-                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                       placeholder="Enter new or revised goal..."
                     />
                     <button
                       type="button"
                       id="review_addNewGoalBtn"
-                      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
                     >
                       Add
                     </button>
@@ -1360,7 +1360,7 @@
                     <input
                       type="checkbox"
                       id="review_noNewGoals"
-                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                     />
                     <label
                       for="review_noNewGoals"
@@ -1376,7 +1376,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Feedback from Multidisciplinary Team</h2>
                 <svg
@@ -1403,7 +1403,7 @@
                 >
                 <textarea
                   id="review_teamFeedback"
-                  class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[6rem]"
+                  class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm min-h-[6rem]"
                   placeholder="e.g., 'Received letter from Dr. Smith (Cardiologist) noting good BP control...', 'Patient reports physio has helped with mobility...'"
                 ></textarea>
               </div>
@@ -1413,7 +1413,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Updates to Management Plan</h2>
                 <svg
@@ -1442,7 +1442,7 @@
                       <input
                         type="checkbox"
                         id="review_noMedicationChange"
-                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                       />
                       <label
                         for="review_noMedicationChange"
@@ -1453,7 +1453,7 @@
                   </div>
                   <textarea
                     id="review_updateMedications"
-                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[6rem] disabled:bg-gray-200 disabled:cursor-not-allowed"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm min-h-[6rem] disabled:bg-gray-200 disabled:cursor-not-allowed"
                     placeholder="List any new medications, ceased medications, or dose changes."
                   ></textarea>
                 </div>
@@ -1468,7 +1468,7 @@
                       <input
                         type="checkbox"
                         id="review_noDiagnosisChange"
-                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                       />
                       <label
                         for="review_noDiagnosisChange"
@@ -1479,7 +1479,7 @@
                   </div>
                   <textarea
                     id="review_updateDiagnoses"
-                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[6rem] disabled:bg-gray-200 disabled:cursor-not-allowed"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm min-h-[6rem] disabled:bg-gray-200 disabled:cursor-not-allowed"
                     placeholder="List any new or resolved health conditions."
                   ></textarea>
                 </div>
@@ -1494,7 +1494,7 @@
                       <input
                         type="checkbox"
                         id="review_noActionChange"
-                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                       />
                       <label
                         for="review_noActionChange"
@@ -1505,7 +1505,7 @@
                   </div>
                   <textarea
                     id="review_updateActions"
-                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm min-h-[6rem] disabled:bg-gray-200 disabled:cursor-not-allowed"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm min-h-[6rem] disabled:bg-gray-200 disabled:cursor-not-allowed"
                     placeholder="List any new actions, goals, or required services."
                   ></textarea>
                 </div>
@@ -1516,7 +1516,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>New Referrals & Care Team Updates</h2>
                 <svg
@@ -1573,13 +1573,13 @@
                   <input
                     type="text"
                     id="review_specialistInput"
-                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                     placeholder="Enter specialist name and practice..."
                   />
                   <button
                     type="button"
                     id="review_addSpecialistBtn"
-                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
                   >
                     Add Specialist
                   </button>
@@ -1591,7 +1591,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Patient Agreement & Consent</h2>
                 <svg
@@ -1613,7 +1613,7 @@
                   <input
                     id="review_consentUpdates"
                     type="checkbox"
-                    class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1"
+                    class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded mt-1"
                     required
                   />
                   <label
@@ -1627,7 +1627,7 @@
                   <input
                     id="review_consentShare"
                     type="checkbox"
-                    class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1"
+                    class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded mt-1"
                   />
                   <label
                     for="review_consentShare"
@@ -1641,7 +1641,7 @@
                   <input
                     id="review_copyOffered"
                     type="checkbox"
-                    class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1"
+                    class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded mt-1"
                     required
                   />
                   <label
@@ -1658,7 +1658,7 @@
               class="mb-10 border border-gray-200 rounded-xl shadow-lg overflow-hidden"
             >
               <div
-                class="text-xl font-bold text-white bg-indigo-700 px-6 py-3 flex justify-between items-center cursor-pointer"
+                class="text-xl font-bold text-white bg-teal-700 px-6 py-3 flex justify-between items-center cursor-pointer"
               >
                 <h2>Next Plan Review</h2>
                 <svg
@@ -1684,7 +1684,7 @@
                 <input
                   type="date"
                   id="review_nextReviewDate"
-                  class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                 />
               </div>
             </div>
@@ -1693,7 +1693,7 @@
               <button
                 type="button"
                 id="clearReviewFormBtn"
-                class="inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                class="inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
               >
                 Clear Form
               </button>
@@ -1707,7 +1707,7 @@
               <button
                 type="button"
                 id="saveReviewRtfBtn"
-                class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
               >
                 Save as .rtf
               </button>
@@ -1781,7 +1781,7 @@
             </button>
             <button
               id="copySummaryBtn"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
             >
               <svg
                 class="w-5 h-5 mr-2"
@@ -1801,7 +1801,7 @@
             </button>
             <button
               id="closeSummaryModalBtn"
-              class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
             >
               Close
             </button>
@@ -1819,7 +1819,7 @@
           <p class="text-sm">&copy; 2025 Dr Bobby Tork</p>
           <button
             id="close-easter-egg"
-            class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+            class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700"
           >
             Close
           </button>
@@ -1842,13 +1842,13 @@
           <div class="flex justify-center gap-4">
             <button
               id="restoreSessionBtn"
-              class="inline-flex justify-center items-center px-6 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              class="inline-flex justify-center items-center px-6 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
             >
               Restore Session
             </button>
             <button
               id="startFreshBtn"
-              class="inline-flex justify-center items-center px-6 py-2 border border-gray-300 text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              class="inline-flex justify-center items-center px-6 py-2 border border-gray-300 text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
             >
               Start Fresh
             </button>
@@ -1858,20 +1858,20 @@
     </div>
 
     <footer
-      class="bg-indigo-950 text-indigo-100 border-t border-indigo-800 mt-auto"
+      class="bg-teal-950 text-teal-100 border-t border-teal-800 mt-auto"
     >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div class="col-span-1 md:col-span-2">
             <div class="flex items-center space-x-3 mb-4">
               <div
-                class="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center shadow-sm"
+                class="w-9 h-9 bg-teal-600 rounded-lg flex items-center justify-center shadow-sm"
               >
                 <span class="text-white font-bold text-lg">GP</span>
               </div>
               <span class="font-bold text-xl text-white">GP Companion</span>
             </div>
-            <p class="text-indigo-200 text-sm max-w-md">
+            <p class="text-teal-200 text-sm max-w-md">
               Comprehensive medical tools and health assessments designed for
               healthcare professionals. Streamline your workflow with our
               secure, privacy-focused platform.
@@ -1884,7 +1884,7 @@
               <li>
                 <a
                   href="/about"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                  class="text-teal-200 hover:text-white transition-colors text-sm block"
                 >
                   About Website
                 </a>
@@ -1892,7 +1892,7 @@
               <li>
                 <a
                   href="/developer"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                  class="text-teal-200 hover:text-white transition-colors text-sm block"
                 >
                   Developer
                 </a>
@@ -1900,7 +1900,7 @@
               <li>
                 <a
                   href="/privacy"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                  class="text-teal-200 hover:text-white transition-colors text-sm block"
                 >
                   Privacy Policy
                 </a>
@@ -1908,7 +1908,7 @@
               <li>
                 <a
                   href="/contact"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                  class="text-teal-200 hover:text-white transition-colors text-sm block"
                 >
                   Contact Developer
                 </a>
@@ -1922,7 +1922,7 @@
               <li>
                 <a
                   href="/gpccmp"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                  class="text-teal-200 hover:text-white transition-colors text-sm block"
                 >
                   GPCCMP Tool
                 </a>
@@ -1930,7 +1930,7 @@
               <li>
                 <a
                   href="/HealthAssessments"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                  class="text-teal-200 hover:text-white transition-colors text-sm block"
                 >
                   Health Assessments
                 </a>
@@ -1938,7 +1938,7 @@
               <li>
                 <a
                   href="/HealthAssessments"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                  class="text-teal-200 hover:text-white transition-colors text-sm block"
                 >
                   75+ Health Assessment
                 </a>
@@ -1946,7 +1946,7 @@
               <li>
                 <a
                   href="/HealthAssessments"
-                  class="text-indigo-200 hover:text-white transition-colors text-sm block"
+                  class="text-teal-200 hover:text-white transition-colors text-sm block"
                 >
                   ATSI Health Assessment
                 </a>
@@ -1955,8 +1955,8 @@
           </div>
         </div>
 
-        <div class="border-t border-indigo-800 mt-8 pt-8 text-center">
-          <p class="text-indigo-300 text-sm">
+        <div class="border-t border-teal-800 mt-8 pt-8 text-center">
+          <p class="text-teal-300 text-sm">
             © 2024 GP Companion. All rights reserved. Designed for healthcare
             professionals.
           </p>
@@ -2686,7 +2686,7 @@
                 <div class="flex items-center h-5">
                     <input id="${condition.id}" name="${
               condition.id
-            }" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded condition-checkbox">
+            }" type="checkbox" class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded condition-checkbox">
                 </div>
                 <div class="ml-3 text-sm">
                     <label for="${
@@ -2707,7 +2707,7 @@
             const div = document.createElement("div");
             div.className = "flex items-center";
             div.innerHTML = `
-                <input id="${factor.id}" name="${factor.id}" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded risk-checkbox">
+                <input id="${factor.id}" name="${factor.id}" type="checkbox" class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded risk-checkbox">
                 <label for="${factor.id}" class="ml-3 block text-sm font-medium text-gray-700">${factor.name}</label>`;
             riskFactorsContainer.appendChild(div);
           });
@@ -2717,7 +2717,7 @@
             const div = document.createElement("div");
             div.className = "flex items-center";
             div.innerHTML = `
-                <input id="${safeId}" name="allied_health" type="checkbox" value="${item}" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                <input id="${safeId}" name="allied_health" type="checkbox" value="${item}" class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded">
                 <label for="${safeId}" class="ml-3 block text-sm font-medium text-gray-700">${item}</label>`;
             alliedHealthContainer.appendChild(div);
           });
@@ -3149,7 +3149,7 @@
           },</p><p class="text-gray-700">Here is a simple summary of the goals and actions we discussed today to help manage your health.</p>`;
 
           if (activeGoals.size > 0) {
-            summaryHtml += `<h4 class="text-lg font-semibold text-indigo-700 mt-4">Our Goals:</h4><ul class="list-disc list-inside space-y-1 text-gray-800">`;
+            summaryHtml += `<h4 class="text-lg font-semibold text-teal-700 mt-4">Our Goals:</h4><ul class="list-disc list-inside space-y-1 text-gray-800">`;
             activeGoals.forEach((goal) => {
               summaryHtml += `<li>${goal}</li>`;
             });
@@ -3157,7 +3157,7 @@
           }
 
           if (activeActions.size > 0) {
-            summaryHtml += `<h4 class="text-lg font-semibold text-indigo-700 mt-4">Your Actions:</h4><ul class="list-disc list-inside space-y-1 text-gray-800">`;
+            summaryHtml += `<h4 class="text-lg font-semibold text-teal-700 mt-4">Your Actions:</h4><ul class="list-disc list-inside space-y-1 text-gray-800">`;
             activeActions.forEach((action) => {
               summaryHtml += `<li>${action}</li>`;
             });
@@ -3271,7 +3271,7 @@
           const div = document.createElement("div");
           div.className = "flex items-center";
           div.innerHTML = `
-            <input id="${safeId}" name="review_allied_health" type="checkbox" value="${item}" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+            <input id="${safeId}" name="review_allied_health" type="checkbox" value="${item}" class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded">
             <label for="${safeId}" class="ml-3 block text-sm font-medium text-gray-700">${item}</label>`;
           alliedHealthContainer.appendChild(div);
         });
@@ -3420,7 +3420,7 @@
        * Adds accordion functionality to section headers.
        */
       function addAccordionListeners() {
-        document.querySelectorAll(".bg-indigo-700").forEach((header) => {
+        document.querySelectorAll(".bg-teal-700").forEach((header) => {
           if (header.dataset.listener) return;
           header.dataset.listener = true;
           header.addEventListener("click", () => {
