@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { createClient as createAdmin } from "@supabase/supabase-js"
+import Stripe from "stripe"
 import { Navbar } from "@/components/navbar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -11,6 +12,10 @@ function getSupabaseAdmin() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
+}
+
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!)
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -34,7 +39,8 @@ export default async function AdminPage() {
 
   if (!user) redirect("/login")
 
-  const { data: currentProfile } = await supabase
+  const supabaseAdmin = getSupabaseAdmin()
+  const { data: currentProfile } = await supabaseAdmin
     .from("profiles")
     .select("is_admin")
     .eq("id", user.id)
@@ -42,29 +48,53 @@ export default async function AdminPage() {
 
   if (!currentProfile?.is_admin) redirect("/")
 
-  const supabaseAdmin = getSupabaseAdmin()
-
   const { data: users } = await supabaseAdmin
     .from("profiles")
     .select(`
       id, first_name, last_name, email, clinic_name, position, phone_number, created_at,
       subscriptions (
-        plan, status, trial_start, trial_end, current_period_end, stripe_subscription_id
+        plan, status, trial_start, trial_end, current_period_end, stripe_subscription_id, stripe_customer_id
       )
     `)
     .order("created_at", { ascending: false })
 
+  // Normalise subscriptions to always be an array regardless of Supabase relationship mode
+  const asSubs = (raw: unknown): any[] =>
+    Array.isArray(raw) ? raw : raw ? [raw] : []
+
+  // Fetch paid invoice totals from Stripe for each customer
+  const stripe = getStripe()
+  const revenueByCustomer: Record<string, number> = {}
+
+  const customerIds = (users ?? [])
+    .flatMap(u => asSubs(u.subscriptions).map((s: any) => s.stripe_customer_id).filter(Boolean))
+
+  await Promise.all(
+    customerIds.map(async (customerId: string) => {
+      try {
+        const invoices = await stripe.invoices.list({ customer: customerId, limit: 100 })
+        revenueByCustomer[customerId] = invoices.data
+          .filter(inv => inv.status === "paid")
+          .reduce((sum, inv) => sum + (inv.amount_paid / 100), 0)
+      } catch {
+        revenueByCustomer[customerId] = 0
+      }
+    })
+  )
+
   const now = new Date()
 
   const total = users?.length ?? 0
-  const trialing = users?.filter((u) => u.subscriptions?.[0]?.status === "trialing").length ?? 0
-  const active = users?.filter((u) => u.subscriptions?.[0]?.status === "active").length ?? 0
+  const trialing = users?.filter((u) => asSubs(u.subscriptions)[0]?.status === "trialing").length ?? 0
+  const active = users?.filter((u) => asSubs(u.subscriptions)[0]?.status === "active").length ?? 0
   const canceled = users?.filter((u) =>
-    ["canceled", "expired"].includes(u.subscriptions?.[0]?.status ?? "")
+    ["canceled", "expired"].includes(asSubs(u.subscriptions)[0]?.status ?? "")
   ).length ?? 0
+  const totalRevenue = Object.values(revenueByCustomer).reduce((sum, v) => sum + v, 0)
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
+      {/* @ts-expect-error async server component */}
       <Navbar />
       <main className="flex-1 py-12 px-4">
         <div className="max-w-7xl mx-auto space-y-8">
@@ -78,12 +108,13 @@ export default async function AdminPage() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
             {[
               { label: "Total Users", value: total, color: "text-slate-900", bg: "bg-white border-teal-100" },
               { label: "On Trial", value: trialing, color: "text-teal-700", bg: "bg-teal-50 border-teal-200" },
               { label: "Active Subscribers", value: active, color: "text-green-700", bg: "bg-green-50 border-green-200" },
               { label: "Canceled / Expired", value: canceled, color: "text-red-700", bg: "bg-red-50 border-red-200" },
+              { label: "Total Revenue", value: `$${totalRevenue.toFixed(2)}`, color: "text-purple-700", bg: "bg-purple-50 border-purple-200" },
             ].map((stat) => (
               <Card key={stat.label} className={`${stat.bg} border rounded-2xl shadow-sm text-center`}>
                 <CardContent className="pt-6 pb-5">
@@ -111,17 +142,21 @@ export default async function AdminPage() {
                     <th className="pb-3 pr-4 font-medium">Status</th>
                     <th className="pb-3 pr-4 font-medium">Plan</th>
                     <th className="pb-3 pr-4 font-medium">Trial Ends / Renews</th>
+                    <th className="pb-3 pr-4 font-medium">Total Paid</th>
                     <th className="pb-3 font-medium">Joined</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-50">
                   {users?.map((u) => {
-                    const sub = u.subscriptions?.[0]
+                    const sub = asSubs(u.subscriptions)[0]
                     const trialEnd = sub?.trial_end ? new Date(sub.trial_end) : null
                     const renewDate = sub?.current_period_end
                       ? new Date(sub.current_period_end)
                       : null
                     const trialDaysLeft = trialEnd ? differenceInDays(trialEnd, now) : null
+                    const amountPaid = sub?.stripe_customer_id
+                      ? (revenueByCustomer[sub.stripe_customer_id] ?? 0)
+                      : 0
 
                     return (
                       <tr key={u.id} className="hover:bg-teal-50/30 transition-colors">
@@ -141,6 +176,9 @@ export default async function AdminPage() {
                             : renewDate
                             ? format(renewDate, "d MMM yyyy")
                             : "—"}
+                        </td>
+                        <td className="py-3 pr-4 text-slate-700 font-medium">
+                          {amountPaid > 0 ? `$${amountPaid.toFixed(2)}` : <span className="text-slate-300">—</span>}
                         </td>
                         <td className="py-3 text-slate-400">
                           {format(new Date(u.created_at), "d MMM yyyy")}
