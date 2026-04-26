@@ -90,7 +90,7 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-slate-50">
       <Navbar />
       <main className="flex-1 py-12 px-4">
         <div className="max-w-4xl mx-auto">

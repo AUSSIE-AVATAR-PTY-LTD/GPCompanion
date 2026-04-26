@@ -15,14 +15,14 @@ function getSupabaseAdmin() {
 
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, string> = {
-    trialing: "bg-green-100 text-green-800",
-    active: "bg-indigo-100 text-indigo-800",
+    trialing: "bg-teal-100 text-teal-800",
+    active: "bg-green-100 text-green-800",
     past_due: "bg-yellow-100 text-yellow-800",
     canceled: "bg-red-100 text-red-800",
-    expired: "bg-gray-100 text-gray-800",
+    expired: "bg-slate-100 text-slate-700",
   }
   return (
-    <Badge className={map[status] ?? "bg-gray-100 text-gray-800"}>
+    <Badge className={`${map[status] ?? "bg-slate-100 text-slate-700"} font-medium`}>
       {status.replace("_", " ")}
     </Badge>
   )
@@ -44,7 +44,6 @@ export default async function AdminPage() {
 
   const supabaseAdmin = getSupabaseAdmin()
 
-  // Fetch all users with their subscriptions using service role
   const { data: users } = await supabaseAdmin
     .from("profiles")
     .select(`
@@ -57,7 +56,6 @@ export default async function AdminPage() {
 
   const now = new Date()
 
-  // Aggregate stats
   const total = users?.length ?? 0
   const trialing = users?.filter((u) => u.subscriptions?.[0]?.status === "trialing").length ?? 0
   const active = users?.filter((u) => u.subscriptions?.[0]?.status === "active").length ?? 0
@@ -66,22 +64,29 @@ export default async function AdminPage() {
   ).length ?? 0
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-slate-50">
       <Navbar />
       <main className="flex-1 py-12 px-4">
         <div className="max-w-7xl mx-auto space-y-8">
-          <h1 className="text-3xl font-bold text-slate-900">Admin Dashboard</h1>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center">
+              <svg className="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <h1 className="text-3xl font-bold text-slate-900">Admin Dashboard</h1>
+          </div>
 
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { label: "Total Users", value: total, color: "text-slate-900" },
-              { label: "On Trial", value: trialing, color: "text-green-700" },
-              { label: "Active Subscribers", value: active, color: "text-indigo-700" },
-              { label: "Canceled / Expired", value: canceled, color: "text-red-700" },
+              { label: "Total Users", value: total, color: "text-slate-900", bg: "bg-white border-teal-100" },
+              { label: "On Trial", value: trialing, color: "text-teal-700", bg: "bg-teal-50 border-teal-200" },
+              { label: "Active Subscribers", value: active, color: "text-green-700", bg: "bg-green-50 border-green-200" },
+              { label: "Canceled / Expired", value: canceled, color: "text-red-700", bg: "bg-red-50 border-red-200" },
             ].map((stat) => (
-              <Card key={stat.label} className="border-gray-200 text-center">
-                <CardContent className="pt-6">
+              <Card key={stat.label} className={`${stat.bg} border rounded-2xl shadow-sm text-center`}>
+                <CardContent className="pt-6 pb-5">
                   <p className={`text-4xl font-bold ${stat.color}`}>{stat.value}</p>
                   <p className="text-sm text-slate-500 mt-1">{stat.label}</p>
                 </CardContent>
@@ -90,14 +95,15 @@ export default async function AdminPage() {
           </div>
 
           {/* Users table */}
-          <Card className="border-gray-200">
-            <CardHeader>
+          <Card className="border border-teal-100 rounded-2xl shadow-sm overflow-hidden">
+            <div className="h-1 bg-gradient-to-r from-teal-600 to-teal-400" />
+            <CardHeader className="pt-6">
               <CardTitle className="text-lg text-slate-900">All Users</CardTitle>
             </CardHeader>
-            <CardContent className="overflow-x-auto">
+            <CardContent className="overflow-x-auto pb-6">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 text-left text-slate-500">
+                  <tr className="border-b border-teal-100 text-left text-slate-400 text-xs uppercase tracking-wide">
                     <th className="pb-3 pr-4 font-medium">Name</th>
                     <th className="pb-3 pr-4 font-medium">Email</th>
                     <th className="pb-3 pr-4 font-medium">Clinic</th>
@@ -108,7 +114,7 @@ export default async function AdminPage() {
                     <th className="pb-3 font-medium">Joined</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-slate-50">
                   {users?.map((u) => {
                     const sub = u.subscriptions?.[0]
                     const trialEnd = sub?.trial_end ? new Date(sub.trial_end) : null
@@ -118,25 +124,25 @@ export default async function AdminPage() {
                     const trialDaysLeft = trialEnd ? differenceInDays(trialEnd, now) : null
 
                     return (
-                      <tr key={u.id} className="hover:bg-gray-50">
+                      <tr key={u.id} className="hover:bg-teal-50/30 transition-colors">
                         <td className="py-3 pr-4 font-medium text-slate-900">
                           {u.first_name} {u.last_name}
                         </td>
-                        <td className="py-3 pr-4 text-slate-600">{u.email}</td>
-                        <td className="py-3 pr-4 text-slate-600">{u.clinic_name}</td>
-                        <td className="py-3 pr-4 text-slate-600">{u.position}</td>
+                        <td className="py-3 pr-4 text-slate-500">{u.email}</td>
+                        <td className="py-3 pr-4 text-slate-500">{u.clinic_name}</td>
+                        <td className="py-3 pr-4 text-slate-500">{u.position}</td>
                         <td className="py-3 pr-4">
-                          {sub ? <StatusBadge status={sub.status} /> : <span className="text-slate-400">—</span>}
+                          {sub ? <StatusBadge status={sub.status} /> : <span className="text-slate-300">—</span>}
                         </td>
-                        <td className="py-3 pr-4 capitalize text-slate-600">{sub?.plan ?? "—"}</td>
-                        <td className="py-3 pr-4 text-slate-600">
+                        <td className="py-3 pr-4 capitalize text-slate-500">{sub?.plan ?? "—"}</td>
+                        <td className="py-3 pr-4 text-slate-500">
                           {sub?.status === "trialing" && trialEnd
                             ? `${format(trialEnd, "d MMM yyyy")} (${Math.max(0, trialDaysLeft ?? 0)}d left)`
                             : renewDate
                             ? format(renewDate, "d MMM yyyy")
                             : "—"}
                         </td>
-                        <td className="py-3 text-slate-500">
+                        <td className="py-3 text-slate-400">
                           {format(new Date(u.created_at), "d MMM yyyy")}
                         </td>
                       </tr>
