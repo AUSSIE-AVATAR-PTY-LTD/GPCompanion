@@ -1,0 +1,5 @@
+{
+  "Description": "Domain ownership verification file for Microsoft 365 - place in the website root",
+  "Domain": "gpcompanion.com.au",
+  "Id": "13963519-c371-4bfe-950f-476ebbe37be6"
+}
