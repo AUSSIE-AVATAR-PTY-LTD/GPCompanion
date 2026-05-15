@@ -65,7 +65,6 @@ export async function POST(request: Request) {
   })
 
   if (profileError) {
-    // Clean up auth user if profile insert fails
     await supabase.auth.admin.deleteUser(authData.user.id)
     return NextResponse.json({ error: profileError.message }, { status: 500 })
   }
@@ -73,12 +72,48 @@ export async function POST(request: Request) {
   // Create trial subscription
   await supabase.from("subscriptions").insert({ user_id: authData.user.id })
 
-  // Explicitly trigger the Send Email hook by generating a signup confirmation link
-  await supabase.auth.admin.generateLink({
+  // Generate verification link
+  const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
     type: "signup",
     email,
-    options: { redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback` },
+    password,
+    options: {
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+    },
   })
+
+  if (linkError || !linkData?.properties) {
+    console.error("generateLink error:", linkError)
+    return NextResponse.json({ success: true, warning: "Account created but verification email could not be sent." })
+  }
+
+  const { hashed_token, redirect_to, verification_type } = linkData.properties
+
+  // Call edge function directly — no hook needed
+  const emailRes = await fetch(
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send-email`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.SEND_EMAIL_HOOK_SECRET}`,
+      },
+      body: JSON.stringify({
+        user: { email },
+        email_data: {
+          token_hash: hashed_token,
+          redirect_to,
+          email_action_type: verification_type,
+        },
+      }),
+    }
+  )
+
+  if (!emailRes.ok) {
+    const err = await emailRes.text()
+    console.error("send-email edge function error:", err)
+    return NextResponse.json({ success: true, warning: "Account created but verification email could not be sent." })
+  }
 
   return NextResponse.json({ success: true })
 }
