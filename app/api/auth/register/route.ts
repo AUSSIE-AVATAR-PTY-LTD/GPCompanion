@@ -73,6 +73,12 @@ export async function POST(request: Request) {
   // Create trial subscription
   await supabase.from("subscriptions").insert({ user_id: authData.user.id })
 
-  // Supabase will call the send-email edge function hook to deliver the verification email
+  // Explicitly trigger the Send Email hook by generating a signup confirmation link
+  await supabase.auth.admin.generateLink({
+    type: "signup",
+    email,
+    options: { redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback` },
+  })
+
   return NextResponse.json({ success: true })
 }
