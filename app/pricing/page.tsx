@@ -21,7 +21,7 @@ const plans = [
     price: "$81",
     period: "/ month",
     description: "Billed monthly. Save 5% vs weekly.",
-    saving: "Save 5%",
+    saving: "Save 6%",
     highlight: true,
   },
   {

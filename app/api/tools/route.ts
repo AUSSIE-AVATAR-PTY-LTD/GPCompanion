@@ -32,18 +32,18 @@ export async function GET(request: Request) {
   const tool = searchParams.get("tool")
 
   if (!tool || !ALLOWED_FILES[tool]) {
-    return NextResponse.json({ error: "Tool not found" }, { status: 404 })
+    return NextResponse.redirect(new URL("/HealthAssessments", request.url))
   }
 
-  // Get session from cookies
+  // Use getUser() for secure server-side auth validation
   const supabase = await createClient()
-  const { data: { session } } = await supabase.auth.getSession()
+  const { data: { user } } = await supabase.auth.getUser()
 
-  if (!session?.user) {
+  if (!user) {
     return NextResponse.redirect(new URL("/login", request.url))
   }
 
-  const userId = session.user.id
+  const userId = user.id
   const admin = getSupabaseAdmin()
 
   // Use admin client to bypass RLS for subscription check

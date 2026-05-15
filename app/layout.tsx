@@ -4,14 +4,37 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
+import { Toaster } from "sonner"
 import "./globals.css"
 import { AnalyticsProvider } from "./AnalyticsProvider"
 import GoogleAnalytics from "./GoogleAnalytics"
 
 export const metadata: Metadata = {
-  title: "GP Companion - Medical Tools for Healthcare Professionals",
-  description: "Comprehensive GP Chronic Care Management Plans and Health Assessment tools for clinics",
-  generator: "v0.app",
+  title: "GP Companion — Clinical Tools for Healthcare Professionals",
+  description:
+    "Comprehensive GP Chronic Care Management Plans and Health Assessment tools for Australian GPs and clinics.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "https://gpcompanion.com.au"),
+  openGraph: {
+    title: "GP Companion — Clinical Tools for Healthcare Professionals",
+    description:
+      "Comprehensive GP Chronic Care Management Plans and Health Assessment tools for Australian GPs.",
+    type: "website",
+    locale: "en_AU",
+    images: [
+      {
+        url: "/images/gp-companion-logo.png",
+        width: 512,
+        height: 512,
+        alt: "GP Companion",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "GP Companion — Clinical Tools for Healthcare Professionals",
+    description: "Comprehensive clinical tools for Australian GPs.",
+    images: ["/images/gp-companion-logo.png"],
+  },
 }
 
 export default function RootLayout({
@@ -28,6 +51,7 @@ export default function RootLayout({
           <AnalyticsProvider />
         </Suspense>
         <Analytics />
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   )

@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("email, first_name, last_name, stripe_customer_id")
+    .select("email, first_name, last_name")
     .eq("id", user.id)
     .single()
 

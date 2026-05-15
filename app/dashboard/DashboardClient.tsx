@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Suspense } from "react"
 import { differenceInDays, format } from "date-fns"
+import { toast } from "sonner"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -26,7 +27,7 @@ const PLANS = [
     price: "$81",
     period: "/ month",
     description: "Billed every month",
-    saving: "Save 5%",
+    saving: "Save 6%",
   },
   {
     id: "yearly",
@@ -58,6 +59,7 @@ function DashboardInner({ profile, subscription, invoices }: { profile: Profile;
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null)
   const [cancelLoading, setCancelLoading] = useState(false)
   const [portalLoading, setPortalLoading] = useState(false)
+  const [hasCanceled, setHasCanceled] = useState(false)
 
   const paymentStatus = searchParams.get("payment")
   const upgradePrompt = searchParams.get("upgrade") === "true"
@@ -65,6 +67,8 @@ function DashboardInner({ profile, subscription, invoices }: { profile: Profile;
   const now = new Date()
   const trialEnd = new Date(subscription.trial_end)
   const trialDaysLeft = Math.max(0, differenceInDays(trialEnd, now))
+  const trialDaysTotal = Math.max(1, differenceInDays(trialEnd, new Date(subscription.trial_start ?? subscription.created_at)))
+  const trialElapsedPct = Math.min(100, Math.max(5, ((trialDaysTotal - trialDaysLeft) / trialDaysTotal) * 100))
   const isTrialing = subscription.status === "trialing" && trialEnd > now
   const isActive = subscription.status === "active"
   const needsUpgrade = !isTrialing && !isActive
@@ -79,32 +83,58 @@ function DashboardInner({ profile, subscription, invoices }: { profile: Profile;
 
   const handleCheckout = async (plan: string) => {
     setCheckoutLoading(plan)
-    const res = await fetch("/api/stripe/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan }),
-    })
-    const { url, error } = await res.json()
-    if (error) {
+    try {
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan }),
+      })
+      const { url, error } = await res.json()
+      if (error || !url) {
+        toast.error(error ?? "Could not start checkout. Please try again.")
+        setCheckoutLoading(null)
+        return
+      }
+      window.location.href = url
+    } catch {
+      toast.error("Something went wrong. Please try again.")
       setCheckoutLoading(null)
-      return
     }
-    window.location.href = url
   }
 
   const handlePortal = async () => {
     setPortalLoading(true)
-    const res = await fetch("/api/stripe/portal", { method: "POST" })
-    const { url, error } = await res.json()
-    if (error) { setPortalLoading(false); return }
-    window.location.href = url
+    try {
+      const res = await fetch("/api/stripe/portal", { method: "POST" })
+      const { url, error } = await res.json()
+      if (error || !url) {
+        toast.error(error ?? "Could not open billing portal. Please try again.")
+        setPortalLoading(false)
+        return
+      }
+      window.location.href = url
+    } catch {
+      toast.error("Something went wrong. Please try again.")
+      setPortalLoading(false)
+    }
   }
 
   const handleCancel = async () => {
-    if (!confirm("Are you sure you want to cancel your subscription? You will lose access at the end of the current billing period.")) return
+    if (!confirm("Are you sure you want to cancel your subscription? You will keep access until the end of your current billing period.")) return
     setCancelLoading(true)
-    await fetch("/api/stripe/cancel", { method: "POST" })
-    router.refresh()
+    try {
+      const res = await fetch("/api/stripe/cancel", { method: "POST" })
+      if (!res.ok) {
+        const { error } = await res.json()
+        toast.error(error ?? "Could not cancel subscription. Please try again.")
+        setCancelLoading(false)
+        return
+      }
+      setHasCanceled(true)
+      toast.success("Subscription canceled. You'll keep access until the end of your billing period.")
+    } catch {
+      toast.error("Something went wrong. Please try again.")
+    }
     setCancelLoading(false)
   }
 
@@ -171,7 +201,7 @@ function DashboardInner({ profile, subscription, invoices }: { profile: Profile;
               <div className="flex-1 bg-slate-100 rounded-full h-2">
                 <div
                   className="bg-teal-500 h-2 rounded-full transition-all"
-                  style={{ width: `${Math.max(5, (trialDaysLeft / 60) * 100)}%` }}
+                  style={{ width: `${trialElapsedPct}%` }}
                 />
               </div>
               <span className="text-sm font-medium text-slate-700 whitespace-nowrap">
@@ -203,7 +233,7 @@ function DashboardInner({ profile, subscription, invoices }: { profile: Profile;
               </p>
             </>
           )}
-          {isActive && (
+          {isActive && !hasCanceled && (
             <div className="flex items-center gap-4 mt-1">
               <button
                 onClick={handlePortal}
@@ -220,6 +250,12 @@ function DashboardInner({ profile, subscription, invoices }: { profile: Profile;
                 {cancelLoading ? "Canceling..." : "Cancel subscription"}
               </button>
             </div>
+          )}
+          {isActive && hasCanceled && (
+            <p className="text-sm text-amber-700">
+              Cancellation scheduled — access continues until{" "}
+              {periodEnd ? <strong>{format(periodEnd, "d MMMM yyyy")}</strong> : "end of billing period"}.
+            </p>
           )}
         </CardContent>
       </Card>
@@ -370,8 +406,6 @@ function DashboardInner({ profile, subscription, invoices }: { profile: Profile;
   )
 }
 
-type Invoice = { id: string; date: string; amount: string; status: string; description: string }
-
 export function DashboardClient({
   profile,
   subscription,
@@ -379,7 +413,7 @@ export function DashboardClient({
 }: {
   profile: Profile
   subscription: Subscription
-  invoices: Invoice[]
+  invoices: { id: string; date: string; amount: string; status: string; description: string }[]
 }) {
   return (
     <Suspense fallback={null}>

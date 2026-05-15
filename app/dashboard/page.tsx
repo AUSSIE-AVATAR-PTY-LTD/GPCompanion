@@ -89,6 +89,17 @@ export default async function DashboardPage() {
     }
   }
 
+  if (!profile || !subscription) {
+    return (
+      <div className="min-h-screen flex flex-col bg-slate-50">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center py-12 px-4">
+          <p className="text-slate-500 text-sm">Unable to load your account. Please try signing out and back in.</p>
+        </main>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Navbar />

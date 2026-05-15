@@ -67,12 +67,13 @@ export async function middleware(request: NextRequest) {
     const trialExpired =
       subscription.status === "trialing" && new Date(subscription.trial_end) < now
 
-    const isExpiredOrCanceled =
+    const isBlocked =
       subscription.status === "expired" ||
       subscription.status === "canceled" ||
+      subscription.status === "past_due" ||
       trialExpired
 
-    if (isExpiredOrCanceled && !pathname.startsWith("/dashboard")) {
+    if (isBlocked && !pathname.startsWith("/dashboard")) {
       return NextResponse.redirect(new URL("/dashboard?upgrade=true", request.url))
     }
   }

@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/server"
+import { NavbarMobileMenu } from "@/components/navbar-mobile-menu"
 
 export async function Navbar() {
   const supabase = await createClient()
@@ -63,14 +64,7 @@ export async function Navbar() {
             )}
           </div>
 
-          <div className="md:hidden">
-            <Button variant="ghost" size="sm" className="text-teal-700">
-              <span className="sr-only">Open menu</span>
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </Button>
-          </div>
+          <NavbarMobileMenu isLoggedIn={!!user} />
         </div>
       </div>
     </nav>
