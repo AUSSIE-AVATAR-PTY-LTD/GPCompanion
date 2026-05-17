@@ -105,6 +105,9 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|images|api/stripe/webhook|api/tools).*)",
+    // api/tools must go through middleware so the session is refreshed
+    // before the route calls getUser() — otherwise expired JWTs redirect to login.
+    // api/stripe/webhook is excluded because it uses raw body for signature verification.
+    "/((?!_next/static|_next/image|favicon.ico|images|api/stripe/webhook).*)",
   ],
 }

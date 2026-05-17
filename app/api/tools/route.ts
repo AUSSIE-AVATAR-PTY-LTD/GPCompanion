@@ -165,6 +165,9 @@ export async function GET(request: Request) {
       headers: {
         "Content-Type": "text/html; charset=utf-8",
         "Cache-Control": "no-store",
+        // Tools load Tailwind CDN, Google Fonts, Chart.js, etc.
+        // Override the global CSP with a permissive policy for these trusted files.
+        "Content-Security-Policy": "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:",
       },
     })
   } catch {
