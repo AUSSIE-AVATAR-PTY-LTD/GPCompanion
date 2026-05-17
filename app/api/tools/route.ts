@@ -77,16 +77,16 @@ export async function GET(request: Request) {
 
     const navbar = `
 <style>
-  /* Hide the existing nav built into the HTML tool */
+  /* Hide any nav already built into the HTML tool */
   body > nav { display: none !important; }
   #gpc-navbar {
     position: sticky;
     top: 0;
     z-index: 9999;
     background: #ffffff;
-    border-bottom: 1px solid #e0e7ff;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    border-bottom: 1px solid #ccfbf1;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
   #gpc-navbar .gpc-inner {
     max-width: 1280px;
@@ -100,17 +100,30 @@ export async function GET(request: Request) {
   #gpc-navbar .gpc-brand {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.75rem;
     text-decoration: none;
-    font-weight: 700;
-    font-size: 1.15rem;
-    color: #3730a3;
     flex-shrink: 0;
   }
   #gpc-navbar .gpc-brand img {
     width: 56px;
     height: 56px;
     object-fit: contain;
+  }
+  #gpc-navbar .gpc-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+  #gpc-navbar .gpc-brand-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #115e59;
+  }
+  #gpc-navbar .gpc-brand-sub {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #14b8a6;
+    letter-spacing: 0.04em;
   }
   #gpc-navbar .gpc-links {
     display: flex;
@@ -119,7 +132,7 @@ export async function GET(request: Request) {
   }
   #gpc-navbar .gpc-links a {
     text-decoration: none;
-    color: #4338ca;
+    color: #475569;
     font-size: 0.875rem;
     font-weight: 500;
     padding: 0.4rem 0.75rem;
@@ -127,20 +140,31 @@ export async function GET(request: Request) {
     transition: color 0.15s, background 0.15s;
     white-space: nowrap;
   }
-  #gpc-navbar .gpc-links a:hover { color: #1e1b4b; background: #eef2ff; }
-  #gpc-navbar .gpc-links a.gpc-back {
-    background: #4f46e5;
-    color: #ffffff !important;
-    margin-left: 0.5rem;
-    font-weight: 600;
+  #gpc-navbar .gpc-links a:hover { color: #0f766e; background: #f0fdfa; }
+  #gpc-navbar .gpc-divider {
+    width: 1px;
+    height: 20px;
+    background: #e2e8f0;
+    margin: 0 0.5rem;
   }
-  #gpc-navbar .gpc-links a.gpc-back:hover { background: #4338ca; }
+  #gpc-navbar .gpc-links a.gpc-back {
+    background: #0d9488;
+    color: #ffffff !important;
+    margin-left: 0.25rem;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  }
+  #gpc-navbar .gpc-links a.gpc-back:hover { background: #0f766e; }
 </style>
 <div id="gpc-navbar">
   <div class="gpc-inner">
     <a href="/" class="gpc-brand">
       <img src="/images/gp-companion-logo.png" alt="GP Companion" />
-      GP Companion
+      <div class="gpc-brand-text">
+        <span class="gpc-brand-name">GP Companion</span>
+        <span class="gpc-brand-sub">Clinical Tools Platform</span>
+      </div>
     </a>
     <div class="gpc-links">
       <a href="/">Home</a>
@@ -149,6 +173,7 @@ export async function GET(request: Request) {
       <a href="/developer">Developer</a>
       <a href="/privacy">Privacy</a>
       <a href="/contact">Contact</a>
+      <div class="gpc-divider"></div>
       <a href="/dashboard" class="gpc-back">&#8592; Back to Dashboard</a>
     </div>
   </div>
